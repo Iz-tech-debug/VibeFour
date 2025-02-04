@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+
+    <title>Halaman Utama</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -25,7 +28,7 @@
         .sidebar .logo {
             font-size: 22px;
             font-weight: bold;
-            color: #6c5ce7;
+            color: #72B5F6;
         }
 
         .sidebar .menu-item {
@@ -42,7 +45,7 @@
         .sidebar .menu-item:hover,
         .menu-item.active {
             background: #e3e3ff;
-            color: #4b0082;
+            color: #000000;
         }
 
         .menu-item i {
@@ -100,20 +103,21 @@
         <a href="#" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
         <a href="#" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
         <hr>
-        <a href="#" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
+        <a href="/logout" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
     </div>
 
-    <!-- Navbar -->
     <div class="content" id="content">
         <div class="navbar">
             <i class="bi bi-list toggle-btn" id="toggleSidebar"></i>
-            <span class="fw-bold">Beranda</span>
         </div>
+
         <div class="container mt-4">
             <h3>Beranda</h3>
             <p>Selamat datang di dashboard Anda!</p>
         </div>
     </div>
+
+
 
     <script>
         document.getElementById("toggleSidebar").addEventListener("click", function() {
