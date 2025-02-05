@@ -9,9 +9,11 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
+            font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
 
@@ -60,12 +62,15 @@
         }
 
         .navbar {
+            position: sticky;
+            top: 20px;
             background: white;
             padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
 
         .toggle-btn {
@@ -99,7 +104,7 @@
     <div class="sidebar" id="sidebar">
         <div class="logo">Vibe<span style="color:blueviolet;">Four</span></div>
         <hr>
-        <a href="/dashboard" class="menu-item active"><i class="bi bi-house-door"></i> Beranda</a>
+        <a href="/dashboard" class="menu-item collapsed"><i class="bi bi-house-door"></i> Beranda</a>
         <a href="/editor_halaman" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
         <a href="#" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
         <a href="#" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
@@ -119,23 +124,31 @@
         </div>
     </div>
 
+    <!-- CKEditor -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         document.getElementById("toggleSidebar").addEventListener("click", function() {
             document.getElementById("sidebar").classList.toggle("sidebar-hidden");
             document.getElementById("content").classList.toggle("content-expanded");
         });
-    </script>
 
-    <!-- Tambahkan CDN CKEditor -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
-    <script>
-        // Aktifkan CKEditor pada textarea
+        // Klasifikasi ckeditor untuk setiap class editor
+        document.querySelectorAll('.editor').forEach((textarea) => {
+            ClassicEditor.create(textarea, {
+                // toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'undo', 'redo']
+            }).catch(error => console.error(error));
+        });
+
+        // CKEditor
         ClassicEditor
             .create(document.querySelector('#editor'))
             .catch(error => {
                 console.error(error);
             });
-    </script>   
+    </script>
 
 </body>
 
