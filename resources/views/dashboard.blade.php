@@ -44,12 +44,13 @@
 
         .sidebar .menu-item:hover,
         .menu-item.active {
-            background: #e3e3ff;
+            background: #72B5F6;
             color: #000000;
         }
 
         .menu-item i {
             font-size: 18px;
+            y
         }
 
         .content {
@@ -98,8 +99,8 @@
     <div class="sidebar" id="sidebar">
         <div class="logo">Vibe<span style="color:blueviolet;">Four</span></div>
         <hr>
-        <a href="#" class="menu-item active"><i class="bi bi-house-door"></i> Beranda</a>
-        <a href="#" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
+        <a href="/dashboard" class="menu-item active"><i class="bi bi-house-door"></i> Beranda</a>
+        <a href="/editor_halaman" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
         <a href="#" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
         <a href="#" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
         <hr>
@@ -112,12 +113,11 @@
         </div>
 
         <div class="container mt-4">
-            <h3>Beranda</h3>
-            <p>Selamat datang di dashboard Anda!</p>
+
+            @yield('content')
+
         </div>
     </div>
-
-
 
     <script>
         document.getElementById("toggleSidebar").addEventListener("click", function() {
@@ -125,6 +125,17 @@
             document.getElementById("content").classList.toggle("content-expanded");
         });
     </script>
+
+    <!-- Tambahkan CDN CKEditor -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+    <script>
+        // Aktifkan CKEditor pada textarea
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>   
 
 </body>
 

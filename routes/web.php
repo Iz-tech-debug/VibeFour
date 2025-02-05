@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+
+Route::get('/editor_halaman', function () {
+    return view('Page_Editor.editor_halaman');
+});
