@@ -102,7 +102,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="logo">Vibe<span style="color:blueviolet;">Four</span></div>
+        <div class="logo">VibeFour</div>
         <hr>
         <a href="/dashboard" class="menu-item collapsed"><i class="bi bi-house-door"></i> Beranda</a>
         <a href="/editor_halaman" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
