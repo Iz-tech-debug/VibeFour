@@ -84,8 +84,8 @@
         }
 
         .slideshow-preview img {
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 75px;
             object-fit: cover;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -96,8 +96,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 75px;
             border: 2px dashed #bbb;
             border-radius: 8px;
             font-size: 24px;
@@ -113,7 +113,7 @@
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
-            <h4 class="" style="color:blueviolet;">Editor Halaman</h4>
+            <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
         </div>
 
         <br>
@@ -179,7 +179,7 @@
             <div class="mb-4">
                 <label class="form-label fw-bold">Banner Penjadwalan:</label>
                 <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-                <input type="file" class="form-control mb-2">
+                <input type="file" class="form-control mb-2" accept="image/*">
                 <i class="bi bi-info-circle"></i>
                 <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
             </div>
@@ -227,8 +227,7 @@
                 <label class="form-label fw-bold">Gambar Latar Belakang:</label>
                 <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
                 <div class="input-group mb-2">
-                    <input type="file" class="form-control">
-                    <button class="btn btn-outline-secondary" type="button">Pilih File</button>
+                    <input type="file" class="form-control" accept="image/*">
                 </div>
                 <div class="form-text">
                     <i class="bi bi-info-circle"></i>
