@@ -113,7 +113,7 @@
     </div>
 
     <div class="content" id="content">
-        <div class="navbar">
+        <div class="navbar bg-transparent" id="navbar">
             <i class="bi bi-list toggle-btn" id="toggleSidebar"></i>
         </div>
 
