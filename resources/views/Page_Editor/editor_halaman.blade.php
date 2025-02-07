@@ -3,6 +3,9 @@
 @section('title', 'Editor Halaman')
 
 @section('content')
+
+    @include('Page_Editor.Section.halaman_depan')
+
     <style>
         /* Dropdown */
         .custom-dropdown {
@@ -118,7 +121,6 @@
 
         <br>
 
-
         <div class="card p-4 shadow-sm">
 
             <div class="row mt-1">
@@ -194,20 +196,29 @@
 
             <!-- Pencapaian -->
             <div class="mt-2">
-                <h4>Pencapaian:</h4>
+                <label for="editorPencapaian" class="form-label fw-bold">Pencapaian: </label>
 
-                <i class="bi bi-info-circle"></i>
-                <small class="text-muted">Tambahkan ikon gambar dengan rasio x:x</small>
+                <div class="mt-2">
+                    <i class="bi bi-info-circle"></i>
+                    <small class="text-muted">Tambahkan ikon gambar dengan rasio x:x</small>
 
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-success mb-2" onclick="addPencapaian()">
+                            <i class="bi bi-plus-lg"></i> Tambah Pencapaian
+                        </button>
+                        <div id="pencapaianContainer">
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <hr>
 
             <div class="slideshow-container">
-                <h4 class="mb-2">Slideshow: </h4>
+                <label for="slideshowInput" class="form-label fw-bold">Dokumentasi Slideshow:</label>
 
-                <div class="slideshow-input">
-                    <label for="slideshowInput" class="form-label">Pilih file gambar</label>
+                <div class="slideshow-input mt-2">
                     <input type="file" id="slideshowInput" class="form-control" accept="image/*" multiple>
                     <small class="text-muted mt-2">
                         <i class="bi bi-info-circle"></i>
@@ -287,6 +298,36 @@
                 reader.readAsDataURL(file);
             });
         });
+
+        // Pencapaian
+        let pencapaianCount = 0;
+
+        function addPencapaian() {
+            const container = document.getElementById('pencapaianContainer');
+            const html = `
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Nama Pencapaian">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="file" class="form-control" accept="image/*">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger" onclick="removePencapaian(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+            container.insertAdjacentHTML('beforeend', html);
+            pencapaianCount++;
+        }
+
+        function removePencapaian(element) {
+            element.closest('.row').remove();
+            pencapaianCount--;
+        }
 
         // Tambahkan klik pada tombol tambah
         addButton.addEventListener('click', function() {
