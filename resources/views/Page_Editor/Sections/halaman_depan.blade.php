@@ -3,15 +3,14 @@
     <!-- Judul Halaman -->
     <div class="mb-4">
         <label for="judulHalaman" class="form-label fw-bold">Judul Halaman:</label>
-        <input type="text" id="judulHalaman" class="form-control" placeholder="Ketik disini....." maxlength="100"
-            title="Judul halaman tidak boleh lebih dari 100 karakter" required>
+        <input type="text" id="judulHalaman" class="form-control" placeholder="Ketik disini....." maxlength="100" required>
     </div>
 
     <!-- Logo -->
     <div class="mb-4">
         <label class="form-label fw-bold">Logo:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <input type="file" class="form-control mb-2" title="Harap unggah gambar sebagai logo" required>
+        <input type="file" class="form-control mb-2" required>
         <i class="bi bi-info-circle"></i>
         <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
     </div>
@@ -35,8 +34,7 @@
     <div class="mb-4">
         <label class="form-label fw-bold">Banner Penjadwalan:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <input type="file" class="form-control mb-2" accept="image/*"
-            title="Harap unggah gambar sebagai banner penjadwalan" required>
+        <input type="file" class="form-control mb-2" accept="image/*" required>
         <i class="bi bi-info-circle"></i>
         <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
     </div>
@@ -75,8 +73,7 @@
         <label for="slideshowInput" class="form-label fw-bold">Dokumentasi Slideshow:</label>
 
         <div class="slideshow-input mt-2">
-            <input type="file" id="slideshowInput" class="form-control" accept="image/*"
-                title="Harap unggah gambar sebagai slideshow" required multiple>
+            <input type="file" id="slideshowInput" class="form-control" accept="image/*" required multiple>
             <small class="text-muted mt-2">
                 <i class="bi bi-info-circle"></i>
                 Tambahkan gambar dengan rasio x:x
@@ -95,8 +92,7 @@
         <label class="form-label fw-bold">Gambar Latar Belakang:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
         <div class="input-group mb-2">
-            <input type="file" class="form-control" accept="image/*"
-                title="Harap unggah gambar sebagai latar belakang" required>
+            <input type="file" class="form-control" accept="image/*" required>
         </div>
         <div class="form-text">
             <i class="bi bi-info-circle"></i>
