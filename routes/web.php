@@ -21,6 +21,11 @@ Route::get('/dashboard', function () {
     return view('home');
 });
 
+// Route::get('/editor_halaman', function () {
+//     return view('Page_Editor.editor_halaman');
+// });
+
+// Pindah atau ambil data dari editor halaman
 Route::get('/editor_halaman', function () {
-    return view('Page_Editor.editor_halaman');
-});
+    return view('Page_Editor.editor_halaman'); // Sesuaikan nama file Blade Anda
+})->name('editor.halaman');
