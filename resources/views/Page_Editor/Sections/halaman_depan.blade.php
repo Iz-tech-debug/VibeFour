@@ -1,8 +1,41 @@
 {{-- START CSS --}}
 <style>
+    .image-preview {
+        margin-top: 10px;
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
     /* Styling Slideshow */
     .slideshow-container {
         margin-top: 20px;
+    }
+
+    .slideshow-preview .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .slideshow-preview .delete-button {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
     }
 
     .slideshow-input {
@@ -61,18 +94,22 @@
     <div class="mb-4">
         <label class="form-label fw-bold">Logo:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <input type="file" class="form-control mb-2" required>
+        <input type="file" id="inputLogo" class="form-control mb-2" accept="image/*" required>
+        <img id="previewLogo" class="image-preview" src="#" alt="Pratinjau Logo" style="display: none;">
         <i class="bi bi-info-circle"></i>
-        <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
+        <small class="text-muted">Tambahkan gambar dengan rasio 1:1</small>
     </div>
 
     <!-- Banner Voting -->
     <div class="mb-4">
-        <label class="form-label fw-bold">Banner Voting:</label>
+        <label class="form-label fw-bold">Video Panduan Voting:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <input type="file" class="form-control mb-2" title="Harap unggah gambar sebagai banner voting" required>
+        <input type="file" class="form-control mb-2" title="Harap unggah video sebagai banner voting"
+            accept="video/*" required>
+        <img id="previewBannerVoting" class="image-preview" src="#" alt="Pratinjau Banner Voting"
+            style="display: none;">
         <i class="bi bi-info-circle"></i>
-        <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
+        <small class="text-muted">Tambahkan video dengan rasio 16:9</small>
     </div>
 
     <!-- Deskripsi Fitur Voting -->
@@ -83,11 +120,11 @@
 
     <!-- Banner Penjadwalan -->
     <div class="mb-4">
-        <label class="form-label fw-bold">Banner Penjadwalan:</label>
+        <label class="form-label fw-bold">Video Panduan Penjadwalan:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <input type="file" class="form-control mb-2" accept="image/*" required>
+        <input type="file" class="form-control mb-2" accept="video/*" required>
         <i class="bi bi-info-circle"></i>
-        <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
+        <small class="text-muted">Tambahkan video dengan rasio 16:9</small>
     </div>
 
     <!-- Deskripsi Fitur Jadwal -->
@@ -127,7 +164,7 @@
             <input type="file" id="slideshowInput" class="form-control" accept="image/*" required multiple>
             <small class="text-muted mt-2">
                 <i class="bi bi-info-circle"></i>
-                Tambahkan gambar dengan rasio x:x
+                Tambahkan gambar dengan rasio 16:9
             </small>
         </div>
 
@@ -142,13 +179,11 @@
     <div class="mb-4">
         <label class="form-label fw-bold">Gambar Latar Belakang:</label>
         <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-        <div class="input-group mb-2">
-            <input type="file" class="form-control" accept="image/*" required>
-        </div>
-        <div class="form-text">
-            <i class="bi bi-info-circle"></i>
-            <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
-        </div>
+        <input type="file" class="form-control" id="inputBackground" required>
+        <img id="previewBackground" class="image-preview" src="#" alt="Pratinjau Latar Belakang"
+            style="display: none;">
+        <i class="bi bi-info-circle"></i>
+        <small class="text-muted">Tambahkan gambar dengan rasio x:x</small>
     </div>
 
     <div class="text-end">
@@ -157,7 +192,7 @@
 </form>
 
 <script>
-    // Pratinjau Gambar
+    // Pratinjau Gambar Slideshow
     const inputElement = document.getElementById('slideshowInput');
     const previewContainer = document.getElementById('slideshowPreview');
     const addButton = document.getElementById('addButton');
@@ -166,23 +201,65 @@
         const files = event.target.files;
 
         // Clear pratinjau sebelumnya
-        const existingImages = previewContainer.querySelectorAll('img');
-        existingImages.forEach(img => img.remove());
+        const existingImages = previewContainer.querySelectorAll('.image-container');
+        existingImages.forEach(container => container.remove());
 
         Array.from(files).forEach(file => {
             const reader = new FileReader();
             reader.onload = function(e) {
+                // Buat elemen div sebagai container untuk gambar dan tombol hapus
+                const container = document.createElement('div');
+                container.classList.add('image-container');
+
                 // Buat elemen img untuk pratinjau
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.alt = file.name;
 
-                // Tambahkan ke pratinjau
-                previewContainer.insertBefore(img, addButton);
+                // Buat tombol hapus
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-button');
+                deleteButton.textContent = 'X';
+                deleteButton.addEventListener('click', function() {
+                    container.remove(); // Hapus gambar dari pratinjau
+                });
+
+                // Tambahkan img dan tombol hapus ke dalam container
+                container.appendChild(img);
+                container.appendChild(deleteButton);
+
+                // Tambahkan container ke pratinjau
+                previewContainer.insertBefore(container, addButton);
             };
             reader.readAsDataURL(file);
         });
     });
+
+    // Fungsi umum untuk menambahkan pratinjau gambar
+    function addImagePreview(inputId, previewId) {
+        const inputElement = document.getElementById(inputId);
+        const previewElement = document.getElementById(previewId);
+
+        inputElement.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewElement.src = e.target.result;
+                    previewElement.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewElement.style.display = 'none';
+            }
+        });
+    }
+
+    // Tambahkan pratinjau untuk setiap input gambar
+    addImagePreview('inputLogo', 'previewLogo');
+    addImagePreview('inputBannerVoting', 'previewBannerVoting');
+    addImagePreview('inputBannerJadwal', 'previewBannerJadwal');
+    addImagePreview('inputBackground', 'previewBackground');
 
     // Pencapaian
     let pencapaianCount = 0;
@@ -190,22 +267,22 @@
     function addPencapaian() {
         const container = document.getElementById('pencapaianContainer');
         const html = `
-                            <div class="row mt-2">
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger" onclick="removePencapaian(this)">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" placeholder="Isi Pencapaian">
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="file" class="form-control" accept="image/*">
-                                    <i class="bi bi-info-circle"></i>
-                                    <small class="text-muted">Tambahkan ikon gambar dengan rasio x:x</small>
-                                </div>
-                            </div>
-                        `;
+            <div class="row mt-2">
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger" onclick="removePencapaian(this)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Isi Pencapaian">
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control" accept="image/*">
+                    <i class="bi bi-info-circle"></i>
+                    <small class="text-muted">Tambahkan ikon gambar dengan rasio 1:1</small>
+                </div>
+            </div>
+        `;
 
         container.insertAdjacentHTML('beforeend', html);
         pencapaianCount++;
