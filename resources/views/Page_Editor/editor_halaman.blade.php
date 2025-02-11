@@ -25,18 +25,18 @@
 
                             <option value="halaman_depan"
                                 {{ request('page') == 'halaman_depan' || !request('page') ? 'selected' : '' }}>
-                                Halaman Depan
+                                Beranda
                             </option>
-
-                            <option value="footer" {{ request('page') == 'footer' ? 'selected' : '' }}>Footer</option>
 
                             <option value="halaman-header" {{ request('page') == 'header' ? 'selected' : '' }}>Header
                             </option>
 
-                            <option value="halaman-tentang" {{ request('page') == 'tentang' ? 'selected' : '' }}>Tentang
+                            <option value="halaman-produk" {{ request('page') == 'produk' ? 'selected' : '' }}>Produk
                             </option>
 
-                            <option value="halaman-produk" {{ request('page') == 'produk' ? 'selected' : '' }}>Produk
+                            <option value="footer" {{ request('page') == 'footer' ? 'selected' : '' }}>Footer</option>
+
+                            <option value="halaman-tentang" {{ request('page') == 'tentang' ? 'selected' : '' }}>Tentang
                             </option>
 
                             <option value="halaman-s&k" {{ request('page') == 's&k' ? 'selected' : '' }}>Syarat & Ketentuan
