@@ -106,8 +106,8 @@
         <hr>
         <a href="/dashboard" class="menu-item collapsed"><i class="bi bi-house-door"></i> Beranda</a>
         <a href="/editor_halaman" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
-        <a href="#" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
-        <a href="#" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
+        <a href="/manajemen_berita" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
+        <a href="/manajemen_pengguna" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
         <hr>
         <a href="/logout" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
     </div>
