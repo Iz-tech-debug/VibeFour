@@ -5,112 +5,231 @@
 <form action="#" method="post">
     @csrf
 
-    <!-- Facebook -->
-    <div class="mb-4">
-        <label for="linkFB" class="form-label fw-bold">Tautan Facebook:</label>
-        <input type="text" id="linkFB" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan facebook tidak boleh kosong.</div>
+    <!-- Nama Brand -->
+    <div class="mb-3 mt-2">
+        <label for="linkAbt" class="form-label fw-bold">Nama Aplikasi:</label>
+        <input type="text" id="linkAbt" class="form-control is-invalid" placeholder="Ketik disini....." required>
+        <div class="invalid-feedback">Nama aplikasi tidak boleh kosong.</div>
     </div>
 
-    <!-- X/Twitter -->
-    <div class="mb-4">
-        <label for="linkX" class="form-label fw-bold">Tautan Twitter / X:</label>
-        <input type="text" id="linkX" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Judul Twitter/X tidak boleh kosong.</div>
+    <!-- Deskripsi Alamat -->
+    <div class="mb-3">
+        <label for="editorAlamat" class="form-label fw-bold">Deskripsi Alamat :</label>
+        <textarea id="editorAlamat" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
     </div>
 
-    <!-- Facebook -->
-    <div class="mb-4">
-        <label for="linkYT" class="form-label fw-bold">Tautan Youtube:</label>
-        <input type="text" id="linkYT" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan Youtube tidak boleh kosong.</div>
-    </div>
+    <div class="row mb-3">
+        {{-- WA --}}
+        <div class="col-md-6">
+            <label for="nomorWA" class="form-label fw-bold">Nomor Whatsapp:</label>
+            <div class="input-group">
+                <span class="input-group-text">+62</span>
+                <input type="number" id="nomorWA" class="form-control" placeholder="Ketik disini....."
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+            </div>
+        </div>
 
-    <!-- Instagram -->
-    <div class="mb-4">
-        <label for="linkIG" class="form-label fw-bold">Tautan Instagram:</label>
-        <input type="text" id="linkIG" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan Instagram tidak boleh kosong.</div>
-    </div>
-
-    <!-- Whatsapp -->
-    <div class="mb-4">
-        <label for="noWA" class="form-label fw-bold">Nomor Whatsapp:</label>
-        <input type="text" id="noWA" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Nomor Whatsapp tidak boleh kosong.</div>
-    </div>
-
-    <!-- CS -->
-    <div class="mb-4">
-        <label for="noCS" class="form-label fw-bold">Nomor Layanan Pengguna:</label>
-        <input type="text" id="noCS" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Nomor Layanan Pengguna tidak boleh kosong.</div>
+        {{-- CS --}}
+        <div class="col-md-6">
+            <label for="nomorCS" class="form-label fw-bold">Nomor Pelayanan Pengguna:</label>
+            <div class="input-group">
+                <span class="input-group-text">+62</span>
+                <input type="number" id="nomorWA" class="form-control" placeholder="Ketik disini....."
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+            </div>
+        </div>
     </div>
 
     <hr>
 
-    <div class="row">
-        <div class="col-md-6">
-            <label for="produkVoting" class="form-label fw-bold">Tautan Produk Voting:</label>
-            <input type="text" id="produkVoting" class="form-control" placeholder="Ketik disini....." required>
+    {{-- Produk Voting --}}
+    <div class="mb-3">
+        <label for="prodVote" class="form-label fw-bold">Produk A:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="prodVote" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="prodVote" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label for="produkPenjadwalan" class="form-label fw-bold">Tautan Produk Penjadwalan:</label>
-            <input type="text" id="produkPenjadwalan" class="form-control" placeholder="Ketik disini....." required>
+    </div>
+
+    {{-- Produk Penjadwalan --}}
+    <div class="mb-3">
+        <label for="prodJdwl" class="form-label fw-bold">Produk B:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="prodJdwl" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="prodJdwl" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
         </div>
     </div>
 
     <hr>
 
     <!-- About Us -->
-    <div class="mb-4">
-        <label for="linkAbt" class="form-label fw-bold">Tautan Tentang:</label>
-        <input type="text" id="linkAbt" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan halaman tentang tidak boleh kosong.</div>
+    <div class="mb-3">
+        <label for="tentang" class="form-label fw-bold">Tentang:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="tentang" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="tentang" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Contact Us -->
-    <div class="mb-4">
-        <label for="linkCtc" class="form-label fw-bold">Tautan Kontak:</label>
-        <input type="text" id="linkCtc" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan halaman kontak tidak boleh kosong.</div>
+    <div class="mb-3">
+        <label for="kontak" class="form-label fw-bold">Kontak:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="kontak" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="kontak" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- News -->
-    <div class="mb-4">
-        <label for="linkNws" class="form-label fw-bold">Tautan Berita:</label>
-        <input type="text" id="linkNws" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan halaman berita tidak boleh kosong.</div>
+    <div class="mb-3">
+        <label for="berita" class="form-label fw-bold">Berita:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="berita" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="berita" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- T&C -->
-    <div class="mb-4">
-        <label for="linkS&K" class="form-label fw-bold">Tautan S&K:</label>
-        <input type="text" id="linkS&K" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Tautan halaman S&K tidak boleh kosong.</div>
+    <div class="mb-3">
+        <label for="s&k" class="form-label fw-bold">Syarat & Ketentuan:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="s&k" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="s&k" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Privacy Policies -->
-    <div class="mb-4">
-        <label for="linkT&C" class="form-label fw-bold">Tautan Kebijakan & Privasi:</label>
-        <input type="text" id="linkT&C" class="form-control is-invalid" placeholder="Ketik disini....."
-            required>
-        <div class="invalid-feedback">Tautan halaman kebijakan dan privasi tidak boleh kosong.</div>
+    <div class="mb-3">
+        <label for="pvp" class="form-label fw-bold">Kebijakan Privasi:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="pvp" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="pvp" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Whatsapp -->
-    <div class="mb-4">
-        <label for="linkFAQ" class="form-label fw-bold">Tautan F.A.Q:</label>
-        <input type="text" id="linkFAQ" class="form-control is-invalid" placeholder="Ketik disini....."
-            required>
-        <div class="invalid-feedback">Tautan halaman F.A.Q tidak boleh kosong.</div>
+    <!-- FAQ -->
+    <div class="mb-3">
+        <label for="faq" class="form-label fw-bold">Pertanyaan Umum:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="faq" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="faq" class="form-control" placeholder="Ketik disini....."
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Deskripsi Alamat -->
-    <div class="mb-2">
-        <label for="editorAlamat" class="form-label fw-bold">Alamat :</label>
-        <textarea id="editorAlamat" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
-    </div>
 
     <div class="text-end">
         <button type="button" class="btn btn-primary" id="btnSimpan">
