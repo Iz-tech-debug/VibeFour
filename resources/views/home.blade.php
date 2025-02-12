@@ -1,6 +1,6 @@
 @extends('dashboard')
 
-@section('title', 'Editor Halaman')
+@section('title', 'Dashboard')
 
 @section('content')
 
