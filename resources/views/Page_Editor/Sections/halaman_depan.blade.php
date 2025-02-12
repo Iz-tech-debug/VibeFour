@@ -151,7 +151,6 @@
                 </div>
 
             </div>
-
         </div>
     </div>
 
@@ -292,15 +291,4 @@
         element.closest('.row').remove();
         pencapaianCount--;
     }
-
-    addButton.addEventListener('click', function() {
-        inputElement.click();
-    });
-
-    window.addEventListener('click', function(e) {
-        const dropdown = document.querySelector('.custom-dropdown');
-        if (!dropdown.contains(e.target)) {
-            dropdown.classList.remove('active');
-        }
-    });
 </script>
