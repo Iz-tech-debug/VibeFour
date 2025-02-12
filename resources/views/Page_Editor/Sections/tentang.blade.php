@@ -5,13 +5,6 @@
 <form action="#" method="post">
     @csrf
 
-    {{-- Brand  --}}
-    <div class="mb-3">
-        <label for="brand" class="form-label fw-bold">Nama Brand:</label>
-        <input type="text" id="brand" class="form-control is-invalid" placeholder="Ketik disini....." required>
-        <div class="invalid-feedback">Nama brand tidak boleh kosong.</div>
-    </div>
-
     {{-- Keterangan Singkat IDN --}}
     <div class="mb-3">
         <label for="keteranganIDN" class="form-label fw-bold">Keterangan Bahasa Indonesia Singkat:</label>

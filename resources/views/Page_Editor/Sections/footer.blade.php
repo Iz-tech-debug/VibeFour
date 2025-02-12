@@ -1,5 +1,3 @@
-{{-- SA --}}
-
 @include('Modal.Editor.sa')
 
 <form action="#" method="post">
