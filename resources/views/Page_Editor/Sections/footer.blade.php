@@ -5,6 +5,13 @@
 <form action="#" method="post">
     @csrf
 
+    <!-- Nama Brand -->
+    <div class="mb-3 mt-2">
+        <label for="linkAbt" class="form-label fw-bold">Nama Aplikasi:</label>
+        <input type="text" id="linkAbt" class="form-control is-invalid" placeholder="Ketik disini....." required>
+        <div class="invalid-feedback">Nama aplikasi tidak boleh kosong.</div>
+    </div>
+
     <!-- Deskripsi Alamat -->
     <div class="mb-3">
         <label for="editorAlamat" class="form-label fw-bold">Deskripsi Alamat :</label>
