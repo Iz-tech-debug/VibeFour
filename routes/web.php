@@ -17,19 +17,10 @@ Route::get('/', function () {
     return view('Auth.login');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/halaman_utama', function () {
     return view('home');
 });
 
-
-// Route::get('/editor_halaman', function () {
-//     return view('Page_Editor.editor_halaman');
-// });
-
-// Pindah atau ambil data dari editor halaman
-Route::get('/editor_halaman', function () {
-    return view('Page_Editor.editor_halaman');
-})->name('editor.halaman');
 
 Route::get('/manajemen_berita', function () {
     return view('Page.m_berita');
@@ -38,3 +29,23 @@ Route::get('/manajemen_berita', function () {
 Route::get('/manajemen_pengguna', function () {
     return view('Page.m_pengguna');
 })->name('page.m_pengguna');
+
+
+// Editor
+
+// Beranda
+Route::get('/editor_beranda', function () {
+    return view('Page_Editor.Sections.beranda');
+})->name('editor.beranda');
+
+// Header
+Route::get('/editor_header', function () {
+    return view('Page_Editor.Sections.header');
+})->name('editor.header');
+
+
+// Footer
+Route::get('/editor_footer', function () {
+    return view('Page_Editor.Sections.footer');
+})->name('editor.footer');
+
