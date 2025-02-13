@@ -29,7 +29,7 @@
         }
 
         .sidebar .logo {
-            font-size: 22px;
+            font-size: 31px;
             font-weight: bold;
             color: #72B5F6;
         }
@@ -53,7 +53,6 @@
 
         .menu-item i {
             font-size: 18px;
-            y
         }
 
         .content {
@@ -83,6 +82,24 @@
             margin-left: -250px;
         }
 
+        .sub-menu-item {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        #buka {
+            transition: transform 0.3s ease;
+        }
+
+        #buka.rotate-up {
+            transform: rotate(180deg);
+        }
+
         .content-expanded {
             margin-left: 0 !important;
         }
@@ -105,9 +122,35 @@
     <div class="sidebar" id="sidebar">
         <div class="logo">VibeFour</div>
         <hr>
-        <a href="/dashboard" class="menu-item collapsed"><i class="bi bi-house-door"></i> Beranda</a>
-        <a href="/editor_halaman" class="menu-item"><i class="bi bi-gear"></i> Editor Halaman</a>
-        <a href="/manajemen_berita" class="menu-item"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
+        <a href="/halaman_utama" class="menu-item"><i class="bi bi-house-door"></i> Beranda</a>
+        <a href="/editor_halaman" class="menu-item mt-2 mb-2" data-bs-toggle="collapse" data-bs-target="#menu_editor"
+            data-taget="#menu_editor" aria-expanded="false"><i class="bi bi-gear"></i> Editor
+            Halaman
+            <i class="bi bi-chevron-down" id="buka"></i>
+        </a>
+
+        <div class="collapse" id="menu_editor">
+            <ul class="list-unstyled">
+                <li class="menu-item ms-3"><a href="/editor_beranda" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Beranda</a></li>
+                <li class="menu-item ms-3"><a href="/editor_header" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Header</a></li>
+                <li class="menu-item ms-3"><a href="/editor_produk" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Produk</a></li>
+                <li class="menu-item ms-3"><a href="/editor_footer" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Footer</a></li>
+                <li class="menu-item ms-3"><a href="/editor_tentang" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Tentang</a></li>
+                <li class="menu-item ms-3"><a href="/editor_s&k" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Syarat & Ketentuan</a></li>
+                <li class="menu-item ms-3"><a href="/editor_faq" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> F.A.Q</a></li>
+                <li class="menu-item ms-3"><a href="/editor_kontak" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Kontak</a></li>
+            </ul>
+        </div>
+
+        <a href="/manajemen_berita" class="menu-item mb-2"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
         <a href="/manajemen_pengguna" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
         <hr>
         <a href="/logout" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
@@ -135,12 +178,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chevronIcon = document.getElementById("buka");
+            const collapseMenu = document.getElementById("menu_editor");
+
+            collapseMenu.addEventListener("show.bs.collapse", function() {
+                chevronIcon.classList.add("rotate-up");
+            });
+
+            collapseMenu.addEventListener("hide.bs.collapse", function() {
+                chevronIcon.classList.remove("rotate-up");
+            });
+        });
+
         document.getElementById("toggleSidebar").addEventListener("click", function() {
             document.getElementById("sidebar").classList.toggle("sidebar-hidden");
             document.getElementById("content").classList.toggle("content-expanded");
         });
 
-        // Klasifikasi ckeditor untuk setiap class editor
         document.querySelectorAll('.editor').forEach((textarea) => {
             ClassicEditor.create(textarea, {
                 // toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'undo', 'redo']
