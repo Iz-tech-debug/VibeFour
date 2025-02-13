@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <!-- produk -->
+    <!-- Produk -->
     <div class="mb-3">
         <label for="produk" class="form-label fw-bold">Produk:</label>
 
@@ -88,6 +88,28 @@
 
                     <span class="input-group-text">Bahasa Inggris</span>
                     <input type="text" id="produk" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tombol Masuk -->
+    <div class="mb-3">
+        <label for="login" class="form-label fw-bold">Tombol masuk akun:</label>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Bahasa Indonesia</span>
+                    <input type="text" id="login" class="form-control" placeholder="Ketik disini....." required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+
+                    <span class="input-group-text">Bahasa Inggris</span>
+                    <input type="text" id="login" class="form-control" placeholder="Ketik disini....." required>
                 </div>
             </div>
         </div>
