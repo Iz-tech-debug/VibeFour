@@ -143,6 +143,8 @@
                             style="font-size: 7px;"></i> Tentang</a></li>
                 <li class="menu-item ms-3"><a href="/editor_s&k" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Syarat & Ketentuan</a></li>
+                <li class="menu-item ms-3"><a href="/editor_kebijakan" class="sub-menu-item"><i class="bi bi-circle"
+                            style="font-size: 7px;"></i> Kebijakan Privasi</a></li>
                 <li class="menu-item ms-3"><a href="/editor_faq" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> F.A.Q</a></li>
                 <li class="menu-item ms-3"><a href="/editor_kontak" class="sub-menu-item"><i class="bi bi-circle"
