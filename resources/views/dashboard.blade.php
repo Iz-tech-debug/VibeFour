@@ -126,7 +126,7 @@
         <a href="/editor_halaman" class="menu-item mt-2 mb-2" data-bs-toggle="collapse" data-bs-target="#menu_editor"
             data-taget="#menu_editor" aria-expanded="false"><i class="bi bi-gear"></i> Editor
             Halaman
-            <i class="bi bi-chevron-down" id="buka"></i>
+            <i class="bi bi-chevron-down ms-2" id="buka"></i>
         </a>
 
         <div class="collapse" id="menu_editor">

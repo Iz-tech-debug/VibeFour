@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                <a href="/dashboard">
+                <a href="/halaman_utama">
                     <button class="btn btn-dark w-100">Masuk akun</button>
                 </a>
                 {{-- </form> --}}

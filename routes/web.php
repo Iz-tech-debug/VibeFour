@@ -43,9 +43,13 @@ Route::get('/editor_header', function () {
     return view('Page_Editor.Sections.header');
 })->name('editor.header');
 
-
 // Footer
 Route::get('/editor_footer', function () {
     return view('Page_Editor.Sections.footer');
 })->name('editor.footer');
+
+// FAQ
+Route::get('/editor_faq', function () {
+    return view('Page_Editor.Sections.faq');
+})->name('editor.faq');
 
