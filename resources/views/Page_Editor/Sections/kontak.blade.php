@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="linkFrame" class="form-label fw-bold">IFrame Alaamat Perusahaan:</label>
+                    <label for="linkFrame" class="form-label fw-bold">IFrame Alamat Perusahaan:</label>
                     <input type="text" id="linkFrame" class="form-control is-invalid" name="iframe" placeholder="Ketik disini....."
                         required>
                     <div class="invalid-feedback">IFrame tidak boleh kosong.</div>
