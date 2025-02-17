@@ -30,7 +30,6 @@ Route::get('/manajemen_pengguna', function () {
     return view('Page.m_pengguna');
 })->name('page.m_pengguna');
 
-
 // Editor
 
 // Beranda
@@ -52,4 +51,27 @@ Route::get('/editor_footer', function () {
 Route::get('/editor_faq', function () {
     return view('Page_Editor.Sections.faq');
 })->name('editor.faq');
+
+Route::get('/tambah_pertanyaan', function () {
+    return view('Page_Editor.Sections.FAQ.tambah_pertanyaan');
+})->name('editor.tambah_pertanyaan');
+
+Route::get('/edit_pertanyaan', function () {
+    return view('Page_Editor.Sections.FAQ.edit_pertanyaan');
+})->name('editor.edit_pertanyaan');
+
+// Produk
+Route::get('/editor_produk', function () {
+    return view('Page_Editor.Sections.produk');
+})->name('editor.produk');
+
+// Tentang
+Route::get('/editor_tentang', function () {
+    return view('Page_Editor.Sections.tentang');
+})->name('editor.tentang');
+
+// Kontak
+Route::get('/editor_kontak', function () {
+    return view('Page_Editor.Sections.kontak');
+})->name('editor.kontak');
 
