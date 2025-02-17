@@ -23,7 +23,7 @@
                 {{-- Foto Berita --}}
                 <div class="mb-4">
                     <label for="gambarBerita" class="form-label fw-bold">Gambar Berita</label>
-                    
+                    <input type="file" id="gambarBerita" class="form-control" accept="image/*">
                 </div>
 
                 {{-- Judul Berita --}}
@@ -38,6 +38,10 @@
                 <div class="mb-4">
                     <label for="isiBerita" class="form-label fw-bold">Isi Berita</label>
                     <textarea name="isi_berita" id="isiBerita" class="editor"></textarea>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
