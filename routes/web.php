@@ -23,11 +23,15 @@ Route::get('/halaman_utama', function () {
 
 
 Route::get('/manajemen_berita', function () {
-    return view('Page.m_berita');
+    return view('Page.Berita.m_berita');
 })->name('page.m_berita');
 
+Route::get('/tambah_berita', function () {
+    return view('Page.Berita.tambah_berita');
+})->name('page.tambah_berita');
+
 Route::get('/manajemen_pengguna', function () {
-    return view('Page.m_pengguna');
+    return view('Page.Pengguna.m_pengguna');
 })->name('page.m_pengguna');
 
 // Editor
@@ -74,4 +78,9 @@ Route::get('/editor_tentang', function () {
 Route::get('/editor_kontak', function () {
     return view('Page_Editor.Sections.kontak');
 })->name('editor.kontak');
+
+// Syarat & Ketentuan
+Route::get('/editor_s&k', function () {
+    return view('Page_Editor.Sections.s&k');
+})->name('editor.s&k');
 
