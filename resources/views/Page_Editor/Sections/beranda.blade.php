@@ -116,14 +116,28 @@
                     <div class="invalid-feedback">Judul halaman tidak boleh kosong.</div>
                 </div>
 
-                <!-- Logo -->
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Logo:</label>
-                    <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-                    <input type="file" id="inputLogo" class="form-control mb-2" accept="image/*" required>
-                    <img id="previewLogo" class="image-preview" src="#" alt="Pratinjau Logo" style="display: none;">
-                    <i class="bi bi-info-circle"></i>
-                    <small class="text-muted">Tambahkan gambar dengan rasio 1:1</small>
+                <!-- Deskripsi Judul -->
+                <div class="mb-3">
+                    <label for="descJudul" class="form-label fw-bold">Keterangan:</label>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text">Bahasa Indonesia</span>
+                                <input type="text" id="descJudul" class="form-control" placeholder="Ketik disini....."
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="input-group">
+
+                                <span class="input-group-text">Bahasa Inggris</span>
+                                <input type="text" id="descJudul" class="form-control" placeholder="Ketik disini....."
+                                    required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Banner Voting -->
