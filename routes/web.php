@@ -30,6 +30,12 @@ Route::get('/tambah_berita', function () {
     return view('Page.Berita.tambah_berita');
 })->name('page.tambah_berita');
 
+Route::get('/edit_berita', function () {
+    return view('Page.Berita.edit');
+})->name('page.edit_berita');
+
+
+
 Route::get('/manajemen_pengguna', function () {
     return view('Page.Pengguna.m_pengguna');
 })->name('page.m_pengguna');
@@ -64,10 +70,26 @@ Route::get('/edit_pertanyaan', function () {
     return view('Page_Editor.Sections.FAQ.edit_pertanyaan');
 })->name('editor.edit_pertanyaan');
 
+
+
 // Produk
 Route::get('/editor_produk', function () {
     return view('Page_Editor.Sections.produk');
 })->name('editor.produk');
+
+// Tambah Paket
+Route::get('/tambah_paket', function () {
+    return view('Page_Editor.Sections.Produk.tambah_paket');
+})->name('editor.paket');
+
+// Edit Paket
+Route::get('/edit_paket', function () {
+    return view('Page_Editor.Sections.Produk.edit_paket');
+})->name('editor.edit_paket');
+
+// Hapus Paket
+
+
 
 // Tentang
 Route::get('/editor_tentang', function () {
@@ -83,4 +105,9 @@ Route::get('/editor_kontak', function () {
 Route::get('/editor_s&k', function () {
     return view('Page_Editor.Sections.s&k');
 })->name('editor.s&k');
+
+// Kebijakan Privasi
+Route::get('/editor_kebijakan', function () {
+    return view('Page_Editor.Sections.kebijakan');
+})->name('editor.kebijakan');
 
