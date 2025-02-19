@@ -7,7 +7,18 @@
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
-            <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+            <div class="row">
+                <div class="col-md">
+                    <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+                </div>
+
+                <div class="col-md-3 mt-1 text-end">
+                    <select class="form-select" aria-label="Pilih Bahasa">
+                        <option value="1">Bahasa Indonesia</option>
+                        <option value="2">Bahasa Inggris</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <br>
@@ -16,7 +27,7 @@
 
             <div class="row mt-1">
                 <div class="col-md-9">
-                    <h5 class="mt-2">Tentang</h5>
+                    <h5 class="mt-2">Tentang - Bahasa Indonesia</h5>
                 </div>
             </div>
 
@@ -25,95 +36,176 @@
             <form action="#" method="post">
                 @csrf
 
-                {{-- Keterangan Singkat IDN --}}
-                <div class="mb-3">
-                    <label for="keteranganIDN" class="form-label fw-bold">Keterangan Bahasa Indonesia Singkat:</label>
-                    <input type="text" id="keteranganIDN" class="form-control is-invalid" placeholder="Ketik disini....."
-                        required>
-                    <div class="invalid-feedback">Keterangan tidak boleh kosong.</div>
-                </div>
-
-                {{-- Keterangan Singkat ENG --}}
-                <div class="mb-3">
-                    <label for="keteranganENG" class="form-label fw-bold">Keterangan Bahasa Inggris Singkat:</label>
-                    <input type="text" id="keteranganENG" class="form-control is-invalid" placeholder="Ketik disini....."
-                        required>
-                    <div class="invalid-feedback">Keterangan tidak boleh kosong.</div>
-                </div>
-
-                {{-- Gambar Latar Belakang --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Gambar Latar Belakang:</label>
-                    <div class="mb-2">File Sekarang: <span class="text-warning">image/abc/def.jpg</span></div>
-                    <input type="file" class="form-control" id="inputBackground" accept="image/*" required>
-                    <img id="previewBackground" class="image-preview" src="#" alt="Pratinjau Latar Belakang"
-                        style="display: none;">
-                    <i class="bi bi-info-circle"></i>
-                    <small class="text-muted">Tambahkan gambar dengan rasio 16:9</small>
-                </div>
-
-                <hr>
-
-                {{-- Deskripsi Perusahaan --}}
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        {{-- Deskripsi Perusahaan IDN --}}
-                        <label for="editorDescIDN" class="form-label fw-bold">Deskripsi Identitas Perusahaan Bahasa
-                            Indonesia:</label>
-                        <textarea id="editorDescIDN" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+                {{-- Judul Kecil --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="judul_kecil" class="form-label fw-bold">Judul kecil pendek:</label>
                     </div>
-                    <div class="col-md-6">
-                        {{-- Deskripsi Perusahaan ENG --}}
-                        <label for="editorDescENG" class="form-label fw-bold">Deskripsi Identitas Perusahaan Bahasa
-                            Inggris:</label>
-                        <textarea id="editorDescENG" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+
+                    <div class="col-md">
+                        <input type="text" id="judul_kecil" name="judul_pendek" class="form-control"
+                            placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
-                <hr>
-
-                {{-- Misi Perusahaan --}}
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        {{-- Misi Perusahaan IDN --}}
-                        <label for="editorMisIDN" class="form-label fw-bold">Misi Perusahaan Bahasa
-                            Indonesia:</label>
-                        <textarea id="editorDescIDN" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+                {{-- Judul Halaman --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="judul_halaman" class="form-label fw-bold">Judul halaman:</label>
                     </div>
-                    <div class="col-md-6">
-                        {{-- Misi Perusahaan ENG --}}
-                        <label for="editorMisENG" class="form-label fw-bold">Misi Perusahaan Bahasa Inggris:</label>
-                        <textarea id="editorDescENG" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+
+                    <div class="col-md">
+                        <input type="text" id="judul_halaman" name="judul_halaman" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
+
+                {{-- Deskripsi --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-2">
+                        <label for="editorDesc" class="form-label fw-bold">Deskripsi singkat:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <textarea name="deskripsi" id="editorDesc" class="editor" placeholder="Ketik disini....." required></textarea>
+                    </div>
+                </div>
+
+                {{-- Teks Tombol Masuk --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="btn_login" class="form-label fw-bold">Teks tombol masuk:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="btn_login" name="btn_login" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
+
+                {{-- Visi --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="judul_vm" class="form-label fw-bold">Judul misi & tujuan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="judul_vm" name="judul_vm" class="form-control"
+                            placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <hr>
 
-                {{-- Keunggulan Perusahaan --}}
-                <div class="row mb-3">
-                    <label for="editorKeunggulan" class="form-label fw-bold">Keunggulan Perusahaan: </label>
+                {{-- Visi --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="visi" class="form-label fw-bold">Visi perusahaan:</label>
+                    </div>
 
-                    <div class="mt-2">
+                    <div class="col-md">
+                        <input type="text" id="visi" name="visi" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
 
-                        <div class="mt-2">
+                {{-- Misi --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label class="form-label fw-bold">Misi Perusahaan:</label>
+                    </div>
+                    <div class="col-md">
+                        <button type="button" class="btn btn-success mb-3" id="tambahMisi"><i class="bi bi-plus"></i>
+                            Tambah
+                            Misi</button>
 
-                            <button type="button" class="btn btn-success mb-2" onclick="addPencapaian()">
-                                <i class="bi bi-plus-lg"></i> Tambah Keunggulan
-                            </button>
-
-                            <div id="keunggulanContainer">
+                        <div id="listMisi">
+                            <div class="row mb-2 misi-item">
+                                <div class="col-md">
+                                    <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi"
+                                        required>
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="misi_keterangan[]" class="form-control"
+                                        placeholder="Keterangan Misi" required>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger hapusMisi"><i
+                                            class="bi bi-trash"></i></button>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div class="text-end">
+                <hr>
+
+                {{-- Judul Keunggulan --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="judul_ku" class="form-label fw-bold">Judul keunggulan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="judul_ku" name="judul_ku" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
+
+                {{-- Keunggulan --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label class="form-label fw-bold">Keunggulan Perusahaan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <button type="button" class="btn btn-success mb-1" id="tambahKeunggulan"><i
+                                class="bi bi-plus"></i>
+                            Tambah Keunggulan
+                        </button>
+
+                        <small class="ms-2"><i class="bi bi-info-circle">Tambahkan ikon dengan rasio 1:1</i></small>
+
+                        <div id="listKeunggulan" class="mt-2">
+                            <div class="row mb-3 keunggulan-item align-items-center">
+                                <!-- Kolom Input -->
+                                <div class="col-md-11">
+                                    <div class="row mb-2">
+                                        <div class="col-md">
+                                            <input type="file" name="keunggulan_image[]" class="form-control"
+                                                accept="image/*" required>
+                                        </div>
+                                        <div class="col-md">
+                                            <input type="text" name="keunggulan_judul[]" class="form-control"
+                                                placeholder="Judul Keunggulan" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <input type="text" name="keunggulan_keterangan[]" class="form-control"
+                                                placeholder="Keterangan Keunggulan" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kolom Button Hapus -->
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-danger hapusKeunggulan"><i
+                                            class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-end mt-3">
                     <button type="button" class="btn btn-primary" id="btnSimpan">
+                        <i class="bi bi-save me-1"></i>
                         Simpan
                     </button>
                 </div>
-
             </form>
 
         </div>
@@ -121,57 +213,90 @@
     </div>
 
     <script>
-        document.getElementById('btnSimpan').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Apakah Anda yakin ingin menyimpan ini?',
-                text: 'Perubahan akan terjadi di website',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Simpan',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Jika dikonfirmasi, lakukan sesuatu
-                    Swal.fire({
-                        title: 'Tersimpan!',
-                        text: 'Data Anda telah disimpan.',
-                        icon: 'success'
-                    });
-                }
+        $(document).ready(function() {
+
+            // Sweetalert Simpan
+            $("#btnSimpan").on("click", function() {
+                Swal.fire({
+                    title: "Apakah Anda yakin ingin menyimpan ini?",
+                    text: "Perubahan akan terjadi di website",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Simpan",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Tersimpan!",
+                            text: "Data Anda telah disimpan.",
+                            icon: "success"
+                        });
+                    }
+                });
             });
+
+            // Misi Perusahaan
+            $("#tambahMisi").on("click", function() {
+                let misiHTML = `
+                    <div class="row mb-2 misi-item">
+                        <div class="col-md">
+                            <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi" required>
+                        </div>
+                        <div class="col-md">
+                            <input type="text" name="misi_keterangan[]" class="form-control" placeholder="Keterangan Misi" required>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger hapusMisi"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                    `;
+                $("#listMisi").append(misiHTML);
+            });
+
+            $(document).on("click", ".hapusMisi", function() {
+                $(this).closest(".misi-item").remove();
+            });
+
+            // Keunggulan
+            $("#tambahKeunggulan").click(function() {
+                let keunggulanHTML = `
+                <hr>
+                    <div class="row mb-3 keunggulan-item align-items-center">
+                        <!-- Kolom Input -->
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*" required>
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_judul[]" class="form-control"
+                                        placeholder="Judul Keunggulan" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_keterangan[]" class="form-control"
+                                        placeholder="Keterangan Keunggulan" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Button Hapus -->
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
+                $("#listKeunggulan").append(keunggulanHTML);
+            });
+
+            $(document).on("click", ".hapusKeunggulan", function() {
+                $(this).closest(".keunggulan-item").remove();
+            });
+
         });
-
-        // Pencapaian
-        let keunggulan = 0;
-
-        function addPencapaian() {
-            const container = document.getElementById('keunggulanContainer');
-            const html = `
-            <div class="row mt-3 justify-content-center">
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger" onclick="hapusKeunggulan(this)">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" name="" class="form-control" placeholder="Isi Keunggulan Bahasa Indonesia">
-                </div>
-                <div class="col-md-5">
-                    <input type="text" name="" class="form-control" placeholder="Isi Keunggulan Bahasa Inggris">
-                </div>
-            </div>
-        `;
-
-            container.insertAdjacentHTML('beforeend', html);
-            keunggulan++;
-        }
-
-        function hapusKeunggulan(element) {
-            element.closest('.row').remove();
-            keunggulan--;
-        }
     </script>
 
 @endsection
