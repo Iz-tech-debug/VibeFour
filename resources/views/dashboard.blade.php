@@ -7,6 +7,8 @@
 
     <title>@yield('title', 'Halaman Dashboard')</title>
 
+    <!-- jQuery -->
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
