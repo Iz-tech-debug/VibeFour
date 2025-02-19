@@ -131,7 +131,7 @@
             <i class="bi bi-chevron-down ms-2" id="buka"></i>
         </a>
 
-        <div class="collapse" id="menu_editor">
+        <div class="collapse active" id="menu_editor">
             <ul class="list-unstyled">
                 <li class="menu-item ms-3"><a href="/editor_beranda" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Beranda</a></li>
@@ -182,36 +182,34 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const chevronIcon = document.getElementById("buka");
-            const collapseMenu = document.getElementById("menu_editor");
+        $(document).ready(function() {
+            let chevronIcon = $("#buka");
+            let collapseMenu = $("#menu_editor");
 
-            collapseMenu.addEventListener("show.bs.collapse", function() {
-                chevronIcon.classList.add("rotate-up");
+            // Rotasi ikon saat collapse dibuka atau ditutup
+            collapseMenu.on("show.bs.collapse", function() {
+                chevronIcon.addClass("rotate-up");
             });
 
-            collapseMenu.addEventListener("hide.bs.collapse", function() {
-                chevronIcon.classList.remove("rotate-up");
+            collapseMenu.on("hide.bs.collapse", function() {
+                chevronIcon.removeClass("rotate-up");
             });
-        });
 
-        document.getElementById("toggleSidebar").addEventListener("click", function() {
-            document.getElementById("sidebar").classList.toggle("sidebar-hidden");
-            document.getElementById("content").classList.toggle("content-expanded");
-        });
+            // Toggle sidebar
+            $("#toggleSidebar").on("click", function() {
+                $("#sidebar").toggleClass("sidebar-hidden");
+                $("#content").toggleClass("content-expanded");
+            });
 
-        document.querySelectorAll('.editor').forEach((textarea) => {
-            ClassicEditor.create(textarea, {
-                // toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'undo', 'redo']
-            }).catch(error => console.error(error));
-        });
+            // CKEditor Init
+            $(".editor").each(function() {
+                ClassicEditor.create(this).catch(error => console.error(error));
+            });
 
-        // CKEditor
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
+            ClassicEditor.create(document.querySelector("#editor")).catch(error => {
                 console.error(error);
             });
+        });
     </script>
 
 </body>
