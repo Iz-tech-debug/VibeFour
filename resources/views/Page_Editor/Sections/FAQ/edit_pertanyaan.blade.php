@@ -6,10 +6,12 @@
 
     <div class="container mt-4">
 
-        <div class="card p-3 shadow-sm">
+        <div class="card p-3 shadow-sm d-flex flex-row justify-content-between align-items-center">
             <h4 class="mt-2" style="color:blueviolet;">F.A.Q / Pertanyaan Umum</h4>
 
-            
+            <a href="/editor_faq" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Kembali
+            </a>
         </div>
 
         <br>
@@ -25,14 +27,14 @@
                         <div class="mb-3">
                             <label for="pertanyaan_idn" class="form-label">Pertanyaan Bahasa Indonesia</label>
                             <input type="text" class="form-control" id="pertanyaan_idn" name="pertanyaan_idn"
-                                value="">
+                                value="" placeholder="Ketik disini...">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="pertanyaan_eng" class="form-label">Pertanyaan Bahasa Inggris</label>
                             <input type="text" class="form-control" id="pertanyaan_eng" name="pertanyaan_eng"
-                                value="">
+                                value="" placeholder="Ketik disini...">
                         </div>
                     </div>
                 </div>
@@ -53,7 +55,7 @@
                 </div>
 
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-2"></i>Simpan</button>
                 </div>
             </form>
         </div>

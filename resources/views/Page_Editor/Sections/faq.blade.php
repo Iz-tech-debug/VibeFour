@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="col-md-3 text-end">
-                    <a href="/tambah_pertanyaan" class="btn btn-primary mt-2">
+                    <a href="/tambah_pertanyaan" class="btn btn-primary">
                         <i class="bi bi-plus-lg"></i> Tambah Pertanyaan
                     </a>
                 </div>
@@ -30,15 +30,8 @@
 
             <hr>
 
-            <div class="row mb-2">
-
-                <div class="col-md-8">
-                    <h4>Pertanyaan-pertanyaan Umum</h4>
-                </div>
-
-                <div class="col">
-                    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari pertanyaan...">
-                </div>
+            <div class="">
+                <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari pertanyaan...">
             </div>
 
             <table id="myTable" class="table table-bordered">

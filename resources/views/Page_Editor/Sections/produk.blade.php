@@ -21,9 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="biaya-tab" data-bs-toggle="tab" href="#biaya">Biaya</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" id="voting-tab" data-bs-toggle="tab" href="#voting">Voting</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" id="penjadwalan-tab" data-bs-toggle="tab" href="#penjadwalan">Penjadwalan</a>
                 </li>
@@ -33,7 +35,7 @@
                 @include('Page_Editor.Sections.Produk.Tabs.biaya')
 
                 @include('Page_Editor.Sections.Produk.Tabs.voting')
-                
+
                 @include('Page_Editor.Sections.Produk.Tabs.penjadwalan')
             </div>
 
