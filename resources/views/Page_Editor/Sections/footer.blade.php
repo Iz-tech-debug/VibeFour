@@ -7,7 +7,18 @@
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
-            <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+            <div class="row">
+                <div class="col-md-9">
+                    <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+                </div>
+
+                <div class="col-md text-end">
+                    <select class="form-select" aria-label="Pilih Bahasa">
+                        <option value="1">Bahasa Indonesia</option>
+                        <option value="2">Bahasa Inggris</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <br>
@@ -26,13 +37,17 @@
                 @csrf
 
                 <!-- Deskripsi Alamat -->
-                <div class="mb-3">
-                    <label for="editorAlamat" class="form-label fw-bold">Deskripsi Alamat :</label>
-                    <textarea id="editorAlamat" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-2">
+                        <label for="editorAlamat" class="form-label fw-bold">Deskripsi Alamat :</label>
+                    </div>
+
+                    <div class="col-md">
+                        <textarea id="editorAlamat" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
-                    {{-- WA --}}
                     <div class="col-md-6">
                         <label for="nomorWA" class="form-label fw-bold">Nomor Whatsapp:</label>
                         <div class="input-group">
@@ -42,12 +57,11 @@
                         </div>
                     </div>
 
-                    {{-- CS --}}
                     <div class="col-md-6">
                         <label for="nomorCS" class="form-label fw-bold">Nomor Pelayanan Pengguna:</label>
                         <div class="input-group">
                             <span class="input-group-text">+62</span>
-                            <input type="number" id="nomorWA" class="form-control" placeholder="Ketik disini....."
+                            <input type="number" id="nomorCS" class="form-control" placeholder="Ketik disini....."
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                         </div>
                     </div>
@@ -56,199 +70,94 @@
                 <hr>
 
                 {{-- Produk Voting --}}
-                <div class="mb-3">
-                    <label for="prodVote" class="form-label fw-bold">Produk A:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="prodVote" class="form-label fw-bold">Produk Voting:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="prodVote" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="prodVote" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="prodVote" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 {{-- Produk Penjadwalan --}}
-                <div class="mb-3">
-                    <label for="prodJdwl" class="form-label fw-bold">Produk B:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="prodJadwal" class="form-label fw-bold">Produk Penjadwalan:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="prodJdwl" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="prodJdwl" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="prodJadwal" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <hr>
 
                 <!-- About Us -->
-                <div class="mb-3">
-                    <label for="tentang" class="form-label fw-bold">Tentang:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="tentang" class="form-label fw-bold">Tentang:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="tentang" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="tentang" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="tentang" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <!-- Contact Us -->
-                <div class="mb-3">
-                    <label for="kontak" class="form-label fw-bold">Kontak:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="Kontak" class="form-label fw-bold">Kontak:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="kontak" class="form-control" placeholder="Ketik disini....."
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="kontak" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="Kontak" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <!-- News -->
-                <div class="mb-3">
-                    <label for="berita" class="form-label fw-bold">Berita:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="Berita" class="form-label fw-bold">Berita:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="berita" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="berita" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="Berita" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <!-- T&C -->
-                <div class="mb-3">
-                    <label for="s&k" class="form-label fw-bold">Syarat & Ketentuan:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="S&K" class="form-label fw-bold">Syarat dan Ketentuan:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="s&k" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="s&k" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="S&K" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <!-- Privacy Policies -->
-                <div class="mb-3">
-                    <label for="pvp" class="form-label fw-bold">Kebijakan Privasi:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="Kebijakan" class="form-label fw-bold">Kebijakan Privasi:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="pvp" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="pvp" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="Kebijakan" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
 
                 <!-- FAQ -->
-                <div class="mb-3">
-                    <label for="faq" class="form-label fw-bold">Pertanyaan Umum:</label>
+                <div class="row mb-3">
+                    <div class="col-md-3 mt-1">
+                        <label for="FAQ" class="form-label fw-bold">FAQ:</label>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text">Bahasa Indonesia</span>
-                                <input type="text" id="faq" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="input-group">
-
-                                <span class="input-group-text">Bahasa Inggris</span>
-                                <input type="text" id="faq" class="form-control"
-                                    placeholder="Ketik disini....." required>
-                            </div>
-                        </div>
+                    <div class="col-md">
+                        <input type="text" id="FAQ" class="form-control" placeholder="Ketik disini....." required>
                     </div>
                 </div>
-
 
                 <div class="text-end">
                     <button type="button" class="btn btn-primary" id="btnSimpan">
