@@ -7,10 +7,20 @@
     @include('Modal.Editor.Produk&Biaya.detail')
 
     <div class="container mt-4">
-
-        <!-- Header -->
+        
         <div class="card p-3 shadow-sm">
-            <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+            <div class="row">
+                <div class="col-md">
+                    <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
+                </div>
+
+                <div class="col-md-3 mt-1 text-end">
+                    <select class="form-select" aria-label="Pilih Bahasa">
+                        <option value="1">Bahasa Indonesia</option>
+                        <option value="2">Bahasa Inggris</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <br>
