@@ -81,41 +81,37 @@
     </div>
 
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            const searchValue = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#myTable tbody tr');
-
-            rows.forEach(row => {
-                const cellText = row.cells[1].textContent.toLowerCase();
-                if (cellText.includes(searchValue)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+        $(document).ready(function() {
+            $('#searchInput').on('keyup', function() {
+                let searchValue = $(this).val().toLowerCase();
+                $('#myTable tbody tr').each(function() {
+                    let cellText = $(this).find('td:eq(1)').text().toLowerCase();
+                    $(this).toggle(cellText.includes(searchValue));
+                });
             });
-        });
 
-        document.querySelector('.btn-hapus').addEventListener('click', function() {
-            const id = this.getAttribute('data-id'); // Ambil ID pertanyaan
+            $(document).on('click', '.btn-hapus', function() {
+                let id = $(this).data('id'); // Ambil ID dari atribut data-id
 
-            Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Ya, Hapus!",
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Simulasi penghapusan dengan alert (Gantilah dengan AJAX atau form submit ke backend)
-                    Swal.fire(
-                        "Terhapus!",
-                        "Pertanyaan dengan telah dihapus.",
-                        "success"
-                    );
-                }
+                Swal.fire({
+                    title: "Apakah Anda yakin?",
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Simulasi penghapusan dengan alert (Gantilah dengan AJAX atau form submit ke backend)
+                        Swal.fire(
+                            "Terhapus!",
+                            "Pertanyaan telah dihapus.",
+                            "success"
+                        );
+                    }
+                });
             });
         });
     </script>
