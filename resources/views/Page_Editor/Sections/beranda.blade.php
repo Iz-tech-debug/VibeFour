@@ -78,7 +78,7 @@
                 <!-- Slideshow Tampilan Aplikasi -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-2">
-                        <label class="form-label fw-bold">Slideshow Tampilan Aplikasi:</label>
+                        <label class="form-label fw-bold">Slideshow tampilan aplikasi:</label>
                     </div>
 
                     <div class="col-md">
@@ -104,7 +104,7 @@
                 <!-- Fitur Keunggulan -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-2">
-                        <label for="editorVoting" class="form-label fw-bold">Deskripsi Fitur Voting:</label>
+                        <label for="editorVoting" class="form-label fw-bold">Deskripsi fitur unggulan:</label>
                     </div>
 
                     <div class="col-md">
@@ -112,26 +112,76 @@
                     </div>
                 </div>
 
+                <!-- Judul pencapaian -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="judul_pencapaian" class="form-label mt-2 fw-bold">Judul pencapaian:</label>
+                    </div>
 
-                <!-- Pencapaian -->
-                <div class="mt-2">
-                    <label for="editorPencapaian" class="form-label fw-bold">Pencapaian: </label>
-
-                    <div class="mt-2">
-
-                        <div class="mt-2">
-
-                            <button type="button" class="btn btn-success mb-2" onclick="addPencapaian()">
-                                <i class="bi bi-plus-lg"></i> Tambah Pencapaian
-                            </button>
-
-                            <div id="pencapaianContainer">
-                            </div>
-
-                        </div>
-
+                    <div class="col-md">
+                        <input type="text" id="judul_pencapaian" name="judul_pencapian" class="form-control"
+                            placeholder="Ketik disini....." required>
                     </div>
                 </div>
+
+                <!-- Deskripsi pencapaian -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mt-2">
+                        <label for="editorDesk" class="form-label fw-bold">Deskripsi pencapaian:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <textarea id="editorDesk" class="editor" name="deskripsiPencapaian" placeholder="Ketik disini....." required></textarea>
+                    </div>
+                </div>
+
+                <!-- Pencapaian -->
+                <div class="row mt-2">
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold mt-1">Pencapaian:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <button type="button" class="btn btn-success mb-1" id="tambahPencapaian">
+                            <i class="bi bi-plus"></i> Tambah Pencapaian
+                        </button>
+
+                        <small class="ms-2"><i class="bi bi-info-circle">Tambahkan ikon dengan rasio 1:1</i></small>
+                    </div>
+
+                    <div id="listPencapaian" class="mt-2">
+                        <div class="row mb-3 pencapaian-item align-items-center">
+                            <!-- Kolom Input -->
+                            <div class="col-md-11">
+                                <div class="row mb-2">
+                                    <div class="col-md">
+                                        <input type="file" name="pencapaian_image[]" class="form-control"
+                                            accept="image/*" required>
+                                    </div>
+                                    <div class="col-md">
+                                        <input type="text" name="pencapaian_judul[]" class="form-control"
+                                            placeholder="Judul Pencapaian" required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md">
+                                        <input type="text" name="pencapaian_keterangan[]" class="form-control"
+                                            placeholder="Keterangan Pencapaian" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kolom Button Hapus -->
+                            <div class="col-md-1 text-end">
+                                <button type="button" class="btn btn-danger hapusPencapaian"><i
+                                        class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <div class="text-end">
@@ -143,5 +193,46 @@
 
     </div>
 
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            // Tambah Pencapaian
+            $("#tambahPencapaian").click(function() {
+                let pencapaianHTML = `
+        <hr>
+        <div class="row mb-3 pencapaian-item align-items-center">
+            <!-- Kolom Input -->
+            <div class="col-md-11">
+                <div class="row mb-2">
+                    <div class="col-md">
+                        <input type="file" name="pencapaian_image[]" class="form-control" accept="image/*" required>
+                    </div>
+                    <div class="col-md">
+                        <input type="text" name="pencapaian_judul[]" class="form-control"
+                            placeholder="Judul Pencapaian" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md">
+                        <input type="text" name="pencapaian_keterangan[]" class="form-control"
+                            placeholder="Keterangan Pencapaian" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Button Hapus -->
+            <div class="col-md-1 text-end">
+                <button type="button" class="btn btn-danger hapusPencapaian"><i class="bi bi-trash"></i></button>
+            </div>
+        </div>`;
+
+                $("#listPencapaian").append(pencapaianHTML);
+            });
+
+            // Hapus Pencapaian
+            $(document).on("click", ".hapusPencapaian", function() {
+                $(this).closest(".pencapaian-item").remove();
+            });
+        });
+    </script>
 @endsection
