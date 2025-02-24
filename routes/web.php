@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,10 +36,17 @@ Route::get('/edit_berita', function () {
 })->name('page.edit_berita');
 
 
-
+// Pengguna
 Route::get('/manajemen_pengguna', function () {
     return view('Page.Pengguna.m_pengguna');
 })->name('page.m_pengguna');
+
+// Bahasa
+Route::get('/bahasa', [LanguageController::class, 'index'])->name('bahasa.index');
+
+Route::delete('/bahasa/{id}', [LanguageController::class, 'destroy'])->name('bahasa.destroy');
+
+
 
 // Editor
 
