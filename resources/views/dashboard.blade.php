@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Halaman Dashboard')</title>
 
@@ -125,6 +126,7 @@
         <div class="logo">VibeFour</div>
         <hr>
         <a href="/halaman_utama" class="menu-item"><i class="bi bi-house-door"></i> Beranda</a>
+
         <a href="/editor_halaman" class="menu-item mt-2 mb-2" data-bs-toggle="collapse" data-bs-target="#menu_editor"
             data-taget="#menu_editor" aria-expanded="false"><i class="bi bi-gear"></i> Editor
             Halaman
@@ -155,9 +157,15 @@
         </div>
 
         <a href="/manajemen_berita" class="menu-item mb-2"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
-        <a href="/manajemen_pengguna" class="menu-item"><i class="bi bi-people"></i> Pengguna</a>
+
+        <a href="/manajemen_pengguna" class="menu-item mb-2"><i class="bi bi-people"></i> Pengguna</a>
+
+        <a href="/bahasa" class="menu-item"><i class="bi bi-globe"></i> Bahasa</a>
+
         <hr>
+
         <a href="/logout" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
+
     </div>
 
     <div class="content" id="content">

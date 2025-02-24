@@ -1,194 +1,160 @@
 <div class="tab-pane fade" id="voting">
 
-    <div class="row">
-        <div class="col-md-9">
-            <h5 class="mt-3">Keunggulan Fitur Voting</h5>
-        </div>
+    <form action="" method="post">
 
-        <div class="col-md-3 text-end">
-            <div class="text-end">
-                <button type="button" class="btn btn-primary mt-2" id="btnTambahVoting">Tambah Keunggulan</button>
+        <!-- Judul Halaman -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="judul" class="form-label mt-2 fw-bold">Judul halaman:</label>
+            </div>
+
+            <div class="col-md">
+                <input type="text" id="judul" name="" class="form-control" placeholder="Ketik disini....."
+                    required>
             </div>
         </div>
-    </div>
 
-    <hr>
+        <!-- Deskripsi Halaman -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="deskripsiEditor" class="form-label mt-2 fw-bold">Deskripsi halaman:</label>
+            </div>
 
-    <div class="votingContainer">
-        <div class="voting-item">
-            <div class="mb-3">
-                <label class="form-label fw-bold">Keunggulan Fitur Voting:</label>
-                <textarea class="form-control" name="keunggulan_voting[]" rows="3" placeholder="Keunggulan fitur ini..." required></textarea>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Ikon:</label>
-                <input type="file" class="form-control" name="ikon_voting[]" accept="image/*">
-                <i class="bi bi-info-circle"></i>
-                <small class="text-muted">Tambahkan foto panduan dengan rasio 1:1</small>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-danger btn-hapus-voting">Hapus Keunggulan</button>
+            <div class="col-md">
+                <input type="text" id="deskripsiEditor" name="deskripsi_hal" class="editor"
+                    placeholder="Ketik disini....." required>
             </div>
         </div>
-    </div>
 
-    <hr>
-
-    <div class="row">
-        <div class="col-md-9">
-            <h5 class="mt-3">Panduan Memvoting</h5>
-        </div>
-
-        <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-primary mt-2" id="btnTambahPanduanVote">Tambah Panduan Voting</button>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="voteContainer">
-        <div class="vote-item">
-            <div class="mb-3">
-                <label class="form-label fw-bold">Panduan Memvoting:</label>
-                <textarea class="form-control" name="panduan_vote[]" rows="3" placeholder="Panduan cara memvoting..." required></textarea>
+        <!-- Button Coba -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="teks_btncoba" class="form-label mt-2 fw-bold">Teks button coba:</label>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Gambar Panduan:</label>
-                <input type="file" class="form-control" name="gambar_vote[]" accept="image/*">
-                <i class="bi bi-info-circle"></i>
-                <small class="text-muted">Tambahkan gambar panduan dengan rasio 16:9</small>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-danger btn-hapus-vote">Hapus Panduan</button>
+
+            <div class="col-md">
+                <input type="text" id="teks_btncoba" name="teks_btncoba" class="form-control"
+                    placeholder="Ketik disini....." required>
             </div>
         </div>
-    </div>
 
-    <hr>
-
-    <div class="row">
-        <div class="col-md-9">
-            <h5 class="mt-3">Panduan Membuat Subjek Vote</h5>
-        </div>
-
-        <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-primary mt-2" id="btnTambahPanduanSubjek">Tambah Panduan</button>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="crtVoteContainer">
-        <div class="crtVote-item">
-            <div class="mb-3">
-                <label class="form-label fw-bold">Panduan Membuat Subjek Vote:</label>
-                <textarea class="form-control" name="panduan_subjek_vote[]" rows="3" placeholder="Panduan membuat subjek vote..."
-                    required></textarea>
+        <!-- Button Tutorial -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="teks_btntutor" class="form-label mt-2 fw-bold">Teks button tutorial:</label>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Gambar Panduan:</label>
-                <input type="file" class="form-control" name="gambar_subjek_vote[]" accept="image/*">
-                <i class="bi bi-info-circle"></i>
-                <small class="text-muted">Tambahkan gambar panduan dengan rasio 16:9</small>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-danger btn-hapus-subjek">Hapus Panduan</button>
+
+            <div class="col-md">
+                <input type="text" id="teks_btntutor" name="teks_btntutor" class="form-control"
+                    placeholder="Ketik disini....." required>
             </div>
         </div>
-    </div>
+
+        <!-- Video Tutorial Voting -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="video_tutor" class="form-label mt-2 fw-bold">Video tutorial:</label>
+            </div>
+
+            <div class="col-md">
+                <input type="file" id="video_tutor" name="video_tutor" class="form-control" accept="video/*"
+                    required>
+            </div>
+        </div>
+
+        <!-- Foto Produk -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="foto_produk" class="form-label mt-2 fw-bold">Foto produk:</label>
+            </div>
+
+            <div class="col-md">
+                <input type="file" id="foto_produk" name="foto_produk" class="form-control" accept="image/*"
+                    required>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Slideshow Voting -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="slideshowVote" class="form-label mt-2 fw-bold">Slideshow produk voting:</label>
+            </div>
+
+            <div class="col-md">
+                <input type="file" id="slideshowVote" name="slideshowVote" class="form-control" accept="image/*"
+                    multiple required>
+            </div>
+        </div>
+
+        <!-- Teks Judul Produk -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="judul_produk" class="form-label mt-2 fw-bold">Teks button tutorial:</label>
+            </div>
+
+            <div class="col-md">
+                <input type="text" id="judul_produk" name="judul_produk" class="form-control"
+                    placeholder="Ketik disini....." required>
+            </div>
+        </div>
+
+        {{-- Keunggulan --}}
+        <div class="row mb-3 mt-2">
+            <div class="col-md-3 mt-1">
+                <label class="form-label fw-bold">Keunggulan produk:</label>
+            </div>
+
+            <div class="col-md">
+                <button type="button" class="btn btn-success mb-1" id="tambahKeunggulanV"><i class="bi bi-plus"></i>
+                    Tambah Keunggulan
+                </button>
+
+                <small class="ms-2"><i class="bi bi-info-circle">Tambahkan ikon dengan rasio 1:1</i></small>
+
+                <div id="listKeunggulanVote" class="mt-2">
+                    <div class="row mb-3 keunggulanV-item align-items-center">
+                        <!-- Kolom Input -->
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="keunggulanV_image[]" class="form-control"
+                                        accept="image/*" required>
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="keunggulanV_judul[]" class="form-control"
+                                        placeholder="Judul Keunggulan" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="keunggulanV_keterangan[]" class="form-control"
+                                        placeholder="Keterangan Keunggulan" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Button Hapus -->
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulanV"><i
+                                    class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button Save -->
+        <div class="row">
+            <div class="col-md-12 text-end">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </div>
+
+    </form>
 
 </div>
 
-<script>
-    $(document).ready(function() {
-        
-        function updateDeleteButtons(container, buttonClass) {
-            let items = $(container).children();
-            let buttons = $(container).find(buttonClass);
-            buttons.prop("disabled", items.length === 1);
-        }
-
-        const votingContainer = $(".votingContainer");
-
-        $("#btnTambahVoting").on("click", function() {
-            let newVoting = `
-            <div class="voting-item">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Keunggulan Fitur Voting:</label>
-                    <textarea class="form-control" name="keunggulan_voting[]" rows="3" placeholder="Keunggulan fitur ini..." required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Ikon:</label>
-                    <input type="file" class="form-control" name="ikon_voting[]" accept="image/*">
-                    <i class="bi bi-info-circle"></i>
-                    <small class="text-muted">Tambahkan foto panduan dengan rasio 1:1</small>
-                </div>
-                <div class="text-end">
-                    <button type="button" class="btn btn-danger btn-hapus-voting">Hapus Keunggulan</button>
-                </div>
-                <hr>
-            </div>`;
-            votingContainer.append(newVoting);
-            updateDeleteButtons(votingContainer, ".btn-hapus-voting");
-        });
-
-        $(document).on("click", ".btn-hapus-voting", function() {
-            $(this).closest(".voting-item").remove();
-            updateDeleteButtons(votingContainer, ".btn-hapus-voting");
-        });
-
-        const voteContainer = $(".voteContainer");
-
-        $("#btnTambahPanduanVote").on("click", function() {
-            let newVote = `
-            <div class="vote-item">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Panduan Memvoting:</label>
-                    <textarea class="form-control" name="panduan_vote[]" rows="3" placeholder="Panduan cara memvoting..." required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Gambar Panduan:</label>
-                    <input type="file" class="form-control" name="gambar_vote[]" accept="image/*">
-                </div>
-                <div class="text-end">
-                    <button type="button" class="btn btn-danger btn-hapus-vote">Hapus Panduan</button>
-                </div>
-                <hr>
-            </div>`;
-            voteContainer.append(newVote);
-        });
-
-        $(document).on("click", ".btn-hapus-vote", function() {
-            $(this).closest(".vote-item").remove();
-        });
-
-        const crtVoteContainer = $(".crtVoteContainer");
-
-        $("#btnTambahPanduanSubjek").on("click", function() {
-            let newSubjek = `
-            <div class="crtVote-item">
-                <hr>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Panduan Membuat Subjek Vote:</label>
-                    <textarea class="form-control" name="panduan_subjek_vote[]" rows="3" placeholder="Panduan membuat subjek vote..." required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Gambar Panduan:</label>
-                    <input type="file" class="form-control" name="gambar_subjek_vote[]" accept="image/*">
-                    <i class="bi bi-info-circle"></i>
-                    <small class="text-muted">Tambahkan gambar panduan dengan rasio 16:9</small>
-                </div>
-                <div class="text-end">
-                    <button type="button" class="btn btn-danger btn-hapus-subjek">Hapus Panduan</button>
-                </div>
-            </div>`;
-            crtVoteContainer.append(newSubjek);
-        });
-
-        $(document).on("click", ".btn-hapus-subjek", function() {
-            $(this).closest(".crtVote-item").remove();
-        });
-
-        updateDeleteButtons(votingContainer, ".btn-hapus-voting");
-    });
-</script>
+<script></script>
