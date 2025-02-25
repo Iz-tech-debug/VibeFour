@@ -36,7 +36,7 @@
                 <!-- Beranda -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="beranda" class="form-label mt-1 fw-bold">Beranda</label>
+                        <label for="beranda" class="form-label mt-1 fw-bold">Beranda:</label>
                     </div>
 
                     <div class="col-md">
@@ -48,7 +48,7 @@
                 <!-- Tentang -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="Tentang" class="form-label mt-1 fw-bold">Tentang</label>
+                        <label for="Tentang" class="form-label mt-1 fw-bold">Tentang:</label>
                     </div>
 
                     <div class="col-md">
@@ -60,7 +60,7 @@
                 <!-- Kontak -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="Kontak" class="form-label mt-1 fw-bold">Kontak</label>
+                        <label for="Kontak" class="form-label mt-1 fw-bold">Kontak:</label>
                     </div>
 
                     <div class="col-md">
@@ -72,7 +72,7 @@
                 <!-- Produk -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="Produk" class="form-label mt-1 fw-bold">Produk</label>
+                        <label for="Produk" class="form-label mt-1 fw-bold">Produk:</label>
                     </div>
 
                     <div class="col-md">
@@ -81,10 +81,34 @@
                     </div>
                 </div>
 
+                <!-- Dropdown Produk -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mt-1">
+                        <label for="produk_a" class="form-label mt-1 fw-bold">Drowpdown produk voting:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="produk_a" name="produk_a" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
+
+                <!-- Dropdown Produk -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mt-1">
+                        <label for="produk_b" class="form-label mt-1 fw-bold">Drowpdown produk penjdawalan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="produk_b" name="produk_b" class="form-control"
+                            placeholder="Ketik disini....." required>
+                    </div>
+                </div>
+
                 <!-- Login Button -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="TeksTombol" class="form-label mt-1 fw-bold">Teks Tombol Masuk</label>
+                        <label for="TeksTombol" class="form-label mt-1 fw-bold">Teks tombol masuk:</label>
                     </div>
 
                     <div class="col-md">

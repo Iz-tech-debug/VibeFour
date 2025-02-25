@@ -113,6 +113,8 @@
 
                 <small class="ms-2"><i class="bi bi-info-circle">Tambahkan ikon dengan rasio 1:1</i></small>
 
+                <hr>
+
                 <div id="listKeunggulanVote" class="mt-2">
                     <div class="row mb-3 keunggulanV-item align-items-center">
                         <!-- Kolom Input -->
@@ -157,4 +159,44 @@
 
 </div>
 
-<script></script>
+<script>
+    $(document).ready(function() {
+        // Tambah Keunggulan Produk Voting
+        $('#tambahKeunggulanV').click(function() {
+            var keunggulanBaru = `
+                <div class="row mb-3 keunggulanV-item align-items-center">
+                    <div class="col-md-11">
+                        <div class="row mb-2">
+                            <div class="col-md">
+                                <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*" required>
+                            </div>
+                            <div class="col-md">
+                                <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            $('#listKeunggulanVote').append(keunggulanBaru);
+        });
+
+        // Hapus Keunggulan Produk Voting
+        $(document).on('click', '.hapusKeunggulanV', function() {
+            $(this).closest('.keunggulanV-item').remove();
+        });
+
+        // Preview Nama File Setelah Upload
+        $('input[type="file"]').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    });
+</script>
