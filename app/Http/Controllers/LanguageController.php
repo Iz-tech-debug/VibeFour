@@ -12,7 +12,7 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        // Index Bahasa
+        // View Bahasa + data
         $bahasa = Language::all();
 
         return view('Page.Bahasa.bahasa', compact('bahasa'));

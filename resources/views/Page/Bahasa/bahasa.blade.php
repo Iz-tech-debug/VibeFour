@@ -9,9 +9,9 @@
         <div class="card p-3 shadow-sm d-flex flex-row justify-content-between align-items-center">
             <h4 class="mt-2" style="color:blueviolet;">Manajemen Bahasa</h4>
 
-            <a href="" class="btn btn-primary">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahBahasa">
                 <i class="bi bi-plus"></i> Tambah Bahasa
-            </a>
+            </button>
         </div>
 
         <br>
@@ -24,10 +24,10 @@
             <table id="tablelang" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center">Ikon</th>
-                        <th class="text-center">Nama Bahasa</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="text-center col-md-1">#</th>
+                        <th class="text-center col-md-2">Ikon</th>
+                        <th class="text-center col-md-4">Nama Bahasa</th>
+                        <th class="text-center col-md-2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,29 +35,71 @@
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
 
-                            <td><img src="{{ $item->gambar }}" class="img-fluid"
-                                    alt="Gambar Ikon Bahasa {{ $item->nama }}" srcset=""></td>
+                            <td>
+                                <img src="{{ $item->gambar }}" class="img-fluid"
+                                    alt="Gambar Ikon Bahasa {{ $item->nama }}" srcset="">
+                            </td>
 
                             <td>{{ $item->nama }}</td>
 
                             <td class="text-center">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#detailModal"><i class="bi bi-eye me-1"></i>
-                                    Detail
-                                </button>
 
-                                <a href="" class="btn btn-success btn-sm"><i class="bi bi-pencil me-2"></i>Edit</a>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#edtBahasa{{ $item->id }}">
+                                    <i class="bi bi-pencil me-2"></i>Edit
+                                </button>
 
                                 <button class="btn btn-danger btn-sm btn-hapus" data-id="{{ $item->id }}">
                                     <i class="bi bi-trash me-2"></i>Hapus</button>
                             </td>
                         </tr>
+
+                        @include('Modal.Bahasa.edit ')
                     @endforeach
                 </tbody>
             </table>
         </div>
 
     </div>
+
+    <!-- Modal Tambah Bahasa -->
+    <div class="modal fade" id="modalTambahBahasa" tabindex="-1" aria-labelledby="modalTambahBahasaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTambahBahasaLabel">Tambah Bahasa Baru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Input Nama Bahasa -->
+                        <div class="mb-3">
+                            <label for="nama_bahasa" class="form-label">Nama Bahasa</label>
+                            <input type="text" class="form-control" id="nama_bahasa" name="nama"
+                                placeholder="Contoh: Indonesia" required>
+                        </div>
+
+                        <!-- Input Ikon Bahasa -->
+                        <div class="mb-3">
+                            <label for="ikon_bahasa" class="form-label">Ikon Bahasa</label>
+                            <input type="file" class="form-control" id="ikon_bahasa" name="gambar" accept="image/*"
+                                required>
+                            <small class="text-muted">Format gambar: JPG, PNG, atau JPEG</small>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         $(document).ready(function() {
