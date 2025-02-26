@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->string('kode', 5)->unique();
-            $table->string('nama', 50)->unique();
+            $table->string('nama_bahasa', 50)->unique();
             $table->string('gambar', 255)->unique();
             $table->timestamps();
         });
