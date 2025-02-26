@@ -9,9 +9,9 @@
         <div class="card p-3 shadow-sm d-flex flex-row justify-content-between align-items-center">
             <h4 class="mt-2" style="color:blueviolet;">Manajemen Bahasa</h4>
 
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahBahasa">
+            <a href="{{ route('page.tambah_bahasa') }}" class="btn btn-success">
                 <i class="bi bi-plus"></i> Tambah Bahasa
-            </button>
+            </a>
         </div>
 
         <br>
@@ -24,10 +24,10 @@
             <table id="tablelang" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center col-md-1">#</th>
-                        <th class="text-center col-md-2">Ikon</th>
+                        <th class="text-center" style="width: 5%">#</th>
+                        <th class="text-center col-md-1">Ikon</th>
                         <th class="text-center col-md-4">Nama Bahasa</th>
-                        <th class="text-center col-md-2">Aksi</th>
+                        <th class="text-center" style="width: 15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,12 +35,13 @@
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
 
-                            <td>
-                                <img src="{{ $item->gambar }}" class="img-fluid"
-                                    alt="Gambar Ikon Bahasa {{ $item->nama }}" srcset="">
+                            <td class="text-center">
+                                <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid mt-1 rounded-circle shadow-sm"
+                                    style="width: 25px; height: 25px;"
+                                    alt="Gambar Ikon Bahasa {{ $item->nama_bahasa }}" srcset="">
                             </td>
 
-                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->nama_bahasa }}</td>
 
                             <td class="text-center">
 
@@ -62,45 +63,6 @@
 
     </div>
 
-    <!-- Modal Tambah Bahasa -->
-    <div class="modal fade" id="modalTambahBahasa" tabindex="-1" aria-labelledby="modalTambahBahasaLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTambahBahasaLabel">Tambah Bahasa Baru</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <!-- Input Nama Bahasa -->
-                        <div class="mb-3">
-                            <label for="nama_bahasa" class="form-label">Nama Bahasa</label>
-                            <input type="text" class="form-control" id="nama_bahasa" name="nama"
-                                placeholder="Contoh: Indonesia" required>
-                        </div>
-
-                        <!-- Input Ikon Bahasa -->
-                        <div class="mb-3">
-                            <label for="ikon_bahasa" class="form-label">Ikon Bahasa</label>
-                            <input type="file" class="form-control" id="ikon_bahasa" name="gambar" accept="image/*"
-                                required>
-                            <small class="text-muted">Format gambar: JPG, PNG, atau JPEG</small>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
     <script>
         $(document).ready(function() {
             // Search
@@ -111,7 +73,7 @@
                 });
             });
 
-            // Hapus
+            // Hapus bahasa
             $(document).on('click', '.btn-hapus', function() {
                 var id = $(this).data('id');
 
