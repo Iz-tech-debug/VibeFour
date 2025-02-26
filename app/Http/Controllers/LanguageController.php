@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class LanguageController extends Controller
@@ -31,7 +32,37 @@ class LanguageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_bahasa' => 'required|unique:languages,nama_bahasa',
+            'ikon_bahasa' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ], [
+            'nama_bahasa.required' => 'Nama bahasa wajib diisi.',
+            'nama_bahasa.unique' => 'Nama bahasa sudah ada, gunakan nama lain.',
+            'gambar.required' => 'Ikon bahasa wajib diunggah.',
+            'gambar.image' => 'Ikon harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus JPEG, PNG, atau JPG.',
+            'gambar.max' => 'Ukuran gambar maksimal 2MB.'
+        ]);
+
+        // Buat objek model baru
+        $language = new Language();
+        $language->nama_bahasa = $request->nama_bahasa;
+
+        // Cek jika file ikon diunggah
+        if ($request->hasFile('ikon_bahasa')) {
+            $file = $request->file('ikon_bahasa');
+            $filenameToStore = Str::slug($request->nama_bahasa) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('images/icon_lang', $filenameToStore, 'public');
+
+            // Simpan path ikon ke database
+            $language->gambar = $path;
+        }
+
+        // Simpan ke database
+        // dd($language);
+        $language->save();
+
+        return redirect()->route('bahasa.index');
     }
 
     /**
