@@ -84,7 +84,7 @@
                 <!-- Dropdown Produk -->
                 <div class="row mb-4">
                     <div class="col-md-3 mt-1">
-                        <label for="produk_a" class="form-label mt-1 fw-bold">Drowpdown produk voting:</label>
+                        <label for="produk_a" class="form-label mt-1 fw-bold">Dropdown produk voting:</label>
                     </div>
 
                     <div class="col-md">

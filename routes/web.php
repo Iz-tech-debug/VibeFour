@@ -46,7 +46,11 @@ Route::get('/bahasa', [LanguageController::class, 'index'])->name('bahasa.index'
 
 Route::delete('/bahasa/{id}', [LanguageController::class, 'destroy'])->name('bahasa.destroy');
 
+Route::get('/p_tambah_bahasa', function () {
+    return view('Page.Bahasa.tambah_bahasa');
+})->name('page.tambah_bahasa');
 
+Route::post('/tambah_bahasa', [LanguageController::class, 'store'])->name('bahasa.store');
 
 // Editor
 

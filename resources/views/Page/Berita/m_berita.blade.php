@@ -29,14 +29,14 @@
                 </div>
 
                 <!-- Judul Berita -->
-                <div class="col-md-6">
-                    <h6 class="m-0">VibeFour Mengalami Peningkatan Pengunjung</h6>
+                <div class="col-md-6 text-start">
+                    <h6 class="">VibeFour Mengalami Peningkatan Pengunjung</h6>
                 </div>
 
                 <!-- Tombol Aksi -->
                 <div class="col-md-4 text-end">
-                    <button class="btn btn-danger btn-sm btn-hapus-berita">Hapus Berita</button>
-                    <a href="/edit_berita" class="btn btn-success btn-sm">Edit Berita</a>
+                    <button class="btn btn-danger btn-sm btn-hapus-berita"><i class="bi bi-trash me-2"></i>Hapus Berita</button>
+                    <a href="/edit_berita" class="btn btn-success btn-sm"><i class="bi bi-pencil me-2"></i>Edit Berita</a>
                 </div>
             </div>
         </div>
