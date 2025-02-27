@@ -3,11 +3,15 @@
 @section('title', 'Editor Halaman - Produk & Biaya')
 
 @section('content')
-
+    <style>
+        .ck-editor__editable {
+            min-height: 250px;
+        }
+    </style>
     @include('Modal.Editor.Produk&Biaya.detail')
 
     <div class="container mt-4">
-        
+
         <div class="card p-3 shadow-sm">
             <div class="row">
                 <div class="col-md">
