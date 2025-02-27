@@ -11,6 +11,10 @@
     <!-- jQuery -->
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
+    {{-- Select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -107,6 +111,13 @@
             margin-left: 0 !important;
         }
 
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            /* Zoom tanpa stretch */
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 margin-left: -250px;
@@ -169,9 +180,22 @@
     </div>
 
     <div class="content" id="content">
-        <div class="navbar bg-transparent" id="navbar">
+
+        <div class="navbar bg-transparent d-flex justify-content-between align-items-center px-3" id="navbar">
+            <!-- Bagian Kiri: Toggle Sidebar -->
             <i class="bi bi-list toggle-btn" id="toggleSidebar"></i>
+
+            <!-- Bagian Kanan: Session Akun -->
+            <div class="d-flex align-items-center">
+                <span class="me-2">Admin 1</span>
+                <i class="bi bi-person-circle ms-2" style="font-size: 1.5rem;"></i>
+
+                {{-- <span class="me-2">{{ Auth::user()->name }}</span>
+                <img src="{{ Auth::user()->profile_picture ?? asset('default-avatar.png') }}" alt="Profil"
+                    class="rounded-circle" width="40" height="40"> --}}
+            </div>
         </div>
+
 
         <div class="container mt-4">
 
