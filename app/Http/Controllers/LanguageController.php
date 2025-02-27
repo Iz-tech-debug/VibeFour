@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Language;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LanguageController extends Controller
 {
@@ -86,8 +87,30 @@ class LanguageController extends Controller
      */
     public function update(Request $request, Language $language)
     {
-        //
+        $request->validate([
+            'nama_bahasa' => 'required|string|max:255',
+            'ikon_bahasa' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+        ]);
+
+        // Jika ada ikon baru, upload
+        if ($request->hasFile('ikon_bahasa')) {
+            $ikonPath = $request->file('ikon_bahasa')->store('ikon_bahasa', 'public');
+
+            // Hapus ikon lama jika ada
+            if ($language->gambar) {
+                Storage::disk('public')->delete($language->gambar);
+            }
+
+            $language->gambar = $ikonPath;
+        }
+
+        // Update data bahasa
+        $language->nama_bahasa = $request->nama_bahasa;
+        $language->save();
+
+        return redirect()->back()->with('success', 'Bahasa berhasil diperbarui!');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -96,8 +119,16 @@ class LanguageController extends Controller
     {
         // Hapus Bahasa
         $bahasa = Language::findOrFail($id);
+
+        // Hapus ikon dari storage
+        if ($bahasa->gambar) {
+            Storage::delete('public/' . $bahasa->gambar);
+        }
+
+        // Hapus data dari database
         $bahasa->delete();
 
         return response()->json(['success' => 'Bahasa berhasil dihapus!']);
+
     }
 }

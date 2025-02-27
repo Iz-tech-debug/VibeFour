@@ -24,7 +24,7 @@
             <table id="tablelang" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 5%">#</th>
+                        <th class="text-center" style="width: 5%">Nomor</th>
                         <th class="text-center col-md-1">Ikon</th>
                         <th class="text-center col-md-4">Nama Bahasa</th>
                         <th class="text-center" style="width: 15%">Aksi</th>
@@ -33,15 +33,19 @@
                 <tbody>
                     @foreach ($bahasa as $item)
                         <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">
+                                <div class="mt-1">{{ $loop->iteration }}</div>
+                            </td>
 
                             <td class="text-center">
-                                <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid mt-1 rounded-circle shadow-sm"
-                                    style="width: 25px; height: 25px;"
+                                <img src="{{ asset('storage/' . $item->gambar) }}"
+                                    class="img-fluid mt-1 rounded-circle shadow-sm" style="width: 25px; height: 25px;"
                                     alt="Gambar Ikon Bahasa {{ $item->nama_bahasa }}" srcset="">
                             </td>
 
-                            <td>{{ $item->nama_bahasa }}</td>
+                            <td>
+                                <div class="mt-1">{{ $item->nama_bahasa }}</div>
+                            </td>
 
                             <td class="text-center">
 
