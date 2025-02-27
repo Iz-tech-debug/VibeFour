@@ -16,17 +16,17 @@ class LanguageSeeder extends Seeder
         // Pengisian data ke dalam tabel bahasa
         $bahasa = [
             [
-                'nama' => 'Indonesia',
+                'nama_bahasa' => 'Indonesia',
                 'gambar' => 'img/bahasa/idn.png',
             ],
             [
-                'nama' => 'English',
+                'nama_bahasa' => 'English',
                 'gambar' => 'img/bahasa/eng.png',
             ],
         ];
         foreach ($bahasa as $value) {
             Language::create([
-                'nama' => $value['nama'],
+                'nama_bahasa' => $value['nama_bahasa'],
                 'gambar' => $value['gambar'],
             ]);
         }
