@@ -53,12 +53,11 @@
         <!-- Video Tutorial Voting -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <label for="video_tutor" class="form-label mt-2 fw-bold">Video tutorial:</label>
+                <label for="video_tutor" class="form-label mt-2 fw-bold">Link video tutorial:</label>
             </div>
 
             <div class="col-md">
-                <input type="file" id="video_tutor" name="video_tutor" class="form-control" accept="video/*"
-                    required>
+                <input type="text" id="video_tutor" name="video_tutor" class="form-control" placeholder="Ketik disini....." required>
             </div>
         </div>
 
