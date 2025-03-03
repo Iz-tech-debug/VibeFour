@@ -11,54 +11,59 @@
 
     <style>
         body {
-            display: flex;
-            /* justify-content: center; */
-            align-items: center;
-            height: 100vh;
             background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .login-container {
-            max-width: 800px;
+            width: 850px;
+            max-width: 100%;
+            height: 500px;
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto; /* Ini membantu memusatkan container */
         }
 
         .login-left {
-            background-image: url("{{ asset('images/login-bg.jpg') }}");
+            background-image: url("{{ asset('images/fluid.gif') }}");
             background-size: cover;
             background-position: center;
             height: 100%;
         }
 
         .login-right {
-            padding: 40px;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
+    <div class="container d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="login-container">
+            <div class="row h-100">
+                <div class="col-md-6 login-left d-none d-md-block p-0"></div>
+                <div class="col-md-6 login-right">
+                    <h4 class="mb-3"><strong style="color: #72B5F6">Selamat datang kembali 👋</strong></h4>
+                    <p class="mb-4">Masuk menggunakan akun anda</p>
 
-    <div class="container">
-        <div class="row login-container">
-
-            <div class="col-md-6 login-left d-none d-md-block"></div>
-
-            <div class="col-md-6 login-right">
-                {{-- <form action="/dashboard" method="post"> --}}
-                <h4><strong>Selamat datang kembali 👋</strong></h4>
-                <p>Masuk menggunakan akun email anda</p>
-
-                <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" placeholder="Masukkan Email anda">
+                        <input type="email" class="form-control" placeholder="Masukkan username atau email">
                     </div>
-                </div>
 
-                <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-key"></i></span>
                         <input type="password" class="form-control" id="password" placeholder="Masukkan kata sandi">
@@ -66,31 +71,25 @@
                             <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
                         </span>
                     </div>
-                </div>
 
-                <a href="/halaman_utama">
-                    <button class="btn btn-dark w-100">Masuk akun</button>
-                </a>
-                {{-- </form> --}}
+                    <a href="{{route('home')}}" class="btn w-100 mt-3" style="color: white; background-color: #72B5F6">Masuk akun</a>
+                </div>
             </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        document.getElementById("togglePassword").addEventListener("click", function() {
-            let passwordInput = document.getElementById("password");
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                this.classList.remove("bi-eye-slash");
-                this.classList.add("bi-eye");
-            } else {
-                passwordInput.type = "password";
-                this.classList.remove("bi-eye");
-                this.classList.add("bi-eye-slash");
-            }
+        $(document).ready(function() {
+            $("#togglePassword").click(function() {
+                let passwordInput = $("#password");
+                let type = passwordInput.attr("type") === "password" ? "text" : "password";
+                passwordInput.attr("type", type);
+                $(this).toggleClass("bi-eye bi-eye-slash");
+            });
         });
     </script>
-
 </body>
 
 </html>
