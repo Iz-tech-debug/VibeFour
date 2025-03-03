@@ -85,30 +85,39 @@ class LanguageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Language $language)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_bahasa' => 'required|string|max:255',
             'ikon_bahasa' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
         ]);
 
-        // Jika ada ikon baru, upload
+        $language = Language::findOrFail($id);
+
+        $language->nama_bahasa = $request->nama_bahasa;
+
+        if (!$language) {
+            return redirect()->back()->with('error', 'Bahasa tidak ditemukan!');
+        }
+
         if ($request->hasFile('ikon_bahasa')) {
-            $ikonPath = $request->file('ikon_bahasa')->store('ikon_bahasa', 'public');
+            $file = $request->file('ikon_bahasa');
+            $filenameToStore = Str::slug($request->nama_bahasa) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('images/icon_lang', $filenameToStore, 'public');
 
             // Hapus ikon lama jika ada
-            if ($language->gambar) {
+            if (!empty($language->gambar)) {
                 Storage::disk('public')->delete($language->gambar);
             }
 
-            $language->gambar = $ikonPath;
+            // Simpan path ikon baru ke database
+            $language->gambar = $path;
         }
 
-        // Update data bahasa
-        $language->nama_bahasa = $request->nama_bahasa;
         $language->save();
 
         return redirect()->back()->with('success', 'Bahasa berhasil diperbarui!');
+
     }
 
 
