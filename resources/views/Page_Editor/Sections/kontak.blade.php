@@ -4,6 +4,11 @@
 
 @section('content')
 
+    <style>
+        .ck-editor__editable {
+            min-height: 300px;
+        }
+    </style>
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
@@ -14,8 +19,9 @@
 
                 <div class="col-md-3 mt-1 text-end">
                     <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                        @foreach ($bahasa as $item)
+                            <option value="{{ $item->id }}">Bahasa {{ $item->nama_bahasa }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -27,7 +33,7 @@
 
             <div class="row mt-1">
                 <div class="col-md-9">
-                    <h5 class="mt-2">Kontak - Bahasa Indonesia</h5>
+                    <h5 class="mt-2">Kontak - Bahasa </h5>
                 </div>
             </div>
 
@@ -45,19 +51,19 @@
 
                     <div class="col-md">
                         <input type="text" id="judul" class="form-control" name="judul"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Judul'] ?? '' }}" required>
                     </div>
                 </div>
 
                 {{-- Iframe Map --}}
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <label for="iframe" class="form-label mt-1 fw-bold">Alamat iframe perusahaan:</label>
+                        <label for="iframe" class="form-label mt-1 fw-bold">Iframe alamat perusahaan:</label>
                     </div>
 
                     <div class="col-md">
                         <input type="text" id="iframe" class="form-control" name="iframe"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['IFrame'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -68,7 +74,7 @@
                     </div>
 
                     <div class="col-md"><input type="text" id="subjudul" class="form-control" name="subjudul"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Subjudul'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -79,7 +85,7 @@
                     </div>
 
                     <div class="col-md">
-                        <textarea name="keterangan" class="form-control editor" placeholder="Ketik disini....." id=""></textarea>
+                        <textarea name="keterangan" class="form-control editor" placeholder="Ketik disini....." id="">{{ $data['Keterangan'] ?? '' }}</textarea>
                     </div>
                 </div>
 
@@ -91,7 +97,7 @@
 
                     <div class="col-md">
                         <input type="text" id="alamat" class="form-control" name="alamat"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Alamat'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -102,7 +108,7 @@
                     </div>
 
                     <div class="col-md"><input type="text" id="no_telp" class="form-control" name="no_telp"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Telepon'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -113,7 +119,7 @@
                     </div>
 
                     <div class="col-md"><input type="text" id="email" class="form-control" name="email"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Email'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -132,6 +138,26 @@
 
     <script>
         $(document).ready(function() {
+            $(document).on("change", "select", function() {
+                let bahasa_id = $(this).val();
+
+                $.ajax({
+                    url: "/editor_kontak/" + bahasa_id,
+                    type: "GET",
+                    cache: false, // Hindari cache
+                    success: function(response) {
+                        $("#judul").val(response["Judul"] || "");
+                        $("#iframe").val(response["IFrame"] || "");
+                        $("#subjudul").val(response["Subjudul"] || "");
+                        $("#keterangan").val(response["Keterangan"] || "");
+                        $("#alamat").val(response["Alamat"] || "");
+                        $("#no_telp").val(response["Telepon"] || "");
+                        $("#email").val(response["Email"] || "");
+                    }
+                });
+
+            });
+
             // Sweetalert Simpan
             $("#btnSimpan").on("click", function() {
                 Swal.fire({
