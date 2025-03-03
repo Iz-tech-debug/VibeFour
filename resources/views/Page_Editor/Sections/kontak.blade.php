@@ -39,7 +39,7 @@
 
             <hr>
 
-            <form action="#" method="post">
+            <form action="{{ route('update.kontak', $bahasa_id) }}" method="post">
                 @csrf
                 @method('put')
 
@@ -138,47 +138,7 @@
 
     <script>
         $(document).ready(function() {
-            $(document).on("change", "select", function() {
-                let bahasa_id = $(this).val();
 
-                $.ajax({
-                    url: "/editor_kontak/" + bahasa_id,
-                    type: "GET",
-                    cache: false, // Hindari cache
-                    success: function(response) {
-                        $("#judul").val(response["Judul"] || "");
-                        $("#iframe").val(response["IFrame"] || "");
-                        $("#subjudul").val(response["Subjudul"] || "");
-                        $("#keterangan").val(response["Keterangan"] || "");
-                        $("#alamat").val(response["Alamat"] || "");
-                        $("#no_telp").val(response["Telepon"] || "");
-                        $("#email").val(response["Email"] || "");
-                    }
-                });
-
-            });
-
-            // Sweetalert Simpan
-            $("#btnSimpan").on("click", function() {
-                Swal.fire({
-                    title: "Apakah Anda yakin ingin menyimpan ini?",
-                    text: "Perubahan akan terjadi di website",
-                    icon: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Simpan",
-                    cancelButtonText: "Batal"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Tersimpan!",
-                            text: "Data Anda telah disimpan.",
-                            icon: "success"
-                        });
-                    }
-                });
-            });
         });
     </script>
 @endsection

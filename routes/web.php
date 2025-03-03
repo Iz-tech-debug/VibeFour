@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\editor_halaman\BerandaController;
+use App\Http\Controllers\editor_halaman\ContactController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,13 +19,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('Auth.login');
-});
+Route::get('/admin', [AuthController::class, 'index'])->name('login');
+
+Route::post('/cek_login', [AuthController::class, 'login'])->name('login.check');
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('/halaman_utama', function () {
     return view('home');
-});
+})->name('home');
 
 
 Route::get('/manajemen_berita', function () {
@@ -37,9 +45,7 @@ Route::get('/edit_berita', function () {
 
 
 // Pengguna
-Route::get('/manajemen_pengguna', function () {
-    return view('Page.Pengguna.m_pengguna');
-})->name('page.m_pengguna');
+Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
 
 // Bahasa
 Route::get('/bahasa', [LanguageController::class, 'index'])->name('bahasa.index');
@@ -52,12 +58,15 @@ Route::get('/p_tambah_bahasa', function () {
 
 Route::post('/tambah_bahasa', [LanguageController::class, 'store'])->name('bahasa.store');
 
+Route::put('/edit_bahasa/{id}', [LanguageController::class, 'update'])->name('bahasa.update');
+
+
+
 // Editor
 
 // Beranda
-Route::get('/editor_beranda', function () {
-    return view('Page_Editor.Sections.beranda');
-})->name('editor.beranda');
+Route::get('/editor_beranda', [BerandaController::class, 'index'])->name('e_beranda.index');
+
 
 // Header
 Route::get('/editor_header', function () {
@@ -109,9 +118,10 @@ Route::get('/editor_tentang', function () {
 })->name('editor.tentang');
 
 // Kontak
-Route::get('/editor_kontak', function () {
-    return view('Page_Editor.Sections.kontak');
-})->name('editor.kontak');
+Route::get('/editor_kontak', [ContactController::class, 'index'])->name('editor.kontak');
+
+Route::get('/update_kontak/{bahasa_id}', [ContactController::class, 'update'])->name('update.kontak');
+
 
 // Syarat & Ketentuan
 Route::get('/editor_s&k', function () {

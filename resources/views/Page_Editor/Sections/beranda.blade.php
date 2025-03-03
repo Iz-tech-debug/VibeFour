@@ -32,10 +32,12 @@
 
                 <div class="col-md-3 mt-1 text-end">
                     <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                        @foreach ($data as $item)
+                            <option value="{{ $item->id }}">Bahasa {{ $item->nama_bahasa }}</option>
+                        @endforeach
                     </select>
                 </div>
+
             </div>
         </div>
 
@@ -139,7 +141,7 @@
                 <div class="row mt-2">
 
                     <div class="col-md-3">
-                        <label class="form-label fw-bold mt-1">Pencapaian:</label>
+                        <label class="form-label fw-bold mt-2">Pencapaian:</label>
                     </div>
 
                     <div class="col-md">
@@ -198,33 +200,33 @@
             // Tambah Pencapaian
             $("#tambahPencapaian").click(function() {
                 let pencapaianHTML = `
-        <hr>
-        <div class="row mb-3 pencapaian-item align-items-center">
-            <!-- Kolom Input -->
-            <div class="col-md-11">
-                <div class="row mb-2">
-                    <div class="col-md">
-                        <input type="file" name="pencapaian_image[]" class="form-control" accept="image/*" required>
-                    </div>
-                    <div class="col-md">
-                        <input type="text" name="pencapaian_judul[]" class="form-control"
-                            placeholder="Judul Pencapaian" required>
-                    </div>
-                </div>
+                    <hr>
+                    <div class="row mb-3 pencapaian-item align-items-center">
+                        <!-- Kolom Input -->
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="pencapaian_image[]" class="form-control" accept="image/*" required>
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="pencapaian_judul[]" class="form-control"
+                                        placeholder="Judul Pencapaian" required>
+                                </div>
+                            </div>
 
-                <div class="row">
-                    <div class="col-md">
-                        <input type="text" name="pencapaian_keterangan[]" class="form-control"
-                            placeholder="Keterangan Pencapaian" required>
-                    </div>
-                </div>
-            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="pencapaian_keterangan[]" class="form-control"
+                                        placeholder="Keterangan Pencapaian" required>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Kolom Button Hapus -->
-            <div class="col-md-1 text-end">
-                <button type="button" class="btn btn-danger hapusPencapaian"><i class="bi bi-trash"></i></button>
-            </div>
-        </div>`;
+                        <!-- Kolom Button Hapus -->
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusPencapaian"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
 
                 $("#listPencapaian").append(pencapaianHTML);
             });

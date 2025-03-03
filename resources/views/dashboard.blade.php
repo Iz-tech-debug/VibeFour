@@ -111,13 +111,6 @@
             margin-left: 0 !important;
         }
 
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            /* Zoom tanpa stretch */
-        }
-
         @media (max-width: 768px) {
             .sidebar {
                 margin-left: -250px;
@@ -146,8 +139,8 @@
 
         <div class="collapse active" id="menu_editor">
             <ul class="list-unstyled">
-                <li class="menu-item ms-3"><a href="/editor_beranda" class="sub-menu-item"><i class="bi bi-circle"
-                            style="font-size: 7px;"></i> Beranda</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('e_beranda.index') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Beranda</a></li>
                 <li class="menu-item ms-3"><a href="/editor_header" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Header</a></li>
                 <li class="menu-item ms-3"><a href="/editor_produk" class="sub-menu-item"><i class="bi bi-circle"
@@ -162,42 +155,54 @@
                             style="font-size: 7px;"></i> Kebijakan Privasi</a></li>
                 <li class="menu-item ms-3"><a href="/editor_faq" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> F.A.Q</a></li>
-                <li class="menu-item ms-3"><a href="/editor_kontak" class="sub-menu-item"><i class="bi bi-circle"
-                            style="font-size: 7px;"></i> Kontak</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('editor.kontak', 1) }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Kontak</a></li>
             </ul>
         </div>
 
         <a href="/manajemen_berita" class="menu-item mb-2"><i class="bi bi-newspaper"></i> Manajemen Berita</a>
 
-        <a href="/manajemen_pengguna" class="menu-item mb-2"><i class="bi bi-people"></i> Pengguna</a>
+        <a href="{{ route('pengguna.index') }}" class="menu-item mb-2"><i class="bi bi-people"></i> Pengguna</a>
 
         <a href="/bahasa" class="menu-item"><i class="bi bi-globe"></i> Bahasa</a>
 
         <hr>
 
-        <a href="/logout" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
+        <a href="{{ route('logout') }}" class="menu-item"><i class="bi bi-box-arrow-right"></i> Keluar Akun</a>
 
     </div>
 
     <div class="content" id="content">
 
         <div class="navbar bg-transparent d-flex justify-content-between align-items-center px-3" id="navbar">
-            <!-- Bagian Kiri: Toggle Sidebar -->
+
             <i class="bi bi-list toggle-btn" id="toggleSidebar"></i>
 
-            <!-- Bagian Kanan: Session Akun -->
             <div class="d-flex align-items-center">
-                <span class="me-2">Admin 1</span>
+                <span class="me-2">{{ Auth::user()->nama }}</span>
                 <i class="bi bi-person-circle ms-2" style="font-size: 1.5rem;"></i>
-
-                {{-- <span class="me-2">{{ Auth::user()->name }}</span>
-                <img src="{{ Auth::user()->profile_picture ?? asset('default-avatar.png') }}" alt="Profil"
-                    class="rounded-circle" width="40" height="40"> --}}
             </div>
         </div>
 
 
         <div class="container mt-4">
+
+            @if (session('success'))
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                    <div id="loginToast" class="toast show" role="alert" aria-live="assertive"
+                        aria-atomic="true">
+                        <div class="toast-header">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong class="me-auto">Berhasil!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             @yield('content')
 
