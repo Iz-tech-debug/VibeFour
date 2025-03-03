@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->text('jawaban');
 
             // Foreign key ke tabel bahasa
-            $table->foreignId('bahasa_id')->constrained('languages')->onDelete('cascade');
+            $table->unsignedBigInteger('bahasa_id');
+            $table->foreign('bahasa_id')->references('id')->on('languages')->onDelete('cascade');
             $table->timestamps();
         });
     }
