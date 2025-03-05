@@ -3,63 +3,68 @@
 namespace App\Http\Controllers\editor_halaman;
 
 use App\Http\Controllers\Controller;
+use App\Models\Header;
+use App\Models\Language;
 use Illuminate\Http\Request;
 
 class HeaderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan halaman editor header dengan bahasa default (ID = 1).
      */
     public function index()
     {
-        //
+        $bahasa = Language::all();
+        $bahasa_id = 1;
+        $data = Header::where('bahasa_id', $bahasa_id)->pluck('isi', 'nama');
+
+        return view('Page_Editor.Sections.header', compact('data', 'bahasa', 'bahasa_id'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mengambil data header berdasarkan bahasa yang dipilih (AJAX).
      */
-    public function create()
+    public function getHeaderByBahasa($bahasa_id)
     {
-        //
+        $data = Header::where('bahasa_id', $bahasa_id)->pluck('isi', 'nama');
+
+        return response()->json($data);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Memperbarui data header (hanya bahasa default = 1).
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'beranda' => 'required|string',
+            'tentang' => 'required|string',
+            'kontak' => 'required|string',
+            'produk' => 'required|string',
+            'produk_a' => 'required|string',
+            'produk_b' => 'required|string',
+            'teks_tombol' => 'required|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $bahasa_id = 1;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $fields = [
+            'Beranda' => $request->beranda,
+            'Tentang' => $request->tentang,
+            'Kontak' => $request->kontak,
+            'Produk' => $request->produk,
+            'Produk Voting' => $request->produk_a,
+            'Produk Penjadwalan' => $request->produk_b,
+            'Teks Masuk' => $request->teks_tombol,
+        ];
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        foreach ($fields as $key => $value) {
+            Header::updateOrCreate(
+                ['bahasa_id' => $bahasa_id, 'nama' => $key],
+                ['isi' => $value ?: '-']
+            );
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
 }
