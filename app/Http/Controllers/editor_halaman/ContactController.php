@@ -26,6 +26,14 @@ class ContactController extends Controller
         return view('Page_Editor.Sections.kontak', compact('data', 'bahasa', 'bahasa_id'));
     }
 
+    public function getKontakByBahasa($bahasa_id)
+    {
+        // Ambil data kontak sesuai bahasa yang dipilih
+        $data = Contact::where('bahasa_id', $bahasa_id)
+            ->pluck('isi', 'nama');
+
+        return response()->json($data);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -62,32 +70,24 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $bahasa_id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'iframe' => 'required|string',
-            'subjudul' => 'required|string|max:255',
-            'keterangan' => 'required|string',
-            'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-        ]);
+        $bahasa_id = 1;
 
-        $kontak = Contact::where('id_bahasa', $bahasa_id)->firstOrFail();
+        $fields = ['Judul', 'IFrame', 'Subjudul', 'Keterangan', 'Alamat', 'Telepon', 'Email'];
 
-        $kontak->update([
-            'judul' => $request->judul,
-            'iframe' => $request->iframe,
-            'subjudul' => $request->subjudul,
-            'keterangan' => $request->keterangan,
-            'alamat' => $request->alamat,
-            'telepon' => $request->no_telp,
-            'email' => $request->email,
-        ]);
+        foreach ($fields as $field) {
+            $value = $request->input(strtolower($field), ''); // Default ke string kosong jika null
 
-        return redirect()->back()->with('success', 'Data kontak berhasil diperbarui!');
+            Contact::updateOrCreate(
+                ['bahasa_id' => $bahasa_id, 'nama' => $field],
+                ['isi' => $value ?: '-']
+            );
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
+
 
     /**
      * Remove the specified resource from storage.
