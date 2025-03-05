@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -31,7 +32,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Masukkan data kedalam tabel user
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'role' => 'required|integer',
+        ]);
+
+        User::create([
+            'nama' => $request->nama,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role,
+        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan!');
     }
 
     /**
