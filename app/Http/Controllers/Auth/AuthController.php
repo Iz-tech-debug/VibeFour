@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         // 4. Cek role admin
         if ($user->role_id !== 1) {
-            return back()->with('error', 'Username atau password salah!');
+            return back()->with('error', 'Anda bukan admin!');
         }
 
         // 5. Login user & redirect ke dashboard
