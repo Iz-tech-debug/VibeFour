@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Header extends Model
 {
     use HasFactory;
+
+    protected $table = 'headers';
+
+    protected $fillable = [
+        'nama',
+        'isi',
+        'bahasa_id',
+    ];
 }
