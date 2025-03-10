@@ -14,5 +14,6 @@ class FAQ extends Model
     protected $fillable = [
         'pertanyaan',
         'jawaban',
+        'bahasa_id',
     ];
 }
