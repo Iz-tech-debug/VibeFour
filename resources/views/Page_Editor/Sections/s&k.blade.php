@@ -39,17 +39,41 @@
 
             <hr>
 
-            <form action="#" method="post">
+            <form action="" method="post">
                 @csrf
 
+                <!-- Judul Halaman -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="judul" class="form-label mt-2 fw-bold">Judul halaman:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="judul" name="judul" class="form-control"
+                            placeholder="Ketik disini....." value="" required>
+                    </div>
+                </div>
+
+                <!-- Kalimat sambutan -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="slogan" class="form-label mt-2 fw-bold">Kalimat sambutan:</label>
+                    </div>
+
+                    <div class="col-md">
+
+                    </div>
+                </div>
+
+                <!-- Isi halaman -->
                 <div class="mb-3">
-                    <label for="editorDescIDN" class="form-label fw-bold">Halaman Syarat & Ketentuan:</label>
-                    <textarea id="editorDescIDN" class="editor" rows="5" placeholder="Ketik disini....." required></textarea>
+                    <label for="editorIsi" class="form-label fw-bold">Isi halaman:</label>
+                    <textarea id="editorIsi" name="editorIsi" class="editor" rows="5" placeholder="Ketik disini....."></textarea>
                 </div>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-primary" id="btnSimpan">
-                        Simpan
+                    <button type="submit" class="btn btn-primary" id="btnSimpan">
+                        <i class="bi bi-save me-2"></i>Simpan
                     </button>
                 </div>
 
@@ -60,7 +84,7 @@
     </div>
 
     <script>
-        document.getElementById('btnSimpan').addEventListener('click', function() {
+        $('#btnSimpan').on('click', function() {
             Swal.fire({
                 title: 'Apakah Anda yakin ingin menyimpan ini?',
                 text: 'Perubahan akan terjadi di website',
