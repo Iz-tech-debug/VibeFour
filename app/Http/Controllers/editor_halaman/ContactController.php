@@ -26,14 +26,19 @@ class ContactController extends Controller
         return view('Page_Editor.Sections.kontak', compact('data', 'bahasa', 'bahasa_id'));
     }
 
-    public function getKontakByBahasa($bahasa_id)
+    public function getKontakByBahasa($bahasaId)
     {
-        // Ambil data kontak sesuai bahasa yang dipilih
-        $data = Contact::where('bahasa_id', $bahasa_id)
-            ->pluck('isi', 'nama');
+        // Ambil data berdasarkan bahasa_id
+        $kontak = Contact::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');
 
-        return response()->json($data);
+        // Cek apakah data ditemukan
+        if ($kontak->isEmpty()) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json($kontak);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -70,24 +75,21 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $bahasa)
     {
-        $bahasa_id = 1;
-
         $fields = ['Judul', 'IFrame', 'Subjudul', 'Keterangan', 'Alamat', 'Telepon', 'Email'];
 
         foreach ($fields as $field) {
-            $value = $request->input(strtolower($field), ''); // Default ke string kosong jika null
+            $value = $request->input(strtolower($field), ''); // Ambil input atau kosong
 
             Contact::updateOrCreate(
-                ['bahasa_id' => $bahasa_id, 'nama' => $field],
+                ['bahasa_id' => $bahasa, 'nama' => $field],
                 ['isi' => $value ?: '-']
             );
         }
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
-
 
     /**
      * Remove the specified resource from storage.
