@@ -12,9 +12,12 @@
                     <h4 class="mt-2" style="color:blueviolet;">Editor Halaman</h4>
                 </div>
                 <div class="col-md-3 mt-1 text-end">
-                    <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                    <select class="form-select" id="pilihBahasa">
+                        @foreach ($bahasa as $item)
+                            <option value="{{ $item->id }}" {{ $bahasa_id == $item->id ? 'selected' : '' }}>
+                                Bahasa {{ $item->nama_bahasa }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -30,8 +33,9 @@
 
             <hr>
 
-            <form action="#" method="post">
+            <form action="{{ route('update.header') }}" method="post">
                 @csrf
+                @method('put')
 
                 <!-- Beranda -->
                 <div class="row mb-4">
@@ -41,7 +45,7 @@
 
                     <div class="col-md">
                         <input type="text" id="beranda" name="beranda" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Beranda'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -53,7 +57,7 @@
 
                     <div class="col-md">
                         <input type="text" id="Tentang" name="tentang" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Tentang'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -65,7 +69,7 @@
 
                     <div class="col-md">
                         <input type="text" id="Kontak" name="kontak" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Kontak'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -77,7 +81,7 @@
 
                     <div class="col-md">
                         <input type="text" id="Produk" name="produk" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Produk'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -89,7 +93,7 @@
 
                     <div class="col-md">
                         <input type="text" id="produk_a" name="produk_a" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Produk Voting'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -101,7 +105,7 @@
 
                     <div class="col-md">
                         <input type="text" id="produk_b" name="produk_b" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            placeholder="Ketik disini....." value="{{ $data['Produk Penjadwalan'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -112,14 +116,14 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="TeksTombol" name="beranda" class="form-control"
-                            placeholder="Ketik disini....." required>
+                        <input type="text" id="TeksTombol" name="teks_tombol" class="form-control"
+                            placeholder="Ketik disini....." value="{{ $data['Teks Masuk'] ?? '' }}" required>
                     </div>
                 </div>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-primary" id="btnSimpan">
-                        Simpan
+                    <button type="submit" class="btn btn-primary" id="btnSimpan">
+                        <i class="bi bi-save me-2"></i>Simpan
                     </button>
                 </div>
             </form>
@@ -127,24 +131,26 @@
     </div>
 
     <script>
-        document.getElementById('btnSimpan').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Apakah Anda yakin ingin menyimpan ini?',
-                text: 'Perubahan akan terjadi di website',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Simpan',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Tersimpan!',
-                        text: 'Data Anda telah disimpan.',
-                        icon: 'success'
-                    });
-                }
+        $(document).ready(function() {
+            $('#pilihBahasa').change(function() {
+                var bahasaId = $(this).val();
+
+                $.ajax({
+                    url: '/header/' + bahasaId,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#beranda').val(response['Beranda'] || '');
+                        $('#tentang').val(response['Tentang'] || '');
+                        $('#kontak').val(response['Kontak'] || '');
+                        $('#produk').val(response['Produk'] || '');
+                        $('#produk_a').val(response['Produk Voting'] || '');
+                        $('#produk_b').val(response['Produk Penjadwalan'] || '');
+                        $('#teks_tombol').val(response['Teks Masuk'] || '');
+                    },
+                    error: function() {
+                        alert('Gagal mengambil data!');
+                    }
+                });
             });
         });
     </script>

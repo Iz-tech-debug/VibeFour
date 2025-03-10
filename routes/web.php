@@ -4,6 +4,9 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\editor_halaman\BerandaController;
 use App\Http\Controllers\editor_halaman\ContactController;
+use App\Http\Controllers\editor_halaman\FAQController;
+use App\Http\Controllers\editor_halaman\HeaderController;
+use App\Http\Controllers\editor_halaman\TnController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +50,8 @@ Route::get('/edit_berita', function () {
 // Pengguna
 Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
 
+Route::post('/pengguna/store', [UserController::class, 'store'])->name('pengguna.store');
+
 // Bahasa
 Route::get('/bahasa', [LanguageController::class, 'index'])->name('bahasa.index');
 
@@ -69,9 +74,12 @@ Route::get('/editor_beranda', [BerandaController::class, 'index'])->name('e_bera
 
 
 // Header
-Route::get('/editor_header', function () {
-    return view('Page_Editor.Sections.header');
-})->name('editor.header');
+Route::get('/editor_header', [HeaderController::class, 'index'])->name('header.index');
+
+Route::get('/header/{bahasa_id}', [HeaderController::class, 'getHeaderByBahasa'])->name('header.bahasa');
+
+Route::put('/update_header', [HeaderController::class, 'update'])->name('update.header');
+
 
 // Footer
 Route::get('/editor_footer', function () {
@@ -79,13 +87,13 @@ Route::get('/editor_footer', function () {
 })->name('editor.footer');
 
 // FAQ
-Route::get('/editor_faq', function () {
-    return view('Page_Editor.Sections.faq');
-})->name('editor.faq');
+Route::get('/editor_faq', [FAQController::class, 'index'])->name('faq.index');
 
-Route::get('/tambah_pertanyaan', function () {
-    return view('Page_Editor.Sections.FAQ.tambah_pertanyaan');
-})->name('editor.tambah_pertanyaan');
+Route::get('/index_add', [FAQController::class, 'storeIndex'])->name('add_faq.index');
+
+Route::post('/tambah_pertanyaan', [FAQController::class, 'store'])->name('faq.add');
+
+Route::delete('/hapus_pertanyaan/{id}', [FAQController::class, 'destroy'])->name('faq.destroy');
 
 Route::get('/edit_pertanyaan', function () {
     return view('Page_Editor.Sections.FAQ.edit_pertanyaan');
@@ -117,16 +125,19 @@ Route::get('/editor_tentang', function () {
     return view('Page_Editor.Sections.tentang');
 })->name('editor.tentang');
 
+
+
 // Kontak
 Route::get('/editor_kontak', [ContactController::class, 'index'])->name('editor.kontak');
 
-Route::get('/update_kontak/{bahasa_id}', [ContactController::class, 'update'])->name('update.kontak');
+Route::put('/update-kontak/{bahasa}', [ContactController::class, 'update'])->name('update.kontak');
+
+Route::get('/editor-halaman/kontak/{bahasaId}', [ContactController::class, 'getKontakByBahasa'])->name('kontak.bahasa');
+
 
 
 // Syarat & Ketentuan
-Route::get('/editor_s&k', function () {
-    return view('Page_Editor.Sections.s&k');
-})->name('editor.s&k');
+Route::get('/editor_s&k', [TnController::class, 'index']);
 
 // Kebijakan Privasi
 Route::get('/editor_kebijakan', function () {

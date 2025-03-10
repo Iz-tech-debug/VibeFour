@@ -18,9 +18,11 @@
                 </div>
 
                 <div class="col-md-3 mt-1 text-end">
-                    <select class="form-select" aria-label="Pilih Bahasa">
+                    <select class="form-select" id="pilihBahasa">
                         @foreach ($bahasa as $item)
-                            <option value="{{ $item->id }}">Bahasa {{ $item->nama_bahasa }}</option>
+                            <option value="{{ $item->id }}" {{ $bahasa_id == $item->id ? 'selected' : '' }}>
+                                Bahasa {{ $item->nama_bahasa }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -39,9 +41,10 @@
 
             <hr>
 
-            <form action="{{ route('update.kontak', $bahasa_id) }}" method="post">
+            <form id="formKontak" action="{{ route('update.kontak', ['bahasa' => 1]) }}" method="post">
                 @csrf
                 @method('put')
+
 
                 {{-- Judul Halaman --}}
                 <div class="row mb-3">
@@ -104,10 +107,10 @@
                 {{-- Kontak telepon --}}
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <label for="no_telp" class="form-label mt-1 fw-bold">Kontak telepon:</label>
+                        <label for="telepon" class="form-label mt-1 fw-bold">Kontak telepon:</label>
                     </div>
 
-                    <div class="col-md"><input type="text" id="no_telp" class="form-control" name="no_telp"
+                    <div class="col-md"><input type="text" id="telepon" class="form-control" name="telepon"
                             placeholder="Ketik disini....." value="{{ $data['Telepon'] ?? '' }}" required>
                     </div>
                 </div>
@@ -124,7 +127,7 @@
                 </div>
 
                 <div class="text-end mt-3">
-                    <button type="button" class="btn btn-primary" id="btnSimpan">
+                    <button type="submit" class="btn btn-primary" id="btnSimpan">
                         <i class="bi bi-save me-1"></i>
                         Simpan
                     </button>
@@ -138,7 +141,31 @@
 
     <script>
         $(document).ready(function() {
+            $('#pilihBahasa').change(function() {
+                var bahasaId = $(this).val();
+                var form = $('#formKontak'); // Tangkap form
 
+                $.ajax({
+                    url: '/editor-halaman/kontak/' + bahasaId,
+                    type: 'GET',
+                    success: function(response) {
+                        // Ubah action form agar menyertakan bahasaId
+                        form.attr('action', '/update-kontak/' + bahasaId);
+
+                        // Update isi input berdasarkan data dari server
+                        $('#judul').val(response.Judul || '');
+                        $('#iframe').val(response.IFrame || '');
+                        $('#subjudul').val(response.Subjudul || '');
+                        $('#keterangan').val(response.Keterangan || '');
+                        $('#alamat').val(response.Alamat || '');
+                        $('#no_telp').val(response.Telepon || '');
+                        $('#email').val(response.Email || '');
+                    },
+                    error: function() {
+                        alert('Gagal mengambil data!');
+                    }
+                });
+            });
         });
     </script>
 @endsection

@@ -4,6 +4,12 @@
 
 @section('content')
 
+    <style>
+        .ck-editor__editable {
+            min-height: 250px;
+        }
+    </style>
+
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
@@ -144,7 +150,8 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="Kebijakan" class="form-control" placeholder="Ketik disini....." required>
+                        <input type="text" id="Kebijakan" class="form-control" placeholder="Ketik disini....."
+                            required>
                     </div>
                 </div>
 
@@ -155,13 +162,14 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="FAQ" class="form-control" placeholder="Ketik disini....." required>
+                        <input type="text" id="FAQ" class="form-control" placeholder="Ketik disini....."
+                            required>
                     </div>
                 </div>
 
                 <div class="text-end">
                     <button type="button" class="btn btn-primary" id="btnSimpan">
-                        Simpan
+                        <i class="bi bi-save me-2"></i>Simpan
                     </button>
                 </div>
 
