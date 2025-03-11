@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('tnc', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
             $table->text('isi');
 
             // Foreign key kedalam tabel bahasa

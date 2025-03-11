@@ -11,7 +11,6 @@
     </style>
 
     <div class="container mt-4">
-
         <div class="card p-3 shadow-sm">
             <div class="row">
                 <div class="col-md">
@@ -19,9 +18,12 @@
                 </div>
 
                 <div class="col-md-3 mt-1 text-end">
-                    <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                    <select class="form-select" id="pilihBahasa" aria-label="Pilih Bahasa">
+                        @foreach ($bahasa as $lang)
+                            <option value="{{ $lang->id }}" {{ $bahasa_id == $lang->id ? 'selected' : '' }}>
+                                Bahasa {{ $lang->nama_bahasa }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -30,45 +32,44 @@
         <br>
 
         <div class="card p-4 shadow-sm">
-
             <div class="row mt-1">
                 <div class="col-md-9">
-                    <h5 class="mt-2">Syarat & Ketentuan - Bahasa Indonesia</h5>
+                    <h5 class="mt-2">Syarat & Ketentuan - <span id="judulBahasa">Bahasa Indonesia</span></h5>
                 </div>
             </div>
 
             <hr>
 
-            <form action="" method="post">
+            <form id="formTNC" action="{{ route('update.tnc', ['bahasa' => 1]) }}" method="post">
                 @csrf
+                @method('PUT')
 
                 <!-- Judul Halaman -->
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <label for="judul" class="form-label mt-2 fw-bold">Judul halaman:</label>
                     </div>
-
                     <div class="col-md">
                         <input type="text" id="judul" name="judul" class="form-control"
-                            placeholder="Ketik disini....." value="" required>
+                            placeholder="Ketik disini....." value="{{ $data['Judul'] ?? '' }}" required>
                     </div>
                 </div>
 
                 <!-- Kalimat sambutan -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <label for="slogan" class="form-label mt-2 fw-bold">Kalimat sambutan:</label>
+                        <label for="keterangan" class="form-label mt-2 fw-bold">Kalimat sambutan:</label>
                     </div>
-
                     <div class="col-md">
-
+                        <input type="text" id="keterangan" name="keterangan" class="form-control"
+                            placeholder="Ketik disini....." value="{{ $data['Keterangan'] ?? '' }}" required>
                     </div>
                 </div>
 
                 <!-- Isi halaman -->
                 <div class="mb-3">
-                    <label for="editorIsi" class="form-label fw-bold">Isi halaman:</label>
-                    <textarea id="editorIsi" name="editorIsi" class="editor" rows="5" placeholder="Ketik disini....."></textarea>
+                    <label for="isi" class="form-label fw-bold">Isi halaman:</label>
+                    <textarea id="isi" name="isi" class="editor" rows="5" placeholder="Ketik disini.....">{{ $data['Isi'] ?? '' }}</textarea>
                 </div>
 
                 <div class="text-end">
@@ -76,33 +77,40 @@
                         <i class="bi bi-save me-2"></i>Simpan
                     </button>
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
     <script>
-        $('#btnSimpan').on('click', function() {
-            Swal.fire({
-                title: 'Apakah Anda yakin ingin menyimpan ini?',
-                text: 'Perubahan akan terjadi di website',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Simpan',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Jika dikonfirmasi, lakukan sesuatu
-                    Swal.fire({
-                        title: 'Tersimpan!',
-                        text: 'Data Anda telah disimpan.',
-                        icon: 'success'
-                    });
-                }
+        $(document).ready(function() {
+            $('#pilihBahasa').on('change', function() {
+                let bahasaId = $(this).val();
+                let bahasaText = $("#pilihBahasa option:selected").text();
+                var form = $('#formTNC');
+
+                $('#judulBahasa').text(bahasaText);
+                form.attr('action', '/update_tnc/' + bahasaId); // Update form action sesuai route baru
+
+                $.ajax({
+                    url: `/editor_halaman/tnc/` + bahasaId, // Gunakan route yang telah diubah
+                    type: "GET",
+                    success: function(response) {
+                        if (response) {
+                            $('#judul').val(response.Judul || '');
+                            $('#keterangan').val(response.Keterangan || '');
+                            $('#isi').val(response.Isi || '');
+                        } else {
+                            $('#judul').val('');
+                            $('#keterangan').val('');
+                            $('#isi').val('');
+                        }
+                    },
+                    error: function() {
+                        $('#judul').val('');
+                        $('#keterangan').val('');
+                        $('#isi').val('');
+                    }
+                });
             });
         });
     </script>

@@ -12,8 +12,7 @@ class TNC extends Model
     protected $table = 'tnc';
 
     protected $fillable = [
-        'judul_halaman',
-        'kalimat_sambutan',
+        'nama',
         'isi',
         'bahasa_id',
     ];
