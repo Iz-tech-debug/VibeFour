@@ -24,47 +24,42 @@ class HeaderController extends Controller
     /**
      * Mengambil data header berdasarkan bahasa yang dipilih (AJAX).
      */
-    public function getHeaderByBahasa($bahasa_id)
+    public function switch($bahasaId)
     {
-        $data = Header::where('bahasa_id', $bahasa_id)->pluck('isi', 'nama');
+        $header = Header::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');
 
-        return response()->json($data);
+        if ($header->isEmpty()) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json($header);
     }
 
     /**
      * Memperbarui data header (hanya bahasa default = 1).
      */
-    public function update(Request $request)
+    public function update(Request $request, $bahasaId)
     {
-        $request->validate([
-            'beranda' => 'required|string',
-            'tentang' => 'required|string',
-            'kontak' => 'required|string',
-            'produk' => 'required|string',
-            'produk_a' => 'required|string',
-            'produk_b' => 'required|string',
-            'teks_tombol' => 'required|string',
-        ]);
-
-        $bahasa_id = 1;
-
+        // Update
         $fields = [
-            'Beranda' => $request->beranda,
-            'Tentang' => $request->tentang,
-            'Kontak' => $request->kontak,
-            'Produk' => $request->produk,
-            'Produk Voting' => $request->produk_a,
-            'Produk Penjadwalan' => $request->produk_b,
-            'Teks Masuk' => $request->teks_tombol,
+            'Beranda' => '-',
+            'Tentang' => '-',
+            'Kontak' => '-',
+            'Produk' => '-',
+            'Produk Voting' => '-',
+            'Produk Penjadwalan' => '-',
+            'Teks Masuk' => '-',
         ];
 
-        foreach ($fields as $key => $value) {
+        foreach ($fields as $field => $default) {
+            $value = $request->input($field, $default);
+
             Header::updateOrCreate(
-                ['bahasa_id' => $bahasa_id, 'nama' => $key],
-                ['isi' => $value ?: '-']
+                ['bahasa_id' => $bahasaId, 'nama' => $field],
+                ['isi' => $value ?: $default]
             );
         }
 
-        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Header berhasil diperbarui!');
     }
 }

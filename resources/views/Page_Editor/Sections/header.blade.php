@@ -33,7 +33,7 @@
 
             <hr>
 
-            <form action="{{ route('update.header') }}" method="post">
+            <form id="formHeader" action="{{ route('update.header', ['bahasaId' => 1]) }}" method="post">
                 @csrf
                 @method('put')
 
@@ -134,23 +134,39 @@
         $(document).ready(function() {
             $('#pilihBahasa').change(function() {
                 var bahasaId = $(this).val();
+                var form = $('#formHeader');
+
+                console.log("Form action berubah ke: " + form.attr('action')); // Debugging
 
                 $.ajax({
-                    url: '/header/' + bahasaId,
+                    url: '/editor_halaman/header/' + bahasaId,
                     type: 'GET',
+                    dataType: 'json',
                     success: function(response) {
-                        $('#beranda').val(response['Beranda'] || '');
-                        $('#tentang').val(response['Tentang'] || '');
-                        $('#kontak').val(response['Kontak'] || '');
-                        $('#produk').val(response['Produk'] || '');
-                        $('#produk_a').val(response['Produk Voting'] || '');
-                        $('#produk_b').val(response['Produk Penjadwalan'] || '');
-                        $('#teks_tombol').val(response['Teks Masuk'] || '');
+
+                        form.attr('action', '/update_header/' + bahasaId);
+
+                        if (response) {
+                            $('#beranda').val(response.Beranda || '');
+                            $('#Tentang').val(response.Tentang || '');
+                            $('#Kontak').val(response.Kontak || '');
+                            $('#Produk').val(response.Produk || '');
+                            $('#produk_a').val(response['Produk Voting'] || '');
+                            $('#produk_b').val(response['Produk Penjadwalan'] || '');
+                            $('#TeksTombol').val(response['Teks Masuk'] || '');
+                        } else {
+                            kosongkanForm();
+                        }
                     },
-                    error: function() {
-                        alert('Gagal mengambil data!');
+                    error: function(xhr, status, error) {
+                        console.error("Error:", status, error);
+                        kosongkanForm();
                     }
                 });
+
+                function kosongkanForm() {
+                    $('#beranda, #Tentang, #Kontak, #Produk, #produk_a, #produk_b, #TeksTombol').val('');
+                }
             });
         });
     </script>
