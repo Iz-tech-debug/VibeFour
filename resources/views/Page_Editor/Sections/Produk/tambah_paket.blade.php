@@ -26,20 +26,20 @@
 
             <hr>
 
-            <form action="#" method="POST">
+            <form action="" method="POST">
                 @csrf
 
                 <!-- Nama Paket & Harga Per-Langganan -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Nama Paket</label>
-                        <input type="text" class="form-control" placeholder="Ketik disini..." required>
+                        <input name="nama_paket" type="text" class="form-control" placeholder="Ketik disini..." required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Harga per-langganan</label>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
-                            <input type="number" class="form-control" placeholder="Ketik nominal..."
+                            <input name="harga" type="number" class="form-control" placeholder="Ketik nominal..."
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                         <small class="text-muted">
@@ -59,12 +59,12 @@
                         <div class="d-flex align-items-center">
                             <span class="me-3">:</span>
 
-                            <input type="number" class="form-control text-center me-2" style="width: 60px;"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                            <input name="durasi" type="number" class="form-control text-center me-2" style="width: 60px;"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 
-                            <select class="form-select" style="width: auto;">
-                                <option>Bulan</option>
-                                <option>Tahun</option>
+                            <select name="periode" class="form-select" style="width: auto;">
+                                <option value="Bulan">Bulan</option>
+                                <option value="Tahun">Tahun</option>
                             </select>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                     <label class="form-label">Fitur-fitur</label>
                     <div id="fitur-container">
                         <div class="d-flex mb-2 fitur-item">
-                            <input type="text" class="form-control" placeholder="Ketik disini..." required>
+                            <input name="fitur[]" type="text" class="form-control" placeholder="Ketik disini..." required>
                             <button type="button" class="btn btn-danger ms-2 hapusFitur" disabled>
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -100,42 +100,40 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const fiturContainer = document.getElementById("fitur-container");
-            const tambahFiturBtn = document.getElementById("tambahFitur");
+        $(document).ready(function() {
+            const fiturContainer = $("#fitur-container");
+            const tambahFiturBtn = $("#tambahFitur");
 
             function updateHapusButtons() {
-                const hapusButtons = document.querySelectorAll(".hapusFitur");
+                const hapusButtons = $(".hapusFitur");
 
                 if (hapusButtons.length === 1) {
-                    hapusButtons[0].disabled = true; // Nonaktifkan jika hanya ada 1 fitur
+                    hapusButtons.prop("disabled", true); // Nonaktifkan jika hanya ada 1 fitur
                 } else {
-                    hapusButtons.forEach(btn => btn.disabled = false);
+                    hapusButtons.prop("disabled", false);
                 }
             }
 
-            tambahFiturBtn.addEventListener("click", function() {
-                let newFitur = document.createElement("div");
-                newFitur.classList.add("d-flex", "mb-2", "fitur-item");
-                newFitur.innerHTML = `
-                    <input type="text" class="form-control" placeholder="Ketik disini..." required>
-                    <button type="button" class="btn btn-danger ms-2 hapusFitur">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                `;
+            tambahFiturBtn.on("click", function() {
+                let newFitur = `
+            <div class="d-flex mb-2 fitur-item">
+                <input type="text" class="form-control" placeholder="Ketik disini..." required>
+                <button type="button" class="btn btn-danger ms-2 hapusFitur">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
 
-                fiturContainer.appendChild(newFitur);
+                fiturContainer.append(newFitur);
                 updateHapusButtons();
             });
 
-            fiturContainer.addEventListener("click", function(event) {
-                if (event.target.classList.contains("hapusFitur") || event.target.closest(".hapusFitur")) {
-                    event.target.closest(".fitur-item").remove();
-                    updateHapusButtons();
-                }
+            fiturContainer.on("click", ".hapusFitur", function() {
+                $(this).closest(".fitur-item").remove();
+                updateHapusButtons();
             });
 
-            updateHapusButtons(); // Jalankan fungsi saat halaman dimuat
+            updateHapusButtons();
         });
     </script>
 

@@ -15,104 +15,63 @@
     <table class="table table-bordered">
         <thead class="text-center">
             <tr>
-                <th style="width: 5%;">#</th>
+                <th style="width: 5%;">Nomor</th>
                 <th>Nama Paket</th>
                 <th style="width: 25%; white-space: nowrap;">Aksi</th>
             </tr>
         </thead>
 
         <tbody>
-            <tr>
-                <td class="text-center">1</td>
-                <td>Basic</td>
-                <td class="text-center" style="white-space: nowrap;">
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#detailPaket1">
-                        Detail
-                    </button>
-                    <a href="/edit_paket" class="btn btn-sm btn-success">Edit</a>
-                    <button class="btn btn-sm btn-danger btn-hapus" data-nama="Basic">
-                        Hapus
-                    </button>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="text-center">2</td>
-                <td>Pro Plan Monthly</td>
-                <td class="text-center" style="white-space: nowrap;">
-                    <button class="btn btn-sm btn-primary">Detail</button>
-                    <a href="/edit_paket" class="btn btn-sm btn-success">Edit</a>
-                    <button class="btn btn-sm btn-danger btn-hapus" data-nama="Pro Plan Monthly">
-                        Hapus
-                    </button>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="text-center">3</td>
-                <td>Pro Plan Annual</td>
-                <td class="text-center" style="white-space: nowrap;">
-                    <button class="btn btn-sm btn-primary">Detail</button>
-                    <a href="/edit_paket" class="btn btn-sm btn-success">Edit</a>
-                    <button class="btn btn-sm btn-danger btn-hapus" data-nama="Pro Plan Annual">
-                        Hapus
-                    </button>
-                </td>
-            </tr>
+            @foreach ($paket as $item)
+                <tr>
+                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td class="text-center" style="white-space: nowrap;">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#detailPaket{{ $item->id }}">
+                            <i class="bi bi-info-circle me-2"></i>Detail
+                        </button>
+                        <a href="/edit_paket" class="btn btn-sm btn-success"><i class="bi bi-pencil me-2"></i>Edit</a>
+                        <button class="btn btn-sm btn-danger btn-hapus" data-nama="{{ $item->nama }}">
+                            <i class="bi bi-trash me-2"></i>Hapus
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
+
     </table>
 
 </div>
 
-<div class="modal fade" id="detailPaket1" tabindex="-1" aria-labelledby="detailPaket1Label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailPaket1Label">Detail Paket: Basic</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Nama Paket:</strong> Basic</p>
-                <p><strong>Harga:</strong> Rp 50.000 / bulan</p>
-                <p><strong>Masa Langganan:</strong> 1 Bulan</p>
-                <p><strong>Fitur:</strong></p>
-                <ul>
-                    <li>Akses Dasar</li>
-                    <li>Dukungan Standar</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+@foreach ($paket as $item)
+    <div class="modal fade" id="detailPaket{{ $item->id }}" tabindex="-1"
+        aria-labelledby="detailPaket{{ $item->id }}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailPaket{{ $item->id }}Label">Detail Paket: {{ $item->nama }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nama Paket:</strong> {{ $item->nama }}</p>
+                    <p><strong>Harga:</strong> Rp {{ $item->harga }} </p>
+                    <p><strong>Masa Langganan:</strong> {{ $item->durasi }} {{ $item->satuan_waktu }}</p>
+                    <p><strong>Fitur:</strong></p>
+                    <ul>
+                        @foreach ($item->features as $feature)
+                            <li>{{ $feature->fitur }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endforeach
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".btn-hapus").forEach(button => {
-            button.addEventListener("click", function() {
-                let namaPaket = this.getAttribute("data-nama");
 
-                Swal.fire({
-                    title: "Konfirmasi Hapus",
-                    text: `Apakah kamu yakin ingin menghapus paket "${namaPaket}"?`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Ya, Hapus!",
-                    cancelButtonText: "Batal"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            "Dihapus!",
-                            `Paket "${namaPaket}" telah dihapus.`,
-                            "success"
-                        );
-                    }
-                });
-            });
-        });
-    });
-</script>
+<script></script>
