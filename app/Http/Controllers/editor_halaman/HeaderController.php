@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 
 class HeaderController extends Controller
 {
-    /**
-     * Menampilkan halaman editor header dengan bahasa default (ID = 1).
-     */
     public function index()
     {
         $bahasa = Language::all();
@@ -21,9 +18,6 @@ class HeaderController extends Controller
         return view('Page_Editor.Sections.header', compact('data', 'bahasa', 'bahasa_id'));
     }
 
-    /**
-     * Mengambil data header berdasarkan bahasa yang dipilih (AJAX).
-     */
     public function switch($bahasaId)
     {
         $header = Header::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');
