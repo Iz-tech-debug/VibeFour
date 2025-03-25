@@ -86,6 +86,17 @@
 
     <script>
         $(document).ready(function() {
+
+            let editor;
+
+            ClassicEditor.create($("#isi")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
             $('#pilihBahasa').on('change', function() {
                 let bahasaId = $(this).val();
                 let bahasaText = $("#pilihBahasa option:selected").text();
@@ -101,17 +112,17 @@
                         if (response) {
                             $('#judul').val(response.Judul || '');
                             $('#keterangan').val(response.Keterangan || '');
-                            $('#isi').val(response.Isi || '');
+                            editor.setData(response.Isi || '');
                         } else {
                             $('#judul').val('');
                             $('#keterangan').val('');
-                            $('#isi').val('');
+                            editor.setData('');
                         }
                     },
                     error: function() {
                         $('#judul').val('');
                         $('#keterangan').val('');
-                        $('#isi').val('');
+                        editor.setData('');
                     }
                 });
             });
