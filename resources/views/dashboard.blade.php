@@ -11,6 +11,8 @@
     <!-- jQuery -->
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+
     {{-- Select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -126,7 +128,7 @@
 <body>
 
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar"  style="overflow-y: auto">
         <div class="logo">VibeFour</div>
         <hr>
         <a href="/halaman_utama" class="menu-item"><i class="bi bi-house-door"></i> Beranda</a>
@@ -143,20 +145,24 @@
                             class="bi bi-circle" style="font-size: 7px;"></i> Beranda</a></li>
                 <li class="menu-item ms-3"><a href="/editor_header" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Header</a></li>
-                <li class="menu-item ms-3"><a href="/editor_produk" class="sub-menu-item"><i class="bi bi-circle"
-                            style="font-size: 7px;"></i> Produk</a></li>
                 <li class="menu-item ms-3"><a href="/editor_footer" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Footer</a></li>
                 <li class="menu-item ms-3"><a href="/editor_tentang" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> Tentang</a></li>
-                <li class="menu-item ms-3"><a href="/editor_s&k" class="sub-menu-item"><i class="bi bi-circle"
-                            style="font-size: 7px;"></i> Syarat & Ketentuan</a></li>
-                <li class="menu-item ms-3"><a href="/editor_kebijakan" class="sub-menu-item"><i class="bi bi-circle"
-                            style="font-size: 7px;"></i> Kebijakan Privasi</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('editor.tnc') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Syarat & Ketentuan</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('editor.privacy') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Kebijakan Privasi</a></li>
                 <li class="menu-item ms-3"><a href="/editor_faq" class="sub-menu-item"><i class="bi bi-circle"
                             style="font-size: 7px;"></i> F.A.Q</a></li>
                 <li class="menu-item ms-3"><a href="{{ route('editor.kontak', 1) }}" class="sub-menu-item"><i
                             class="bi bi-circle" style="font-size: 7px;"></i> Kontak</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('biaya.index') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Biaya</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('voting.index') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Voting</a></li>
+                <li class="menu-item ms-3"><a href="{{ route('penjadwalan.index') }}" class="sub-menu-item"><i
+                            class="bi bi-circle" style="font-size: 7px;"></i> Penjadwalan</a></li>
             </ul>
         </div>
 
@@ -210,7 +216,8 @@
     </div>
 
     <!-- CKEditor -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script> --}}
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script> --}}
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -219,7 +226,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // let editor;
         $(document).ready(function() {
+
+
             let chevronIcon = $("#buka");
             let collapseMenu = $("#menu_editor");
 
@@ -239,13 +249,17 @@
             });
 
             // CKEditor Init
-            $(".editor").each(function() {
-                ClassicEditor.create(this).catch(error => console.error(error));
-            });
+            // $(".editor").each(function() {
+            //     ClassicEditor.create(this).catch(error => console.error(error));
+            // });
 
-            ClassicEditor.create(document.querySelector("#editor")).catch(error => {
-                console.error(error);
-            });
+
+
+            // ClassicEditor.create(document.querySelector("#editor")).then(newEditor => {
+            //     editor = newEditor;
+            // }).catch(error => {
+            //     console.error(error);
+            // });
         });
     </script>
 
