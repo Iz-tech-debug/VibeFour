@@ -4,6 +4,12 @@
 
 @section('content')
 
+    <style>
+        .ck-editor__editable {
+            min-height: 250px;
+        }
+    </style>
+
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
@@ -13,9 +19,12 @@
                 </div>
 
                 <div class="col-md-3 mt-1 text-end">
-                    <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                    <select class="form-select" id="pilihBahasa">
+                        @foreach ($bahasa as $item)
+                            <option value="{{ $item->id }}" {{ $bahasa_id == $item->id ? 'selected' : '' }}>
+                                Bahasa {{ $item->nama_bahasa }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -33,8 +42,9 @@
 
             <hr>
 
-            <form action="#" method="post">
+            <form id="formTentang" action="{{ route('update.tentang', ['bahasa' => 1]) }}" method="post">
                 @csrf
+                @method('put')
 
                 {{-- Judul Kecil --}}
                 <div class="row mb-3 mt-2">
@@ -44,7 +54,7 @@
 
                     <div class="col-md">
                         <input type="text" id="judul_kecil" name="judul_pendek" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            value="{{ $data['judul_pendek'] ?? '' }}" placeholder="Ketik disini.....">
                     </div>
                 </div>
 
@@ -56,7 +66,7 @@
 
                     <div class="col-md">
                         <input type="text" id="judul_halaman" name="judul_halaman" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            value="{{ $data['judul_halaman'] ?? '' }}" placeholder="Ketik disini.....">
                     </div>
                 </div>
 
@@ -67,7 +77,7 @@
                     </div>
 
                     <div class="col-md">
-                        <textarea name="deskripsi" id="editorDesc" class="editor" placeholder="Ketik disini....." required></textarea>
+                        <textarea name="deskripsi" id="editorDesc" class="editor" placeholder="Ketik disini.....">{{ $data['deskripsi'] ?? '' }}</textarea>
                     </div>
                 </div>
 
@@ -79,33 +89,68 @@
 
                     <div class="col-md">
                         <input type="text" id="btn_login" name="btn_login" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            value="{{ $data['btn_login'] ?? '' }}" placeholder="Ketik disini.....">
                     </div>
                 </div>
 
-                {{-- Visi --}}
+                {{-- Judul tentang perusahaan --}}
                 <div class="row mb-3 mt-2">
                     <div class="col-md-3 mt-1">
-                        <label for="judul_vm" class="form-label fw-bold">Judul misi & tujuan:</label>
+                        <label for="tentang_perusahaan" class="form-label fw-bold">Judul tentang perusahaan:</label>
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="judul_vm" name="judul_vm" class="form-control"
-                            placeholder="Ketik disini....." required>
+                        <input type="text" id="tentang_perusahaan" name="tentang_perusahaan" class="form-control"
+                            value="{{ $data['tentang_perusahaan'] ?? '' }}" placeholder="Ketik disini.....">
+                    </div>
+                </div>
+
+                {{-- Keterangan tentang perusahaan --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="keterangan_perusahaan" class="form-label fw-bold">Keterangan tentang perusahaan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <textarea type="text" id="keterangan_perusahaan" name="keterangan_perusahaan" class="form-control editor"
+                            placeholder="Ketik disini.....">{{ $data['keterangan_perusahaan'] ?? '' }}</textarea>
                     </div>
                 </div>
 
                 <hr>
 
-                {{-- Visi --}}
+                {{-- Judul visi & misi --}}
                 <div class="row mb-3 mt-2">
                     <div class="col-md-3 mt-1">
-                        <label for="visi" class="form-label fw-bold">Visi perusahaan:</label>
+                        <label for="visi_misi" class="form-label fw-bold">Judul untuk visi & misi:</label>
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="visi" name="visi" class="form-control"
-                            placeholder="Ketik disini....." required>
+                        <input type="text" id="visi_misi" name="visi_misi" class="form-control"
+                            value="{{ $data['visi_misi'] ?? '' }}" placeholder="Ketik disini.....">
+                    </div>
+                </div>
+
+                {{-- Judul visi perusahaan --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="judul_visi" class="form-label fw-bold">Judul visi perusahaan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <input type="text" id="judul_visi" name="judul_visi" class="form-control"
+                            value="{{ $data['judul_visi'] ?? '' }}" placeholder="Ketik disini.....">
+                    </div>
+                </div>
+
+                {{-- Isi Visi perusahaan --}}
+                <div class="row mb-3 mt-2">
+                    <div class="col-md-3 mt-1">
+                        <label for="isi_visi" class="form-label fw-bold">Isi visi perusahaan:</label>
+                    </div>
+
+                    <div class="col-md">
+                        <textarea type="text" id="isi_visi" name="isi_visi" class="form-control" placeholder="Ketik disini.....">{{ $data['isi_visi'] ?? '' }}</textarea>
                     </div>
                 </div>
 
@@ -122,12 +167,12 @@
                         <div id="listMisi">
                             <div class="row mb-2 misi-item">
                                 <div class="col-md">
-                                    <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi"
-                                        required>
+                                    <input type="text" name="misi_judul[]" class="form-control"
+                                        placeholder="Judul Misi">
                                 </div>
                                 <div class="col-md">
                                     <input type="text" name="misi_keterangan[]" class="form-control"
-                                        placeholder="Keterangan Misi" required>
+                                        placeholder="Keterangan Misi">
                                 </div>
                                 <div class="col-md-1">
                                     <button type="button" class="btn btn-danger hapusMisi"><i
@@ -143,12 +188,12 @@
                 {{-- Judul Keunggulan --}}
                 <div class="row mb-3 mt-2">
                     <div class="col-md-3 mt-1">
-                        <label for="judul_ku" class="form-label fw-bold">Judul keunggulan:</label>
+                        <label for="judul_ku" class="form-label fw-bold">Judul keunggulan perusahaan:</label>
                     </div>
 
                     <div class="col-md">
                         <input type="text" id="judul_ku" name="judul_ku" class="form-control"
-                            placeholder="Ketik disini....." required>
+                            value="{{ $data['judul_ku'] ?? '' }}" placeholder="Ketik disini.....">
                     </div>
                 </div>
 
@@ -173,18 +218,18 @@
                                     <div class="row mb-2">
                                         <div class="col-md">
                                             <input type="file" name="keunggulan_image[]" class="form-control"
-                                                accept="image/*" required>
+                                                accept="image/*">
                                         </div>
                                         <div class="col-md">
                                             <input type="text" name="keunggulan_judul[]" class="form-control"
-                                                placeholder="Judul Keunggulan" required>
+                                                placeholder="Judul Keunggulan">
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md">
                                             <input type="text" name="keunggulan_keterangan[]" class="form-control"
-                                                placeholder="Keterangan Keunggulan" required>
+                                                placeholder="Keterangan Keunggulan">
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +246,7 @@
 
 
                 <div class="text-end mt-3">
-                    <button type="button" class="btn btn-primary" id="btnSimpan">
+                    <button type="submit" class="btn btn-primary" id="btnSimpan">
                         <i class="bi bi-save me-1"></i>
                         Simpan
                     </button>
@@ -215,26 +260,73 @@
     <script>
         $(document).ready(function() {
 
-            // Sweetalert Simpan
-            $("#btnSimpan").on("click", function() {
-                Swal.fire({
-                    title: "Apakah Anda yakin ingin menyimpan ini?",
-                    text: "Perubahan akan terjadi di website",
-                    icon: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Simpan",
-                    cancelButtonText: "Batal"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Tersimpan!",
-                            text: "Data Anda telah disimpan.",
-                            icon: "success"
-                        });
+            let editor;
+
+            ClassicEditor.create($("#editorDesc")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor.create($("#isi_visi")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor.create($("#keterangan_perusahaan")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            $('#pilihBahasa').change(function() {
+                var bahasaId = $(this).val();
+                var form = $('#formTentang');
+
+                console.log("Form action berubah ke: " + form.attr('action')); // Debugging
+
+                $.ajax({
+                    url: '/editor_halaman/tentang/' + bahasaId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+
+                        form.attr('action', '/update_tentang/' + bahasaId);
+
+                        if (response) {
+                            $('#judul_kecil').val(response.judul_pendek || '');
+                            $('#judul_halaman').val(response.judul_halaman || '');
+                            $('#deskripsi').val(response.deskripsi || '');
+                            $('#btn_login').val(response.btn_login || '');
+                            $('#tentang_perusahaan').val(response.tentang_perusahaan || '');
+                            $('#keterangan_perusahaan').val(response.keterangan_perusahaan ||
+                                '');
+                            $('#visi_misi').val(response.visi_misi || '');
+                            $('#judul_visi').val(response.judul_visi || '');
+                            $('#isi_visi').val(response.isi_visi || '');
+                            $('#judul_ku').val(response.judul_ku || '');
+                        } else {
+                            kosongkanForm();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        form.attr('action', '/update_tentang/' + bahasaId);
+                        console.error("Error:", status, error);
+                        kosongkanForm();
                     }
                 });
+
+                function kosongkanForm() {
+                    form.attr('action', '/update_header/' + bahasaId);
+                    $('#judul_kecil, #judul_halaman, #deskripsi, #btn_login, #tentang_perusahaan, #keterangan_perusahaan, #visi_misi, #judul_visi, #isi_visi, #judul_ku').val('');
+                }
             });
 
             // Misi Perusahaan
@@ -242,10 +334,10 @@
                 let misiHTML = `
                     <div class="row mb-2 misi-item">
                         <div class="col-md">
-                            <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi" required>
+                            <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi">
                         </div>
                         <div class="col-md">
-                            <input type="text" name="misi_keterangan[]" class="form-control" placeholder="Keterangan Misi" required>
+                            <input type="text" name="misi_keterangan[]" class="form-control" placeholder="Keterangan Misi">
                         </div>
                         <div class="col-md-1">
                             <button type="button" class="btn btn-danger hapusMisi"><i class="bi bi-trash"></i></button>
@@ -268,18 +360,18 @@
                         <div class="col-md-11">
                             <div class="row mb-2">
                                 <div class="col-md">
-                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*" required>
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
                                 </div>
                                 <div class="col-md">
                                     <input type="text" name="keunggulan_judul[]" class="form-control"
-                                        placeholder="Judul Keunggulan" required>
+                                        placeholder="Judul Keunggulan">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md">
                                     <input type="text" name="keunggulan_keterangan[]" class="form-control"
-                                        placeholder="Keterangan Keunggulan" required>
+                                        placeholder="Keterangan Keunggulan">
                                 </div>
                             </div>
                         </div>
