@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('nama');
             $table->string('harga');
             $table->integer('durasi');
-            $table->enum('satuan_waktu', ['Bulan', 'Tahun']);
+            $table->string('satuan_waktu');
             $table->timestamps();
         });
     }
