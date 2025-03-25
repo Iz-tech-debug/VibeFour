@@ -3,7 +3,7 @@
 @section('title', 'Editor Halaman - Produk & Biaya')
 
 @section('content')
-    <style>
+    {{-- <style>
         .ck-editor__editable {
             min-height: 250px;
         }
@@ -20,8 +20,9 @@
 
                 <div class="col-md-3 mt-1 text-end">
                     <select class="form-select" aria-label="Pilih Bahasa">
-                        <option value="1">Bahasa Indonesia</option>
-                        <option value="2">Bahasa Inggris</option>
+                        @foreach ($bahasa as $item)
+                            <option value="{{ $item->id }}">Bahasa {{ $item->nama_bahasa }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -55,6 +56,6 @@
 
         </div>
 
-    </div>
+    </div> --}}
 
 @endsection
