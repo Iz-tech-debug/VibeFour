@@ -10,9 +10,24 @@
         <div class="card p-3 shadow-sm d-flex flex-row justify-content-between align-items-center">
             <h4 class="mt-2" style="color:blueviolet;">Manajemen Berita</h4>
 
-            <a href="{{ route('page.tambah_berita') }}" class="btn btn-primary">
-                <i class="bi bi-plus"></i> Tambah Berita
-            </a>
+            <div class="d-flex align-items-center gap-3">
+                <!-- Search -->
+                <input type="text" id="searchBerita" class="form-control" placeholder="Cari berita..."
+                    style="max-width: 250px;">
+
+                <!-- Filter Bahasa -->
+                <select id="filterBahasa" class="form-select" style="max-width: 200px;">
+                    <option value=""><--Pilih Bahasa--></option>
+                    @foreach ($bahasa as $b)
+                        <option value="{{ $b->id }}">{{ $b->nama_bahasa }}</option>
+                    @endforeach
+                </select>
+
+                <!-- Tambah Berita -->
+                <a href="{{ route('page.tambah_berita') }}" class="btn btn-primary" style="min-width: 180px;">
+                    <i class="bi bi-plus"></i> Tambah Berita
+                </a>
+            </div>
         </div>
 
         <br>
@@ -22,7 +37,7 @@
             <div class="card p-4 shadow-sm mb-3">
                 <div class="row align-items-center">
                     <!-- Gambar -->
-                    <div class="col-md-2 text-center">
+                    <div class="col-md-1 text-center">
                         <div class="border rounded d-flex align-items-center justify-content-center"
                             style="width: 100px; height: 100px; border: 2px solid blue; overflow: hidden;">
                             <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Berita"
@@ -31,12 +46,17 @@
                     </div>
 
                     <!-- Judul Berita -->
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-6 mt-2 ms-5 text-start">
                         <h6 class="">{{ $item->judul }}</h6>
                     </div>
 
-                    <!-- Tombol Aksi -->
-                    <div class="col-md-4 text-end">
+                    <!-- Tombol Aksi & Bahasa -->
+                    <div class="col-md-4 ms-5 mb-2 text-end">
+                        <!-- Tampilkan Nama Bahasa -->
+                        <p class="text-muted mb-1">
+                            <i class="bi bi-translate"></i> {{ $item->bahasa->nama_bahasa ?? 'Tidak Diketahui' }}
+                        </p>
+
                         <button class="btn btn-danger btn-sm btn-hapus-berita" data-id="{{ $item->id }}">
                             <i class="bi bi-trash me-2"></i>Hapus Berita
                         </button>
@@ -49,50 +69,63 @@
             </div>
         @endforeach
 
+
     </div>
 
     <script>
         $(document).ready(function() {
-            $(".btn-hapus-berita").click(function() {
-                let beritaId = $(this).data("id");
-                let token = "{{ csrf_token() }}";
+            // SEARCH BERITA
+            $("#searchBerita").on("keyup", function() {
+                var searchText = $(this).val().toLowerCase();
+                $("#tableBerita tr").each(function() {
+                    var nama = $(this).data("nama");
+                    $(this).toggle(nama.includes(searchText));
+                });
+            });
+
+            // FILTER BAHASA
+            $("#filterBahasa").on("change", function() {
+                var filterValue = $(this).val();
+                $("#tableBerita tr").each(function() {
+                    var bahasa = $(this).data("bahasa");
+                    $(this).toggle(filterValue === "" || bahasa == filterValue);
+                });
+            });
+
+            // DELETE DENGAN SWEETALERT
+            $(".btn-hapus").click(function() {
+                var beritaId = $(this).data("id");
+                var beritaNama = $(this).data("nama");
 
                 Swal.fire({
-                    title: "Apakah kamu yakin?",
-                    text: "Data berita yang dihapus tidak bisa dikembalikan!",
+                    title: "Hapus Berita?",
+                    text: `Apakah Anda yakin ingin menghapus berita "${beritaNama}"?`,
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#d33",
                     cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Ya, hapus!",
+                    confirmButtonText: "Ya, Hapus!",
                     cancelButtonText: "Batal"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "/berita/" + beritaId,
+                            url: "/hapus_berita/" + beritaId,
                             type: "DELETE",
                             data: {
-                                _token: token
+                                _token: "{{ csrf_token() }}"
                             },
-                            success: function(response) {
+                            success: function() {
                                 Swal.fire({
-                                    title: "Terhapus!",
-                                    text: response.message,
+                                    title: "Berhasil!",
+                                    text: "Berita berhasil dihapus.",
                                     icon: "success",
                                     timer: 2000,
                                     showConfirmButton: false
-                                });
-
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 2000);
+                                }).then(() => location.reload());
                             },
-                            error: function(xhr) {
-                                Swal.fire({
-                                    title: "Gagal!",
-                                    text: "Berita tidak bisa dihapus, coba lagi.",
-                                    icon: "error"
-                                });
+                            error: function() {
+                                Swal.fire("Oops!", "Terjadi kesalahan saat menghapus.",
+                                    "error");
                             }
                         });
                     }

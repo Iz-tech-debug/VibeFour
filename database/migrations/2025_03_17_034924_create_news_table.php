@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('judul');
             $table->text('konten');
             $table->string('gambar');
+
+            // Foreign key kedalam tabel bahasa
+            $table->unsignedBigInteger('bahasa_id');
+            $table->foreign('bahasa_id')->references('id')->on('languages')->onDelete('cascade');
             $table->timestamps();
         });
     }

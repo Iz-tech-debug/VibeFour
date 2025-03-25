@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Language;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,9 @@ class NewsController extends Controller
         // Index + data
         $data = News::all();
 
-        return view('Page.Berita.m_berita', compact('data'));
+        $bahasa = Language::all();
+
+        return view('Page.Berita.m_berita', compact('data', 'bahasa'));
     }
 
     /**
@@ -39,12 +42,15 @@ class NewsController extends Controller
             'judul' => 'required',
             'isi_konten' => 'required',
             'gambar' => 'required',
+            'bahasa_id' => 'required',
         ]);
 
         $news = new News();
 
         $news->judul = $request->judul;
         $news->konten = $request->isi_konten;
+        $news->bahasa_id = $request->bahasa_id;
+
 
         // Cek jika file gambar diunggah
         if ($request->hasFile('gambar')) {
@@ -57,12 +63,10 @@ class NewsController extends Controller
             // Simpan file dengan nama slug di folder public/storage/images/news
             $path = $file->storeAs('images/news', $filenameToStore, 'public');
 
-            // Hapus gambar lama jika ada
             if ($news->gambar) {
                 Storage::disk('public')->delete($news->gambar);
             }
 
-            // Simpan path gambar di database
             $news->gambar = $path;
         }
 
@@ -76,9 +80,13 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(News $news)
+    public function news()
     {
-        //
+        // Index + data bahasa
+
+        $bahasa = Language::all();
+
+        return view('Page.Berita.tambah_berita', compact('bahasa'));
     }
 
     /**
@@ -99,7 +107,7 @@ class NewsController extends Controller
         $request->validate([
             'judul' => 'required|max:100',
             'konten' => 'required',
-            'gambar' => 'image', // Validasi gambar
+            'gambar' => 'image',
         ]);
 
         $news = News::findOrFail($id);
