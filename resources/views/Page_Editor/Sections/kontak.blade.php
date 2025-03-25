@@ -9,6 +9,7 @@
             min-height: 300px;
         }
     </style>
+
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
@@ -88,7 +89,7 @@
                     </div>
 
                     <div class="col-md">
-                        <textarea name="keterangan" class="form-control editor" placeholder="Ketik disini....." id="">{{ $data['Keterangan'] ?? '' }}</textarea>
+                        <textarea name="keterangan" class="form-control editor" placeholder="Ketik disini....." id="keterangan">{{ $data['Keterangan'] ?? '' }}</textarea>
                     </div>
                 </div>
 
@@ -141,31 +142,108 @@
 
     <script>
         $(document).ready(function() {
+            let editor;
+            let formChanged = false;
+
+            ClassicEditor.create($("#keterangan")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            // Cek apakah ada perubahan di salah satu inputan
+            $('#formKontak input, #formKontak textarea').on('input', function() {
+                formChanged = true; // Jika ada perubahan, set formChanged menjadi true
+            });
+
             $('#pilihBahasa').change(function() {
-                var bahasaId = $(this).val();
-                var form = $('#formKontak'); // Tangkap form
+                if (formChanged) {
+                    Swal.fire({
+                        title: "Apakah Anda yakin?",
+                        text: "Data yang telah Anda masukkan akan disimpan sebelum berpindah bahasa.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, simpan & ganti bahasa",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveToDatabase().then(() => {
+                                changeLanguage();
+                            }).catch(() => {
+                                Swal.fire("Error!", "Gagal menyimpan data!", "error");
+                            });
+                        } else {
+                            $(this).val($(this).data('prev'));
+                        }
+                    });
+                } else {
+                    // Jika belum ada perubahan, langsung ganti bahasa
+                    changeLanguage();
+                }
+            });
+
+            // Menyimpan nilai sebelumnya agar bisa dikembalikan jika user batal
+            $('#pilihBahasa').focus(function() {
+                $(this).data('prev', $(this).val());
+            });
+
+            function saveToDatabase() {
+                return new Promise((resolve, reject) => {
+                    let formData = {
+                        judul: $('#judul').val(),
+                        iframe: $('#iframe').val(),
+                        subjudul: $('#subjudul').val(),
+                        keterangan: editor.getData(),
+                        alamat: $('#alamat').val(),
+                        telepon: $('#telepon').val(),
+                        email: $('#email').val(),
+                        _token: $('meta[name="csrf-token"]').attr('content'), // Laravel CSRF Token
+                        _method: 'PUT' // Gunakan PUT karena rute hanya mendukung metode PUT
+                    };
+
+                    $.ajax({
+                        url: "/update_kontak/" + $('#pilihBahasa').val(),
+                        type: "POST", // tetap pakai POST, tapi Laravel akan mengenali sebagai PUT
+                        data: formData,
+                        success: function(response) {
+                            Swal.fire("Tersimpan!", "Data berhasil disimpan.", "success");
+                            formChanged = false;
+                            resolve();
+                        },
+                        error: function(xhr) {
+                            reject(xhr);
+                        }
+                    });
+                });
+            }
+
+
+            function changeLanguage() {
+                var bahasaId = $('#pilihBahasa').val();
+                var form = $('#formKontak');
 
                 $.ajax({
                     url: '/editor-halaman/kontak/' + bahasaId,
                     type: 'GET',
                     success: function(response) {
-                        // Ubah action form agar menyertakan bahasaId
-                        form.attr('action', '/update-kontak/' + bahasaId);
+                        form.attr('action', '/update_kontak/' + bahasaId);
 
-                        // Update isi input berdasarkan data dari server
-                        $('#judul').val(response.Judul || '');
-                        $('#iframe').val(response.IFrame || '');
-                        $('#subjudul').val(response.Subjudul || '');
-                        $('#keterangan').val(response.Keterangan || '');
-                        $('#alamat').val(response.Alamat || '');
-                        $('#no_telp').val(response.Telepon || '');
-                        $('#email').val(response.Email || '');
-                    },
-                    error: function() {
-                        alert('Gagal mengambil data!');
+                        if (response) {
+                            $('#judul').val(response.Judul || '');
+                            $('#iframe').val(response.IFrame || '');
+                            $('#subjudul').val(response.Subjudul || '');
+                            editor.setData(response.Keterangan || '');
+                            $('#alamat').val(response.Alamat || '');
+                            $('#telepon').val(response.Telepon || '');
+                            $('#email').val(response.Email || '');
+                        }
+
+                        formChanged = false;
                     }
                 });
-            });
+            }
         });
     </script>
 @endsection
