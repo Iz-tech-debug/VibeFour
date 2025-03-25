@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="col-md">
-                        <textarea name="jawaban" class="form-control" placeholder="Ketik disini....." id="editor"></textarea>
+                        <textarea name="jawaban" class="form-control" placeholder="Ketik disini....." id="keterangan"></textarea>
                     </div>
                 </div>
 
@@ -77,7 +77,17 @@
         </form>
     </div>
 
-    <script></script>
+    <script>
+        let editor;
+
+        ClassicEditor.create($("#keterangan")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            .then(newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
 
 @endsection
