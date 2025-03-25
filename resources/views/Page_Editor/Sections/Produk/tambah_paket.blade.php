@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="col-md-3 text-end">
-                    <a href="/editor_produk" class="btn btn-secondary mt-2">
+                    <a href="{{ route('biaya.index') }}" class="btn btn-secondary mt-2">
                         <i class="bi bi-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -26,7 +26,7 @@
 
             <hr>
 
-            <form action="" method="POST">
+            <form action="{{ route('paket.add') }}" method="POST">
                 @csrf
 
                 <!-- Nama Paket & Harga Per-Langganan -->
@@ -43,7 +43,8 @@
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                         <small class="text-muted">
-                            <i class="bi bi-question-circle"></i> Kosongkan nominal harga untuk tanpa biaya berlangganan
+                            <i class="bi bi-question-circle form-text"></i> Kosongkan nominal harga untuk tanpa biaya
+                            berlangganan
                         </small>
                     </div>
                 </div>
@@ -60,12 +61,10 @@
                             <span class="me-3">:</span>
 
                             <input name="durasi" type="number" class="form-control text-center me-2" style="width: 60px;"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
+                                placeholder="0" required>
 
-                            <select name="periode" class="form-select" style="width: auto;">
-                                <option value="Bulan">Bulan</option>
-                                <option value="Tahun">Tahun</option>
-                            </select>
+                            <input type="text" class="form-control" name="periode" placeholder="Hari/Minggu/Bulan/Tahun">
                         </div>
                     </div>
 
@@ -77,7 +76,8 @@
                     <label class="form-label">Fitur-fitur</label>
                     <div id="fitur-container">
                         <div class="d-flex mb-2 fitur-item">
-                            <input name="fitur[]" type="text" class="form-control" placeholder="Ketik disini..." required>
+                            <input name="fitur[]" type="text" class="form-control" placeholder="Ketik disini..."
+                                required>
                             <button type="button" class="btn btn-danger ms-2 hapusFitur" disabled>
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -91,11 +91,21 @@
 
                 <hr>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <label for="pilihBahasa" class="form-label me-2 mt-2">Simpan untuk bahasa: </label>
+                        <select id="pilihBahasa" name="pilihBahasa" class="form-select w-auto">
+                            @foreach ($lang as $item)
+                                <option value="{{ $item->id }}"> {{ $item->nama_bahasa }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+                    </div>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -108,7 +118,7 @@
                 const hapusButtons = $(".hapusFitur");
 
                 if (hapusButtons.length === 1) {
-                    hapusButtons.prop("disabled", true); // Nonaktifkan jika hanya ada 1 fitur
+                    hapusButtons.prop("disabled", true);
                 } else {
                     hapusButtons.prop("disabled", false);
                 }
@@ -117,12 +127,13 @@
             tambahFiturBtn.on("click", function() {
                 let newFitur = `
             <div class="d-flex mb-2 fitur-item">
-                <input type="text" class="form-control" placeholder="Ketik disini..." required>
+                <input type="text" name="fitur[]" class="form-control" placeholder="Ketik disini..." required>
                 <button type="button" class="btn btn-danger ms-2 hapusFitur">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
-        `;
+
+            `;
 
                 fiturContainer.append(newFitur);
                 updateHapusButtons();

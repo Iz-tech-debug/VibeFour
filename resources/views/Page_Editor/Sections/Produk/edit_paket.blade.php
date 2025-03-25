@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="col-md-3 text-end">
-                    <a href="/editor_produk" class="btn btn-secondary mt-2">
+                    <a href="{{route('biaya.index')}}" class="btn btn-secondary mt-2">
                         <i class="bi bi-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -60,7 +60,7 @@
                             <span class="me-3">:</span>
 
                             <input type="number" class="form-control text-center me-2" style="width: 60px;"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 
                             <select class="form-select" style="width: auto;">
                                 <option>Bulan</option>
@@ -91,8 +91,19 @@
 
                 <hr>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <label for="pilihBahasa" class="form-label me-2 mt-2">Simpan untuk bahasa: </label>
+                        <select id="pilihBahasa" name="pilihBahasa" class="form-select w-auto">
+                            {{-- @foreach ($lang as $item)
+                                <option value="{{ $item->id }}"> {{ $item->nama_bahasa }}</option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+                    </div>
                 </div>
             </form>
 
