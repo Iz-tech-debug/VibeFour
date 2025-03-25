@@ -2,13 +2,19 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\editor_halaman\AboutController;
 use App\Http\Controllers\editor_halaman\BerandaController;
 use App\Http\Controllers\editor_halaman\ContactController;
 use App\Http\Controllers\editor_halaman\FAQController;
+use App\Http\Controllers\editor_halaman\FooterController;
 use App\Http\Controllers\editor_halaman\HeaderController;
+use App\Http\Controllers\editor_halaman\PrivacyController;
+use App\Http\Controllers\editor_halaman\ProductController;
 use App\Http\Controllers\editor_halaman\TnController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
+use App\Models\Privacy;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,17 +40,19 @@ Route::get('/halaman_utama', function () {
 })->name('home');
 
 
-Route::get('/manajemen_berita', function () {
-    return view('Page.Berita.m_berita');
-})->name('page.m_berita');
+// Berita
+Route::get('/manajemen_berita', [NewsController::class, 'index'])->name('page.m_berita');
 
-Route::get('/tambah_berita', function () {
-    return view('Page.Berita.tambah_berita');
-})->name('page.tambah_berita');
+Route::get('/tambah_berita', [NewsController::class, 'news'])->name('page.tambah_berita');
 
-Route::get('/edit_berita', function () {
-    return view('Page.Berita.edit');
-})->name('page.edit_berita');
+Route::post('/add_berita', [NewsController::class, 'store'])->name('add.berita');
+
+Route::delete('/berita/{id}', [NewsController::class, 'destroy'])->name('berita.destroy');
+
+Route::get('/edit_berita/{id}', [NewsController::class, 'edit'])->name('page.edit_berita');
+
+Route::put('/berita/{id}', [NewsController::class, 'update'])->name('berita.update');
+
 
 
 // Pengguna
@@ -72,19 +80,29 @@ Route::put('/edit_bahasa/{id}', [LanguageController::class, 'update'])->name('ba
 // Beranda
 Route::get('/editor_beranda', [BerandaController::class, 'index'])->name('e_beranda.index');
 
+Route::get('/editor_halaman/beranda/{bahasaId}', [BerandaController::class, 'switch'])->name('beranda.bahasa');
+
+Route::put('/update_beranda/{bahasaId}', [BerandaController::class, 'update'])->name('update.beranda');
+
+
+
+
 
 // Header
 Route::get('/editor_header', [HeaderController::class, 'index'])->name('header.index');
 
-Route::get('/header/{bahasa_id}', [HeaderController::class, 'getHeaderByBahasa'])->name('header.bahasa');
+Route::get('/editor_halaman/header/{bahasaId}', [HeaderController::class, 'switch'])->name('header.bahasa');
 
-Route::put('/update_header', [HeaderController::class, 'update'])->name('update.header');
+Route::put('/update_header/{bahasaId}', [HeaderController::class, 'update'])->name('update.header');
 
 
 // Footer
-Route::get('/editor_footer', function () {
-    return view('Page_Editor.Sections.footer');
-})->name('editor.footer');
+Route::get('/editor_footer', [FooterController::class, 'index'])->name('footer.index');
+
+Route::get('/editor_halaman/footer/{bahasaId}', [FooterController::class, 'switch'])->name('footer.bahasa');
+
+Route::put('/update_footer/{bahasa}', [FooterController::class, 'update'])->name('update.footer');
+
 
 // FAQ
 Route::get('/editor_faq', [FAQController::class, 'index'])->name('faq.index');
@@ -101,46 +119,68 @@ Route::get('/edit_pertanyaan', function () {
 
 
 
-// Produk
-Route::get('/editor_produk', function () {
-    return view('Page_Editor.Sections.produk');
-})->name('editor.produk');
+// Voting
+Route::get('/editor_voting', [ProductController::class, 'Voting'])->name('voting.index');
 
-// Tambah Paket
-Route::get('/tambah_paket', function () {
-    return view('Page_Editor.Sections.Produk.tambah_paket');
-})->name('editor.paket');
+Route::put('/update_voting/{bahasa}', [ProductController::class, 'storeVote'])->name('update.voting');
 
-// Edit Paket
+Route::get('/editor_halaman/voting/{bahasaId}', [ProductController::class, 'switchVote'])->name('vote.bahasa');
+
+
+
+// Penjadwalan
+Route::get('/editor_penjadwalan', [ProductController::class, 'Penjadwalan'])->name('penjadwalan.index');
+
+Route::put('/update_penjadwalan/{bahasa}', [ProductController::class, 'storePenjadwalan'])->name('update.penjadwalan');
+
+Route::get('/editor_halaman/penjadwalan/{bahasaId}', [ProductController::class, 'switchPenjadwalan'])->name('penjadwalan.bahasa');
+
+
+
+
+// Paket berlangganan / Biaya index
+Route::get('/editor_biaya', [ProductController::class, 'Paket'])->name('biaya.index');
+
+Route::get('/tambah_paket', [ProductController::class, 'inputPaket'])->name('editor.paket');
+
+Route::post('/add_paket', [ProductController::class, 'addPaket'])->name('paket.add');
+
+Route::put('/update_paket/{id}', [ProductController::class, 'updatePaket'])->name('update.paket');
+
+Route::delete('/hapus_paket/{id}', [ProductController::class, 'destroyPaket'])->name('delete.paket');
+
 Route::get('/edit_paket', function () {
     return view('Page_Editor.Sections.Produk.edit_paket');
 })->name('editor.edit_paket');
 
-// Hapus Paket
-
-
 
 // Tentang
-Route::get('/editor_tentang', function () {
-    return view('Page_Editor.Sections.tentang');
-})->name('editor.tentang');
+Route::get('/editor_tentang', [AboutController::class, 'index'])->name('tentang.index');
 
+Route::put('/update_tentang/{bahasa}', [AboutController::class, 'update'])->name('update.tentang');
+
+Route::get('/editor-halaman/tentang/{bahasaId}', [AboutController::class, 'switch'])->name('tentang.bahasa');
 
 
 // Kontak
 Route::get('/editor_kontak', [ContactController::class, 'index'])->name('editor.kontak');
 
-Route::put('/update-kontak/{bahasa}', [ContactController::class, 'update'])->name('update.kontak');
+Route::put('/update_kontak/{bahasa}', [ContactController::class, 'update'])->name('update.kontak');
 
-Route::get('/editor-halaman/kontak/{bahasaId}', [ContactController::class, 'getKontakByBahasa'])->name('kontak.bahasa');
-
+Route::get('/editor-halaman/kontak/{bahasaId}', [ContactController::class, 'switch'])->name('kontak.bahasa');
 
 
 // Syarat & Ketentuan
-Route::get('/editor_s&k', [TnController::class, 'index']);
+Route::get('/editor_tnc', [TnController::class, 'index'])->name('editor.tnc');
+
+Route::get('/editor_halaman/tnc/{bahasaId}', [TnController::class, 'switch'])->name('tnc.bahasa');
+
+Route::put('/update_tnc/{bahasa}', [TnController::class, 'update'])->name('update.tnc');
+
 
 // Kebijakan Privasi
-Route::get('/editor_kebijakan', function () {
-    return view('Page_Editor.Sections.kebijakan');
-})->name('editor.kebijakan');
+Route::get('/editor_privacy', [PrivacyController::class, 'index'])->name('editor.privacy');
 
+Route::get('/editor_halaman/privacy/{bahasaId}', [PrivacyController::class, 'switch'])->name('privacy.bahasa');
+
+Route::put('/update_privacy/{bahasa}', [PrivacyController::class, 'update'])->name('update.privacy');
