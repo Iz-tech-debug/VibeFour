@@ -48,8 +48,32 @@
                     <textarea name="isi_konten" id="isiBerita" class="editor" placeholder="Ketik disini....."></textarea>
                 </div>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 mt-2">
+                                <label for="bahasa_id" class="form-label fw-bold">Simpan sebagai:</label>
+                            </div>
+
+                            <div class="col-md-5">
+                                <select name="bahasa_id" id="bahasa_id" class="form-select" required>
+                                    <option value=""><--- Pilih Bahasa ---></option>
+                                    @foreach ($bahasa as $item)
+                                        <option value="{{ $item->id }}">
+                                            Bahasa {{ $item->nama_bahasa }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Bahasa tidak boleh kosong.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </div>
             </form>
         </div>
