@@ -159,12 +159,14 @@
                         }
                     },
                     error: function(xhr, status, error) {
+                        form.attr('action', '/update_header/' + bahasaId);
                         console.error("Error:", status, error);
                         kosongkanForm();
                     }
                 });
 
                 function kosongkanForm() {
+                    form.attr('action', '/update_header/' + bahasaId);
                     $('#beranda, #Tentang, #Kontak, #Produk, #produk_a, #produk_b, #TeksTombol').val('');
                 }
             });
