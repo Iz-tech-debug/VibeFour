@@ -4,6 +4,12 @@
 
 @section('content')
 
+    <style>
+        .ck-editor__editable {
+            min-height: 200px;
+        }
+    </style>
+
     <div class="container mt-4">
 
         <div class="card p-3 shadow-sm">
@@ -88,65 +94,85 @@
 
     </div>
 
+    <!-- Modal Edit FAQ -->
+    <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+        aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <form action="{{ route('faq.update', $item->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title" id="editModalLabel{{ $item->id }}">
+                            <i class="bi bi-pencil-square me-2"></i>Edit Pertanyaan
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="pertanyaan{{ $item->id }}" class="form-label">Pertanyaan</label>
+                            <input type="text" name="pertanyaan" class="form-control" id="pertanyaan{{ $item->id }}"
+                                value="{{ $item->pertanyaan }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jawaban{{ $item->id }}" class="form-label">Jawaban</label>
+                            <textarea name="jawaban" class="form-control editor" id="jawaban{{ $item->id }}" rows="5" required>{{ $item->jawaban }}</textarea>
+                        </div>
+
+                        <input type="hidden" name="bahasa_id" value="{{ $item->bahasa_id }}"> {{-- kalau ada relasi bahasa --}}
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-circle me-2"></i>Simpan Perubahan
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        $(document).ready(function() {
-            $('#searchInput').on('keyup', function() {
-                let searchValue = $(this).val().toLowerCase();
-                $('#myTable tbody tr').each(function() {
-                    let cellText = $(this).find('td:eq(1)').text().toLowerCase();
-                    $(this).toggle(cellText.includes(searchValue));
-                });
-            });
+        let editors = {}; // buat nyimpan semua instance CKEditor
 
-            $(document).on('click', '.btn-hapus', function() {
-                var id = $(this).data('id');
+        // Bikin function inisialisasi ulang CKEditor
+        function initCKEditor() {
+            document.querySelectorAll('.editor').forEach((textarea) => {
+                const id = textarea.id;
 
-                Swal.fire({
-                    title: "Apakah Anda yakin?",
-                    text: "Data ini akan dihapus secara permanen!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Ya, Hapus!",
-                    cancelButtonText: "Batal"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: `/hapus_pertanyaan/${id}`,
-                            type: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(response) {
-                                console.log(
-                                    response); // Cek respons dari server di console
-
-                                if (response.success) {
-                                    Swal.fire({
-                                        title: "Terhapus!",
-                                        text: response.success,
-                                        icon: "success",
-                                    }).then(() => {
-                                        $('button[data-id="' + id + '"]')
-                                            .closest('tr').remove();
-                                    });
-                                } else {
-                                    Swal.fire("Gagal!", "Respon server tidak sesuai.",
-                                        "error");
-                                }
-                            },
-                            error: function(xhr) {
-                                console.error(xhr.responseText); // Cek error di console
-                                Swal.fire("Gagal!",
-                                    "Terjadi kesalahan saat menghapus data.",
-                                    "error");
-                            }
+                // Cek biar gak double init
+                if (!editors[id]) {
+                    ClassicEditor
+                        .create(textarea)
+                        .then(editor => {
+                            editors[id] = editor;
+                        })
+                        .catch(error => {
+                            console.error(`CKEditor error on #${id}`, error);
                         });
-                    }
-                });
+                }
+            });
+        }
+
+        // Inisialisasi saat pertama kali DOM ready
+        $(document).ready(function() {
+            initCKEditor();
+
+            // Inisialisasi ulang CKEditor saat modal dibuka
+            $('.modal').on('shown.bs.modal', function() {
+                initCKEditor();
             });
         });
     </script>
+
 
 @endsection

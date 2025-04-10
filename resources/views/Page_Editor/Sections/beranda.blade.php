@@ -191,10 +191,12 @@
                                     </div>
 
                                     <div class="col-md-1 text-end">
-                                        <button type="button" class="btn btn-danger hapusKeunggulan"><i
-                                                class="bi bi-trash"></i></button>
+                                        <button type="button" class="btn btn-danger hapusKeunggulan"
+                                            data-id="{{ $item->id }}"><i class="bi bi-trash"></i></button>
                                     </div>
                                 </div>
+
+                                <hr>
                             @endforeach
                         @else
                             {{-- Kalau gak ada data, tampilkan satu form kosong --}}
@@ -227,9 +229,6 @@
                         @endif
                     </div>
                 </div>
-
-
-                <hr>
 
                 <!-- Judul pencapaian -->
                 <div class="row mb-4">
@@ -306,8 +305,8 @@
 
                                 <!-- Kolom Button Hapus -->
                                 <div class="col-md-1 text-end">
-                                    <button type="button" class="btn btn-danger hapusPencapaian"><i
-                                            class="bi bi-trash"></i></button>
+                                    <button type="button" class="btn btn-danger hapusPencapaian"
+                                        data-id="{{ $ach->id }}"><i class="bi bi-trash"></i></button>
                                 </div>
                             </div>
                         @empty
@@ -336,6 +335,8 @@
                                             class="bi bi-trash"></i></button>
                                 </div>
                             </div>
+
+                            <hr>
                         @endforelse
                     </div>
 
@@ -354,6 +355,84 @@
 
     <script>
         $(document).ready(function() {
+
+            // Hapus Keunggulan dari DB
+            $(document).on('click', '.hapusKeunggulan', function() {
+                const button = $(this);
+                const id = button.data('id');
+
+                Swal.fire({
+                    title: 'Yakin hapus keunggulan ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('hapus.keunggulan') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                id: id
+                            },
+                            success: function(res) {
+                                if (res.status === 'success') {
+                                    Swal.fire('Berhasil!', res.message, 'success');
+                                    button.closest('.pencapaian-item').remove();
+                                } else {
+                                    Swal.fire('Gagal!', res.message, 'error');
+
+                                    console.log('gagal' + id);
+                                }
+                            },
+                            error: function() {
+                                Swal.fire('Oops!', 'Terjadi kesalahan saat menghapus.',
+                                    'error');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Hapus Pencapaian dari DB
+            $(document).on('click', '.hapusPencapaian', function() {
+                const button = $(this);
+                const id = button.data('id');
+
+                Swal.fire({
+                    title: 'Yakin hapus pencapaian ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('hapus.pencapaian') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                id: id
+                            },
+                            success: function(res) {
+                                if (res.status === 'success') {
+                                    Swal.fire('Berhasil!', res.message, 'success');
+                                    button.closest('.pencapaian-item').remove();
+                                } else {
+                                    Swal.fire('Gagal!', res.message, 'error');
+                                }
+                            },
+                            error: function() {
+                                Swal.fire('Oops!', 'Terjadi kesalahan saat menghapus.',
+                                    'error');
+
+
+                            }
+                        });
+                    }
+                });
+            });
 
             let editorKeterangan, editorDesc;
 

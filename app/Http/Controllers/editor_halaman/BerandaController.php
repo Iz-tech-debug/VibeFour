@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\editor_halaman;
 
+use Log;
 use App\Models\Home;
 use App\Models\Product;
 use App\Models\Language;
@@ -135,5 +136,44 @@ class BerandaController extends Controller
 
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+    }
+
+    public function HapusKeunggulan(Request $request)
+    {
+        $id = $request->id;
+
+        try {
+            $data = Advantage::findOrFail($id);
+
+            if ($data->ikon && Storage::exists('public/' . $data->ikon)) {
+                Storage::delete('public/' . $data->ikon);
+            }
+
+            $data->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Keunggulan berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus keunggulan']);
+        }
+    }
+
+
+    public function HapusPencapaian(Request $request)
+    {
+        $id = $request->id;
+
+        try {
+            $data = Achievement::findOrFail($id);
+
+            if ($data->ikon && Storage::exists('public/' . $data->ikon)) {
+                Storage::delete('public/' . $data->ikon);
+            }
+
+            $data->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Pencapaian berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus pencapaian']);
+        }
     }
 }

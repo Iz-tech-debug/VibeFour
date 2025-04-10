@@ -84,6 +84,9 @@ Route::get('/editor_halaman/beranda/{bahasaId}', [BerandaController::class, 'swi
 
 Route::put('/update_beranda/{bahasaId}', [BerandaController::class, 'update'])->name('update.beranda');
 
+Route::post('/hapus_keunggulan', [BerandaController::class, 'HapusKeunggulan'])->name('hapus.keunggulan');
+
+Route::post('/hapus_pencapaian', [BerandaController::class, 'HapusPencapaian'])->name('hapus.pencapaian');
 
 
 
@@ -113,9 +116,8 @@ Route::post('/tambah_pertanyaan', [FAQController::class, 'store'])->name('faq.ad
 
 Route::delete('/hapus_pertanyaan/{id}', [FAQController::class, 'destroy'])->name('faq.destroy');
 
-Route::get('/edit_pertanyaan', function () {
-    return view('Page_Editor.Sections.FAQ.edit_pertanyaan');
-})->name('editor.edit_pertanyaan');
+Route::put('/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
+
 
 
 

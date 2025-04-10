@@ -47,6 +47,17 @@ class FAQController extends Controller
     {
 
     }
+    public function update(Request $request, $id)
+    {
+        $faq = Faq::findOrFail($id);
+        $faq->pertanyaan = $request->pertanyaan;
+        $faq->jawaban = $request->jawaban;
+        $faq->bahasa_id = $request->bahasa_id; // kalau pakai multi-bahasa
+        $faq->save();
+
+        return redirect()->back()->with('success', 'Pertanyaan berhasil diperbarui!');
+    }
+
 
     public function storeIndex()
     {
