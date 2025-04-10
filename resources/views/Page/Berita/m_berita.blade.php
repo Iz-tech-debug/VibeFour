@@ -46,20 +46,21 @@
                     </div>
 
                     <!-- Judul Berita -->
-                    <div class="col-md-6 mt-2 ms-5 text-start">
+                    <div class="col mt-2 ms-5 text-start">
                         <h6 class="">{{ $item->judul }}</h6>
                     </div>
 
                     <!-- Tombol Aksi & Bahasa -->
                     <div class="col-md-4 ms-5 mb-2 text-end">
                         <!-- Tampilkan Nama Bahasa -->
-                        <p class="text-muted mb-1">
+                        <p class="text-muted mb-4">
                             <i class="bi bi-translate"></i> {{ $item->bahasa->nama_bahasa ?? 'Tidak Diketahui' }}
                         </p>
 
                         <button class="btn btn-danger btn-sm btn-hapus-berita" data-id="{{ $item->id }}">
                             <i class="bi bi-trash me-2"></i>Hapus Berita
                         </button>
+
                         <a href="/edit_berita/{{ $item->id }}" class="btn btn-success btn-sm">
                             <i class="bi bi-pencil me-2"></i>Edit Berita
                         </a>

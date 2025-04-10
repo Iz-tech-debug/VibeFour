@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\editor_halaman;
 
+use Log;
 use App\Models\Vote;
 use App\Models\Price;
 use App\Models\Feature;
@@ -12,6 +13,7 @@ use App\Models\Schedule;
 use App\Models\Advantage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\AdvantageProduct;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -149,8 +151,10 @@ class ProductController extends Controller
     {
         $lang = Language::all();
 
-        // Ambil semua keunggulan berdasarkan bahasa
-        $advantages = Advantage::where('bahasa_id', 1)->get();
+        $advantages = AdvantageProduct::where('bahasa_id', 1)->where('produk', 'vote')->get();
+
+
+        $produk = Product::where('nama', 'vote')->first();
 
         $data = Vote::where('bahasa_id', 1)
             ->pluck('isi', 'nama');
@@ -158,12 +162,11 @@ class ProductController extends Controller
         // Ambil data kontak dengan bahasa default (misalnya bahasa dengan ID 1)
         $bahasa_id = 1;
 
-        return view('Page_Editor.Sections.Produk.voting', compact('lang', 'bahasa_id', 'data', 'advantages'));
+        return view('Page_Editor.Sections.Produk.voting', compact('lang', 'bahasa_id', 'data', 'advantages', 'produk'));
     }
 
     public function storeVote(Request $request, $bahasa)
     {
-        // dd($request->all());
         $fields = ['Judul', 'Deskripsi', 'TeksButtonCoba', 'TeksButtonTutorial', 'Link', 'JudulBagianKeunggulan', 'KeteranganBagianKeunggulan'];
 
         $data = ['nama' => 'vote'];
@@ -187,13 +190,13 @@ class ProductController extends Controller
             );
         }
 
-        // 🚀 Tambahkan keunggulan ke tabel `advantages`
         if ($request->has('keunggulanV_judul')) {
             foreach ($request->keunggulanV_judul as $index => $judul) {
                 $keunggulanData = [
                     'nama' => $judul,
                     'isi' => $request->keunggulanV_keterangan[$index] ?? '',
                     'bahasa_id' => $bahasa,
+                    'produk' => 'vote',
                 ];
 
                 // Jika ada ikon yang diunggah
@@ -205,7 +208,7 @@ class ProductController extends Controller
                 }
 
                 // Simpan atau update keunggulan
-                Advantage::updateOrCreate(
+                AdvantageProduct::updateOrCreate(
                     ['nama' => $judul, 'bahasa_id' => $bahasa],
                     $keunggulanData
                 );
@@ -220,27 +223,36 @@ class ProductController extends Controller
         // Ambil data berdasarkan bahasa_id
         $vote = Vote::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');
 
+        // Ambil keunggulan berdasarkan bahasa_id
+        $keunggulan = Advantage::where('bahasa_id', $bahasaId)->get(['id', 'ikon', 'nama', 'isi']);
+
         // Cek apakah data ditemukan
-        if ($vote->isEmpty()) {
+        if ($vote->isEmpty() && $keunggulan->isEmpty()) {
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
 
-        return response()->json($vote);
+        // Return response dalam format JSON
+        return response()->json([
+            'vote' => $vote,
+            'keunggulan' => $keunggulan
+        ]);
     }
-
 
     // Penjadwalan
     public function Penjadwalan()
     {
         $lang = Language::all();
 
+        $produk = Product::where('nama', 'penjadwalan')->first();
+
+        $advantages = AdvantageProduct::where('bahasa_id', 1)->where('produk', 'penjadwalan')->get();
+
         $data = Schedule::where('bahasa_id', 1)
             ->pluck('isi', 'nama');
 
-        // Ambil data kontak dengan bahasa default (misalnya bahasa dengan ID 1)
         $bahasa_id = 1;
 
-        return view('Page_Editor.Sections.Produk.penjadwalan', compact('lang', 'bahasa_id', 'data'));
+        return view('Page_Editor.Sections.Produk.penjadwalan', compact('lang', 'bahasa_id', 'data', 'advantages', 'produk'));
     }
 
 
@@ -249,22 +261,27 @@ class ProductController extends Controller
         // Ambil data berdasarkan bahasa_id
         $schedule = Schedule::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');
 
-        // Cek apakah data ditemukan
-        if ($schedule->isEmpty()) {
+        $advantages = AdvantageProduct::where('bahasa_id', $bahasaId)->where('produk', 'penjadwalan')->get();
+
+        if ($schedule->isEmpty() && $advantages->isEmpty()) {
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
+        $scheduleData = $schedule->toArray();
 
-        return response()->json($schedule);
+        return response()->json(array_merge($scheduleData, [
+            'keunggulan' => $advantages
+        ]));
     }
+
 
     public function storePenjadwalan(Request $request, $bahasa)
     {
         // dd($request->all());
+
         $fields = ['Judul', 'Deskripsi', 'TeksButtonCoba', 'TeksButtonTutorial', 'Link', 'JudulBagianKeunggulan', 'KeteranganBagianKeunggulan'];
 
         $data = ['nama' => 'penjadwalan'];
 
-        // Cek apakah ada gambar baru
         if ($request->hasFile('foto_produk')) {
             $file = $request->file('foto_produk');
             $filenameToStore = 'penjadwalan' . time() . '.' . $file->getClientOriginalExtension();
@@ -272,7 +289,32 @@ class ProductController extends Controller
             $data['gambar'] = $path;
         }
 
-        Product::updateOrCreate(['nama' => 'vote'], $data);
+        Product::updateOrCreate(['nama' => 'penjadwalan'], $data);
+
+        if ($request->has('keunggulanV_judul')) {
+            foreach ($request->keunggulanV_judul as $index => $judul) {
+                $keunggulanData = [
+                    'nama' => $judul,
+                    'isi' => $request->keunggulanV_keterangan[$index] ?? '',
+                    'bahasa_id' => $bahasa,
+                    'produk' => 'penjadwalan',
+                ];
+
+                // Jika ada ikon yang diunggah
+                if ($request->hasFile("keunggulanV_image.$index")) {
+                    $file = $request->file("keunggulanV_image.$index");
+                    $filenameToStore = 'keunggulan_' . time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('images/advantages', $filenameToStore, 'public');
+                    $keunggulanData['ikon'] = $path;
+                }
+
+                // Simpan atau update keunggulan
+                AdvantageProduct::updateOrCreate(
+                    ['nama' => $judul, 'bahasa_id' => $bahasa],
+                    $keunggulanData
+                );
+            }
+        }
 
         foreach ($fields as $field) {
             $value = $request->input($field, '');
@@ -285,5 +327,26 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
+
+    public function HapusKeunggulan(Request $request)
+    {
+        $id = $request->id;
+
+        try {
+            $keunggulan = AdvantageProduct::findOrFail($id);
+
+            // Hapus file ikon kalau ada
+            if ($keunggulan->ikon && Storage::exists('public/' . $keunggulan->ikon)) {
+                Storage::delete('public/' . $keunggulan->ikon);
+            }
+
+            $keunggulan->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Keunggulan berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus keunggulan']);
+        }
+    }
+
 
 }

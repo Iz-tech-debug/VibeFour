@@ -26,7 +26,7 @@ class ContactController extends Controller
         return view('Page_Editor.Sections.kontak', compact('data', 'bahasa', 'bahasa_id'));
     }
 
-    public function getKontakByBahasa($bahasaId)
+    public function switch($bahasaId)
     {
         // Ambil data berdasarkan bahasa_id
         $kontak = Contact::where('bahasa_id', $bahasaId)->pluck('isi', 'nama');

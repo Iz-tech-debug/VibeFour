@@ -62,7 +62,7 @@
 
                             <input name="durasi" type="number" class="form-control text-center me-2" style="width: 60px;"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
-                                placeholder="0" required>
+                                placeholder="0">
 
                             <input type="text" class="form-control" name="periode" placeholder="Hari/Minggu/Bulan/Tahun">
                         </div>

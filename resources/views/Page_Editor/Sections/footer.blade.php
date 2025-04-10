@@ -212,29 +212,98 @@
     </div>
 
     <script>
-        let editor;
+        $(document).ready(function() {
+            let editor;
+            let formChanged = false;
 
-        ClassicEditor.create($("#editorAlamat")[0]) // jQuery selector perlu dikonversi ke elemen DOM
-            .then(newEditor => {
-                editor = newEditor;
-            })
-            .catch(error => {
-                console.error(error);
+            ClassicEditor.create($("#editorAlamat")[0])
+                .then(newEditor => {
+                    editor = newEditor;
+                    editor.model.document.on('change:data', () => {
+                        formChanged = true;
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            $('#formFooter input, #formFooter textarea').on('input', function() {
+                formChanged = true;
             });
 
-        $(document).ready(function() {
             $('#pilihBahasa').on('change', function() {
                 let bahasaId = $(this).val();
                 let bahasaText = $("#pilihBahasa option:selected").text();
-                var form = $('#formFooter');
+                let form = $('#formFooter');
 
-                // Perbarui judul halaman
+                if (formChanged) {
+                    Swal.fire({
+                        title: "Apakah Anda yakin?",
+                        text: "Data yang telah Anda ubah akan disimpan sebelum berpindah bahasa.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, simpan & ganti bahasa",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveToDatabase().then(() => {
+                                changeLanguage(bahasaId, bahasaText);
+                            }).catch(() => {
+                                Swal.fire("Error!", "Gagal menyimpan data!", "error");
+                            });
+                        } else {
+                            $(this).val($(this).data('prev'));
+                        }
+                    });
+                } else {
+                    changeLanguage(bahasaId, bahasaText);
+                }
+            });
+
+            $('#pilihBahasa').focus(function() {
+                $(this).data('prev', $(this).val());
+            });
+
+            function saveToDatabase() {
+                return new Promise((resolve, reject) => {
+                    let formData = {
+                        alamat: editor.getData(),
+                        nomorWA: $('#nomorWA').val(),
+                        nomorCS: $('#nomorCS').val(),
+                        produk: $('#produk').val(),
+                        prodVote: $('#prodVote').val(),
+                        prodJadwal: $('#prodJadwal').val(),
+                        perusahaan: $('#perusahaan').val(),
+                        tentang: $('#tentang').val(),
+                        kontak: $('#Kontak').val(),
+                        berita: $('#Berita').val(),
+                        TNC: $('#TNC').val(),
+                        kebijakan: $('#Kebijakan').val(),
+                        FAQ: $('#FAQ').val(),
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        _method: 'PUT'
+                    };
+
+                    $.ajax({
+                        url: "/update_footer/" + $('#pilihBahasa').val(),
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            Swal.fire("Tersimpan!", "Data berhasil disimpan.", "success");
+                            formChanged = false;
+                            resolve();
+                        },
+                        error: function(xhr) {
+                            reject(xhr);
+                        }
+                    });
+                });
+            }
+
+            function changeLanguage(bahasaId, bahasaText) {
+                let form = $('#formFooter');
                 $('#judulBahasa').text(bahasaText);
-
-                // Ubah action form sesuai bahasa yang dipilih
                 form.attr('action', '/update_footer/' + bahasaId);
 
-                // Panggil data terkait bahasa yang dipilih
                 $.ajax({
                     url: `/editor_halaman/footer/${bahasaId}`,
                     type: "GET",
@@ -255,38 +324,21 @@
                             $('#Kebijakan').val(response.Kebijakan_Privasi || '');
                             $('#FAQ').val(response.FAQ || '');
                         } else {
-                            editor.setData('');
-                            $('#nomorWA').val('');
-                            $('#nomorCS').val('');
-                            $('#produk').val('');
-                            $('#prodVote').val('');
-                            $('#prodJadwal').val('');
-                            $('#perusahaan').val('');
-                            $('#tentang').val('');
-                            $('#Kontak').val('');
-                            $('#Berita').val('');
-                            $('#TNC').val('');
-                            $('#Kebijakan').val('');
-                            $('#FAQ').val('');
+                            resetFields();
                         }
+                        formChanged = false;
                     },
                     error: function() {
-                        editor.setData('');
-                        $('#nomorWA').val('');
-                        $('#nomorCS').val('');
-                        $('#produk').val('');
-                        $('#prodVote').val('');
-                        $('#prodJadwal').val('');
-                        $('#perusahaan').val('');
-                        $('#tentang').val('');
-                        $('#Kontak').val('');
-                        $('#Berita').val('');
-                        $('#TNC').val('');
-                        $('#Kebijakan').val('');
-                        $('#FAQ').val('');
+                        resetFields();
                     }
                 });
-            });
+            }
+
+            function resetFields() {
+                editor.setData('');
+                $('#nomorWA, #nomorCS, #produk, #prodVote, #prodJadwal, #perusahaan, #tentang, #Kontak, #Berita, #TNC, #Kebijakan, #FAQ')
+                    .val('');
+            }
         });
     </script>
 

@@ -40,9 +40,9 @@ class HeaderController extends Controller
             'Tentang' => '-',
             'Kontak' => '-',
             'Produk' => '-',
-            'Produk Voting' => '-',
-            'Produk Penjadwalan' => '-',
-            'Teks Masuk' => '-',
+            'ProdukVoting' => '-',
+            'ProdukPenjadwalan' => '-',
+            'TeksMasuk' => '-',
         ];
 
         foreach ($fields as $field => $default) {

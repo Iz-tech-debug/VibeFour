@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="beranda" name="beranda" class="form-control"
+                        <input type="text" id="beranda" name="Beranda" class="form-control"
                             placeholder="Ketik disini....." value="{{ $data['Beranda'] ?? '' }}" required>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="Tentang" name="tentang" class="form-control"
+                        <input type="text" id="Tentang" name="Tentang" class="form-control"
                             placeholder="Ketik disini....." value="{{ $data['Tentang'] ?? '' }}" required>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="Kontak" name="kontak" class="form-control"
+                        <input type="text" id="Kontak" name="Kontak" class="form-control"
                             placeholder="Ketik disini....." value="{{ $data['Kontak'] ?? '' }}" required>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="Produk" name="produk" class="form-control"
+                        <input type="text" id="Produk" name="Produk" class="form-control"
                             placeholder="Ketik disini....." value="{{ $data['Produk'] ?? '' }}" required>
                     </div>
                 </div>
@@ -92,8 +92,8 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="produk_a" name="produk_a" class="form-control"
-                            placeholder="Ketik disini....." value="{{ $data['Produk Voting'] ?? '' }}" required>
+                        <input type="text" id="produk_a" name="ProdukVoting" class="form-control"
+                            placeholder="Ketik disini....." value="{{ $data['ProdukVoting'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -104,8 +104,8 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="produk_b" name="produk_b" class="form-control"
-                            placeholder="Ketik disini....." value="{{ $data['Produk Penjadwalan'] ?? '' }}" required>
+                        <input type="text" id="produk_b" name="ProdukPenjadwalan" class="form-control"
+                            placeholder="Ketik disini....." value="{{ $data['ProdukPenjadwalan'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -116,8 +116,8 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="text" id="TeksTombol" name="teks_tombol" class="form-control"
-                            placeholder="Ketik disini....." value="{{ $data['Teks Masuk'] ?? '' }}" required>
+                        <input type="text" id="TeksTombol" name="TeksMasuk" class="form-control"
+                            placeholder="Ketik disini....." value="{{ $data['TeksMasuk'] ?? '' }}" required>
                     </div>
                 </div>
 
@@ -132,44 +132,95 @@
 
     <script>
         $(document).ready(function() {
-            $('#pilihBahasa').change(function() {
-                var bahasaId = $(this).val();
-                var form = $('#formHeader');
+            let formChanged = false;
 
-                console.log("Form action berubah ke: " + form.attr('action')); // Debugging
+            $('#formHeader input').on('input', function() {
+                formChanged = true;
+            });
+
+            $('#pilihBahasa').on('change', function() {
+                let bahasaId = $(this).val();
+                let form = $('#formHeader');
+
+                if (formChanged) {
+                    Swal.fire({
+                        title: "Apakah Anda yakin?",
+                        text: "Perubahan belum disimpan. Simpan sebelum berpindah bahasa?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, Simpan & Ganti",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveHeaderData().then(() => {
+                                changeHeaderLanguage(bahasaId);
+                            }).catch(() => {
+                                Swal.fire("Error!", "Gagal menyimpan data!", "error");
+                            });
+                        } else {
+                            $(this).val($(this).data('prev'));
+                        }
+                    });
+                } else {
+                    changeHeaderLanguage(bahasaId);
+                }
+            });
+
+            $('#pilihBahasa').focus(function() {
+                $(this).data('prev', $(this).val());
+            });
+
+            function saveHeaderData() {
+                return new Promise((resolve, reject) => {
+                    let formData = $('#formHeader').serialize();
+
+                    $.ajax({
+                        url: $('#formHeader').attr('action'),
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            Swal.fire("Tersimpan!", "Data berhasil disimpan.", "success");
+                            formChanged = false;
+                            resolve();
+                        },
+                        error: function(xhr) {
+                            reject(xhr);
+                        }
+                    });
+                });
+            }
+
+            function changeHeaderLanguage(bahasaId) {
+                let form = $('#formHeader');
+                form.attr('action', '/update_header/' + bahasaId);
 
                 $.ajax({
-                    url: '/editor_halaman/header/' + bahasaId,
-                    type: 'GET',
-                    dataType: 'json',
+                    url: `/editor_halaman/header/${bahasaId}`,
+                    type: "GET",
+                    dataType: "json",
                     success: function(response) {
-
-                        form.attr('action', '/update_header/' + bahasaId);
-
                         if (response) {
                             $('#beranda').val(response.Beranda || '');
                             $('#Tentang').val(response.Tentang || '');
                             $('#Kontak').val(response.Kontak || '');
                             $('#Produk').val(response.Produk || '');
-                            $('#produk_a').val(response['Produk Voting'] || '');
-                            $('#produk_b').val(response['Produk Penjadwalan'] || '');
-                            $('#TeksTombol').val(response['Teks Masuk'] || '');
+                            $('#produk_a').val(response.ProdukVoting || '');
+                            $('#produk_b').val(response.ProdukPenjadwalan || '');
+                            $('#TeksTombol').val(response.TeksMasuk || '');
                         } else {
-                            kosongkanForm();
+                            resetHeaderFields();
                         }
+                        formChanged = false;
                     },
-                    error: function(xhr, status, error) {
-                        form.attr('action', '/update_header/' + bahasaId);
-                        console.error("Error:", status, error);
-                        kosongkanForm();
+                    error: function() {
+                        resetHeaderFields();
                     }
                 });
+            }
 
-                function kosongkanForm() {
-                    form.attr('action', '/update_header/' + bahasaId);
-                    $('#beranda, #Tentang, #Kontak, #Produk, #produk_a, #produk_b, #TeksTombol').val('');
-                }
-            });
+            function resetHeaderFields() {
+                $('#beranda, #Tentang, #Kontak, #Produk, #produk_a, #produk_b, #TeksTombol').val('');
+            }
         });
     </script>
 @endsection

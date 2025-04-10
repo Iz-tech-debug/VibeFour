@@ -46,12 +46,13 @@
         <div class="card p-4 shadow-sm">
 
             <div class="row mb-2">
-                <h5 class="mt-2">Beranda - Bahasa Indonesia</h5>
+                <h5 class="mt-2">Beranda</h5>
             </div>
 
             <hr>
 
-            <form id="formBeranda" action="{{ route('update.beranda', ['bahasaId' => 1]) }}" method="post">
+            <form id="formBeranda" action="{{ route('update.beranda', ['bahasaId' => 1]) }}" method="post"
+                enctype="multipart/form-data">
                 @csrf
                 @method('put')
 
@@ -99,21 +100,24 @@
 
                     <div class="col-md">
 
-                        <img id="imagePreview" class="image-preview" src="#" alt="Pratinjau Latar Belakang"
-                            style="display: none;">
-
-                        <input type="file" class="form-control" id="imageAplikasi" accept="image/*">
-
+                        <input type="file" name="foto_produk" class="form-control" id="imageAplikasi" accept="image/*">
                         <div class="row">
                             <div class="col">
+                                {{-- Tampilkan gambar yang sudah tersimpan di database --}}
+                                @if (!empty($produk->gambar))
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $produk->gambar) }}" alt="Foto Produk"
+                                            class="img-thumbnail" width="150">
+                                    </div>
+                                @endif
 
                             </div>
-
                             <div class="col mt-2 text-end">
                                 <i class="bi bi-info-circle"></i>
                                 <small class="text-muted">Tambahkan gambar dengan rasio 4:3</small>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -145,9 +149,8 @@
 
                 <hr>
 
-                <!-- Keunggulan -->
+                {{-- Keunggulan --}}
                 <div class="row mt-2">
-
                     <div class="col-md-3">
                         <label class="form-label fw-bold mt-2">Keunggulan:</label>
                     </div>
@@ -156,41 +159,75 @@
                         <button type="button" class="btn btn-success mb-1" id="tambahKeunggulan">
                             <i class="bi bi-plus"></i> Tambah Keunggulan
                         </button>
-
                         <small class="ms-2"><i class="bi bi-info-circle">Tambahkan foto dengan rasio 4:3</i></small>
                     </div>
 
                     <div id="listKeunggulan" class="mt-2">
-                        <div class="row mb-3 pencapaian-item align-items-center">
-                            <!-- Kolom Input -->
-                            <div class="col-md-11">
-                                <div class="row mb-2">
-                                    <div class="col-md">
-                                        <input type="file" name="keunggulan_image[]" class="form-control"
-                                            accept="image/*">
+                        @if (count($keunggulan) > 0)
+                            @foreach ($keunggulan as $item)
+                                <div class="row mb-3 pencapaian-item align-items-center">
+                                    <div class="col-md-11">
+                                        <div class="row mb-2">
+                                            <div class="col-md">
+                                                <input type="file" name="keunggulan_image[]" class="form-control"
+                                                    accept="image/*">
+                                                @if ($item->ikon)
+                                                    <img src="{{ asset('storage/' . $item->ikon) }}" alt="ikon"
+                                                        class="img-thumbnail mt-2" width="80">
+                                                @endif
+                                            </div>
+                                            <div class="col-md">
+                                                <input type="text" name="judul_keunggulan[]" class="form-control"
+                                                    placeholder="Judul keunggulan" value="{{ $item->judul }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <input type="text" name="Keterangan_keunggulan[]" class="form-control"
+                                                    placeholder="Keterangan keunggulan" value="{{ $item->isi }}">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md">
-                                        <input type="text" name="judul_keunggulan[]" class="form-control"
-                                            placeholder="Judul keunggulan">
+
+                                    <div class="col-md-1 text-end">
+                                        <button type="button" class="btn btn-danger hapusKeunggulan"><i
+                                                class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            {{-- Kalau gak ada data, tampilkan satu form kosong --}}
+                            <div class="row mb-3 pencapaian-item align-items-center">
+                                <div class="col-md-11">
+                                    <div class="row mb-2">
+                                        <div class="col-md">
+                                            <input type="file" name="keunggulan_image[]" class="form-control"
+                                                accept="image/*">
+                                        </div>
+                                        <div class="col-md">
+                                            <input type="text" name="judul_keunggulan[]" class="form-control"
+                                                placeholder="Judul keunggulan">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <input type="text" name="Keterangan_keunggulan[]" class="form-control"
+                                                placeholder="Keterangan keunggulan">
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md">
-                                        <input type="text" name="Keterangan_keunggulan[]" class="form-control"
-                                            placeholder="Keterangan keunggulan">
-                                    </div>
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-danger hapusKeunggulan"><i
+                                            class="bi bi-trash"></i></button>
                                 </div>
                             </div>
-
-                            <!-- Kolom Button Hapus -->
-                            <div class="col-md-1 text-end">
-                                <button type="button" class="btn btn-danger hapusKeunggulan"><i
-                                        class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
+
 
                 <hr>
 
@@ -202,7 +239,8 @@
 
                     <div class="col-md">
                         <input type="text" id="judul_pencapaian" name="judul_pencapaian"
-                            value="{{ $data['judul_pencapaian'] }}" class="form-control" placeholder="Ketik disini.....">
+                            value="{{ $data['judul_pencapaian'] }}" class="form-control"
+                            placeholder="Ketik disini.....">
                     </div>
                 </div>
 
@@ -237,35 +275,70 @@
                     </div>
 
                     <div id="listPencapaian" class="mt-2">
-                        <div class="row mb-3 pencapaian-item align-items-center">
-                            <!-- Kolom Input -->
-                            <div class="col-md-11">
-                                <div class="row mb-2">
-                                    <div class="col-md">
-                                        <input type="file" name="pencapaian_image[]" class="form-control"
-                                            accept="image/*">
+                        @forelse ($achievements as $index => $ach)
+                            <div class="row mb-3 pencapaian-item align-items-center">
+                                <!-- Kolom Input -->
+                                <div class="col-md-11">
+                                    <input type="hidden" name="pencapaian_id[]" value="{{ $ach->id }}">
+
+                                    <div class="row mb-2">
+                                        <div class="col-md">
+                                            <input type="file" name="pencapaian_image[]" class="form-control"
+                                                accept="image/*">
+                                            @if ($ach->ikon)
+                                                <img src="{{ asset('storage/' . $ach->ikon) }}" alt="ikon"
+                                                    class="img-thumbnail mt-2" width="80">
+                                            @endif
+                                        </div>
+                                        <div class="col-md">
+                                            <input type="text" name="pencapaian_judul[]" class="form-control"
+                                                placeholder="Judul Pencapaian" value="{{ $ach->nama }}">
+                                        </div>
                                     </div>
-                                    <div class="col-md">
-                                        <input type="text" name="pencapaian_judul[]" class="form-control"
-                                            placeholder="Judul Pencapaian">
+
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <input type="text" name="pencapaian_keterangan[]" class="form-control"
+                                                placeholder="Keterangan Pencapaian" value="{{ $ach->isi }}">
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md">
-                                        <input type="text" name="pencapaian_keterangan[]" class="form-control"
-                                            placeholder="Keterangan Pencapaian">
-                                    </div>
+                                <!-- Kolom Button Hapus -->
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-danger hapusPencapaian"><i
+                                            class="bi bi-trash"></i></button>
                                 </div>
                             </div>
+                        @empty
+                            <div class="row mb-3 pencapaian-item align-items-center">
+                                <div class="col-md-11">
+                                    <div class="row mb-2">
+                                        <div class="col-md">
+                                            <input type="file" name="pencapaian_image[]" class="form-control"
+                                                accept="image/*">
+                                        </div>
+                                        <div class="col-md">
+                                            <input type="text" name="pencapaian_judul[]" class="form-control"
+                                                placeholder="Judul Pencapaian">
+                                        </div>
+                                    </div>
 
-                            <!-- Kolom Button Hapus -->
-                            <div class="col-md-1 text-end">
-                                <button type="button" class="btn btn-danger hapusPencapaian"><i
-                                        class="bi bi-trash"></i></button>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <input type="text" name="pencapaian_keterangan[]" class="form-control"
+                                                placeholder="Keterangan Pencapaian">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-danger hapusPencapaian"><i
+                                            class="bi bi-trash"></i></button>
+                                </div>
                             </div>
-                        </div>
+                        @endforelse
                     </div>
+
                 </div>
 
 
@@ -282,48 +355,110 @@
     <script>
         $(document).ready(function() {
 
-            let editor;
+            let editorKeterangan, editorDesc;
 
-            ClassicEditor.create($("#keterangan_keunggulan")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            ClassicEditor.create($("#editorDesk")[0])
                 .then(newEditor => {
-                    editor = newEditor;
+                    editorDesc = newEditor;
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-            ClassicEditor.create($("#editorDesk")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            ClassicEditor.create($("#keterangan_keunggulan")[0])
                 .then(newEditor => {
-                    editor = newEditor;
+                    editorKeterangan = newEditor;
                 })
                 .catch(error => {
                     console.error(error);
                 });
-
-
-            console.log("Form action berubah ke: " + form.attr('action')); // Debugging
 
             // Switch bahasa
             $('#pilihBahasa').change(function() {
                 var bahasaId = $(this).val();
                 var form = $('#formBeranda');
 
-                console.log("Form action berubah ke: " + form.attr('action')); // Debugging
-
                 $.ajax({
                     url: '/editor_halaman/beranda/' + bahasaId,
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {
-
                         form.attr('action', '/update_beranda/' + bahasaId);
 
-                        if (response) {
-                            $('#Slogan').val(response.Slogan || '');
+                        if (response && response.beranda) {
+                            const data = response.beranda;
+
+                            $('#slogan').val(data.Slogan || '');
+                            $('#keterangan').val(data.Keterangan || '');
+                            $('#btn_masuk').val(data.btn_masuk || '');
+                            $('#keunggulan_produk').val(data.keunggulan_produk || '');
+                            $('#judul_pencapaian').val(data.judul_pencapaian || '');
+
+                            editorKeterangan.setData(data.keterangan_keunggulan || '');
+                            editorDesc.setData(data.deskripsiPencapaian || '');
+
+                            // Render ulang bagian keunggulan
+                            const listKeunggulan = $('#listKeunggulan');
+                            listKeunggulan.empty(); // Kosongkan dulu
+
+                            if (response.keunggulan && response.keunggulan.length > 0) {
+                                response.keunggulan.forEach(function(item) {
+                                    let html = `
+                    <div class="row mb-3 pencapaian-item align-items-center">
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="hidden" name="keunggulan_id[]" value="${item.id || ''}">
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
+                                    ${item.ikon ? `<img src="/storage/${item.ikon}" alt="ikon" class="mt-2" width="60">` : ''}
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="judul_keunggulan[]" class="form-control" placeholder="Judul keunggulan" value="${item.judul}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="Keterangan_keunggulan[]" class="form-control" placeholder="Keterangan keunggulan" value="${item.isi}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                                    listKeunggulan.append(html);
+                                });
+                            } else {
+                                listKeunggulan.append(`
+                <div class="row mb-3 pencapaian-item align-items-center">
+                    <div class="col-md-11">
+                        <div class="row mb-2">
+                            <div class="col-md">
+                                <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
+                            </div>
+                            <div class="col-md">
+                                <input type="text" name="judul_keunggulan[]" class="form-control" placeholder="Judul keunggulan">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <input type="text" name="Keterangan_keunggulan[]" class="form-control" placeholder="Keterangan keunggulan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            `);
+                            }
+
                         } else {
                             kosongkanForm();
                         }
                     },
+
                     error: function(xhr, status, error) {
                         form.attr('action', '/update_beranda/' + bahasaId);
                         console.error("Error:", status, error);
@@ -333,8 +468,17 @@
 
                 function kosongkanForm() {
                     form.attr('action', '/update_beranda/' + bahasaId);
-                    $('#Slogan').val('');
+
+                    $('#slogan').val('');
+                    $('#keterangan').val('');
+                    $('#btn_masuk').val('');
+                    $('#keunggulan_produk').val('');
+                    $('#judul_pencapaian').val('');
+
+                    editorKeterangan.setData('');
+                    editorDesc.setData('');
                 }
+
             });
 
             // Tambah Pencapaian
@@ -370,6 +514,34 @@
 
                 $("#listPencapaian").append(pencapaianHTML);
             });
+
+            // Tambah Keunggulan
+            $("#tambahKeunggulan").click(function() {
+                let keunggulanHTML = `
+                    <div class="row mb-3 pencapaian-item align-items-center">
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="judul_keunggulan[]" class="form-control" placeholder="Judul keunggulan">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="Keterangan_keunggulan[]" class="form-control" placeholder="Keterangan keunggulan">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                $("#listKeunggulan").append(keunggulanHTML);
+            });
+
 
             // Hapus Pencapaian
             $(document).on("click", ".hapusPencapaian", function() {

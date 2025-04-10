@@ -86,20 +86,85 @@
 
     <script>
         $(document).ready(function() {
-
             let editor;
+            let formChanged = false;
 
             ClassicEditor.create($("#isi")[0]) // jQuery selector perlu dikonversi ke elemen DOM
                 .then(newEditor => {
                     editor = newEditor;
+                    editor.model.document.on('change:data', () => {
+                        formChanged = true;
+                    });
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-            $('#pilihBahasa').on('change', function() {
-                let bahasaId = $(this).val();
-                let bahasaText = $("#pilihBahasa option:selected").text();
+            $('#formPrivacy input, #formPrivacy textarea').on('input', function() {
+                formChanged = true;
+            });
+
+            $('#pilihBahasa').change(function() {
+                if (formChanged) {
+                    Swal.fire({
+                        title: "Apakah Anda yakin?",
+                        text: "Data yang telah Anda masukkan akan disimpan sebelum berpindah bahasa.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, simpan & ganti bahasa",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveToDatabase().then(() => {
+                                changeLanguage();
+                            }).catch(() => {
+                                Swal.fire("Error!", "Gagal menyimpan data!", "error");
+                            });
+                        } else {
+                            $(this).val($(this).data('prev'));
+                        }
+                    });
+                } else {
+                    // Jika belum ada perubahan, langsung ganti bahasa
+                    changeLanguage();
+                }
+            });
+
+            $('#pilihBahasa').focus(function() {
+                $(this).data('prev', $(this).val());
+            });
+
+            function saveToDatabase() {
+                return new Promise((resolve, reject) => {
+                    let bahasaSebelumnya = $('#pilihBahasa').data(
+                        'prev'); // Ambil ID bahasa sebelum perubahan
+
+                    let formData = {
+                        judul: $('#judul').val(),
+                        keterangan: $('#keterangan').val(),
+                        isi: editor.getData(),
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        _method: 'PUT'
+                    };
+
+                    $.ajax({
+                        url: "/update_privacy/" + bahasaSebelumnya,
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            Swal.fire("Tersimpan!", "Data berhasil disimpan.", "success");
+                            formChanged = false;
+                            resolve();
+                        },
+                        error: function(xhr) {
+                            reject(xhr);
+                        }
+                    });
+                });
+            }
+
+            function changeLanguage(bahasaId, bahasaText) {
+                var bahasaId = $('#pilihBahasa').val();
                 var form = $('#formPrivacy');
 
                 $('#judulBahasa').text(bahasaText);
@@ -118,6 +183,7 @@
                             $('#keterangan').val('');
                             editor.setData('');
                         }
+                        formChanged = false;
                     },
                     error: function() {
                         $('#judul').val('');
@@ -125,7 +191,7 @@
                         editor.setData('');
                     }
                 });
-            });
+            }
         });
     </script>
 

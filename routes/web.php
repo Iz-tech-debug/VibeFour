@@ -126,6 +126,7 @@ Route::put('/update_voting/{bahasa}', [ProductController::class, 'storeVote'])->
 
 Route::get('/editor_halaman/voting/{bahasaId}', [ProductController::class, 'switchVote'])->name('vote.bahasa');
 
+Route::post('/hapus_keunggulan', [ProductController::class, 'HapusKeunggulan'])->name('hapus.keunggulan');
 
 
 // Penjadwalan
@@ -159,7 +160,7 @@ Route::get('/editor_tentang', [AboutController::class, 'index'])->name('tentang.
 
 Route::put('/update_tentang/{bahasa}', [AboutController::class, 'update'])->name('update.tentang');
 
-Route::get('/editor-halaman/tentang/{bahasaId}', [AboutController::class, 'switch'])->name('tentang.bahasa');
+Route::get('/editor_halaman/tentang/{bahasaId}', [AboutController::class, 'switch'])->name('tentang.bahasa');
 
 
 // Kontak

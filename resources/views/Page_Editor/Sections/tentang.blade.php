@@ -42,7 +42,8 @@
 
             <hr>
 
-            <form id="formTentang" action="{{ route('update.tentang', ['bahasa' => 1]) }}" method="post">
+            <form id="formTentang" action="{{ route('update.tentang', ['bahasa' => 1]) }}" method="post"
+                enctype="multipart/form-data">
                 @csrf
                 @method('put')
 
@@ -165,21 +166,42 @@
                             Misi</button>
 
                         <div id="listMisi">
-                            <div class="row mb-2 misi-item">
-                                <div class="col-md">
-                                    <input type="text" name="misi_judul[]" class="form-control"
-                                        placeholder="Judul Misi">
+                            @foreach ($misi as $item)
+                                <div class="row mb-2 misi-item">
+                                    <div class="col-md">
+                                        <input type="text" name="misi_judul[]" class="form-control"
+                                            value="{{ $item->judul }}" placeholder="Judul Misi">
+                                    </div>
+                                    <div class="col-md">
+                                        <input type="text" name="misi_keterangan[]" class="form-control"
+                                            value="{{ $item->keterangan }}" placeholder="Keterangan Misi">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger hapusMisi"><i
+                                                class="bi bi-trash"></i></button>
+                                    </div>
                                 </div>
-                                <div class="col-md">
-                                    <input type="text" name="misi_keterangan[]" class="form-control"
-                                        placeholder="Keterangan Misi">
+                            @endforeach
+
+                            {{-- Kalau belum ada misi sama sekali, munculin 1 form kosong --}}
+                            @if ($misi->isEmpty())
+                                <div class="row mb-2 misi-item">
+                                    <div class="col-md">
+                                        <input type="text" name="misi_judul[]" class="form-control"
+                                            placeholder="Judul Misi">
+                                    </div>
+                                    <div class="col-md">
+                                        <input type="text" name="misi_keterangan[]" class="form-control"
+                                            placeholder="Keterangan Misi">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger hapusMisi"><i
+                                                class="bi bi-trash"></i></button>
+                                    </div>
                                 </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger hapusMisi"><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                            </div>
+                            @endif
                         </div>
+
                     </div>
                 </div>
 
@@ -212,34 +234,43 @@
                         <small class="ms-2"><i class="bi bi-info-circle">Tambahkan ikon dengan rasio 1:1</i></small>
 
                         <div id="listKeunggulan" class="mt-2">
-                            <div class="row mb-3 keunggulan-item align-items-center">
-                                <!-- Kolom Input -->
-                                <div class="col-md-11">
-                                    <div class="row mb-2">
-                                        <div class="col-md">
-                                            <input type="file" name="keunggulan_image[]" class="form-control"
-                                                accept="image/*">
+                            @foreach ($kelebihan as $item)
+                                <div class="row mb-3 keunggulan-item align-items-center">
+                                    <!-- Kolom Input -->
+                                    <div class="col-md-11">
+                                        <div class="row mb-2">
+                                            <div class="col-md">
+                                                <input type="file" name="keunggulan_image[]" class="form-control"
+                                                    accept="image/*">
+
+                                                @if ($item->ikon)
+                                                    <small class="d-block mt-1">
+                                                        <img src="{{ asset('storage/' . $item->ikon) }}"
+                                                            alt="{{ $item->nama }}" class="img-thumbnail"
+                                                            width="80">
+                                                    </small>
+                                                @endif
+                                            </div>
+                                            <div class="col-md">
+                                                <input type="text" name="keunggulan_judul[]" class="form-control"
+                                                    placeholder="Judul Keunggulan" value="{{ $item->judul }}">
+                                            </div>
                                         </div>
-                                        <div class="col-md">
-                                            <input type="text" name="keunggulan_judul[]" class="form-control"
-                                                placeholder="Judul Keunggulan">
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <input type="text" name="keunggulan_keterangan[]" class="form-control"
+                                                    placeholder="Keterangan Keunggulan" value="{{ $item->isi }}">
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md">
-                                            <input type="text" name="keunggulan_keterangan[]" class="form-control"
-                                                placeholder="Keterangan Keunggulan">
-                                        </div>
+                                    <!-- Kolom Button Hapus -->
+                                    <div class="col-md-1 text-end">
+                                        <button type="button" class="btn btn-danger hapusKeunggulan"><i
+                                                class="bi bi-trash"></i></button>
                                     </div>
                                 </div>
-
-                                <!-- Kolom Button Hapus -->
-                                <div class="col-md-1 text-end">
-                                    <button type="button" class="btn btn-danger hapusKeunggulan"><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -260,74 +291,185 @@
     <script>
         $(document).ready(function() {
 
-            let editor;
+            let editorDesc, editorVisi, editorKet;
 
-            ClassicEditor.create($("#editorDesc")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            ClassicEditor.create($("#editorDesc")[0])
                 .then(newEditor => {
-                    editor = newEditor;
+                    editorDesc = newEditor;
+                    // Optional: editorDesc.setData("data dari database untuk editorDesc");
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-            ClassicEditor.create($("#isi_visi")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            ClassicEditor.create($("#isi_visi")[0])
                 .then(newEditor => {
-                    editor = newEditor;
+                    editorVisi = newEditor;
+                    // Optional: editorVisi.setData("data dari database untuk isi_visi");
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-            ClassicEditor.create($("#keterangan_perusahaan")[0]) // jQuery selector perlu dikonversi ke elemen DOM
+            ClassicEditor.create($("#keterangan_perusahaan")[0])
                 .then(newEditor => {
-                    editor = newEditor;
+                    editorKet = newEditor;
+                    // Optional: editorKet.setData("data dari database untuk keterangan_perusahaan");
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
+            // Event ganti bahasa
             $('#pilihBahasa').change(function() {
-                var bahasaId = $(this).val();
-                var form = $('#formTentang');
+                const bahasaId = $(this).val();
+                const form = $('#formTentang');
 
-                console.log("Form action berubah ke: " + form.attr('action')); // Debugging
+                console.log("Form action berubah ke: " + form.attr('action'));
 
                 $.ajax({
                     url: '/editor_halaman/tentang/' + bahasaId,
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {
-
                         form.attr('action', '/update_tentang/' + bahasaId);
 
-                        if (response) {
-                            $('#judul_kecil').val(response.judul_pendek || '');
-                            $('#judul_halaman').val(response.judul_halaman || '');
-                            $('#deskripsi').val(response.deskripsi || '');
-                            $('#btn_login').val(response.btn_login || '');
-                            $('#tentang_perusahaan').val(response.tentang_perusahaan || '');
-                            $('#keterangan_perusahaan').val(response.keterangan_perusahaan ||
-                                '');
-                            $('#visi_misi').val(response.visi_misi || '');
-                            $('#judul_visi').val(response.judul_visi || '');
-                            $('#isi_visi').val(response.isi_visi || '');
-                            $('#judul_ku').val(response.judul_ku || '');
+                        const tentang = response.tentang;
+                        const misiList = response.misi;
+                        const keunggulanList = response.keunggulan;
+
+                        if (tentang) {
+                            $('#judul_kecil').val(tentang.judul_pendek || '');
+                            $('#judul_halaman').val(tentang.judul_halaman || '');
+                            $('#btn_login').val(tentang.btn_login || '');
+                            $('#tentang_perusahaan').val(tentang.tentang_perusahaan || '');
+                            $('#judul_visi').val(tentang.judul_visi || '');
+                            $('#visi_misi').val(tentang.visi_misi || '');
+                            $('#judul_ku').val(tentang.judul_ku || '');
+
+                            editorDesc.setData(tentang.deskripsi || '');
+                            editorKet.setData(tentang.keterangan_perusahaan || '');
+                            editorVisi.setData(tentang.isi_visi || '');
                         } else {
-                            kosongkanForm();
+                            kosong();
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        form.attr('action', '/update_tentang/' + bahasaId);
-                        console.error("Error:", status, error);
-                        kosongkanForm();
+
+                        // 🔥 Render ulang daftar Misi
+                        let misiHTML = '';
+                        if (misiList.length > 0) {
+                            misiList.forEach(function(misi) {
+                                misiHTML += `
+                    <div class="row mb-2 misi-item">
+                        <div class="col-md">
+                            <input type="text" name="misi_judul[]" class="form-control" value="${misi.judul}" placeholder="Judul Misi">
+                        </div>
+                        <div class="col-md">
+                            <input type="text" name="misi_keterangan[]" class="form-control" value="${misi.keterangan}" placeholder="Keterangan Misi">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger hapusMisi"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
+                            });
+                        } else {
+                            misiHTML = `
+                    <div class="row mb-2 misi-item">
+                        <div class="col-md">
+                            <input type="text" name="misi_judul[]" class="form-control" placeholder="Judul Misi">
+                        </div>
+                        <div class="col-md">
+                            <input type="text" name="misi_keterangan[]" class="form-control" placeholder="Keterangan Misi">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger hapusMisi"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
+                        }
+
+                        $('#listMisi').html(misiHTML);
+
+                        // 🔥 Render ulang daftar Keunggulan
+                        let keunggulanHTML = '';
+                        if (keunggulanList.length > 0) {
+                            keunggulanList.forEach(function(item) {
+                                keunggulanHTML += `
+                    <div class="row mb-3 keunggulan-item align-items-center">
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
+                                    ${item.ikon ? `
+                                            <div class="mt-2">
+                                                <img src="storage/${item.ikon}" alt="ikon" class="img-thumbnail rounded shadow-sm" style="width: 80px; height: auto;">
+                                            </div>
+                                        ` : ''}
+                                </div>
+
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_judul[]" class="form-control"
+                                        placeholder="Judul Keunggulan" value="${item.judul}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_keterangan[]" class="form-control"
+                                        placeholder="Keterangan Keunggulan" value="${item.isi}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
+                            });
+                        } else {
+                            keunggulanHTML = `
+                    <div class="row mb-3 keunggulan-item align-items-center">
+                        <div class="col-md-11">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <input type="file" name="keunggulan_image[]" class="form-control" accept="image/*">
+                                </div>
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_judul[]" class="form-control" placeholder="Judul Keunggulan">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <input type="text" name="keunggulan_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger hapusKeunggulan"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>`;
+                        }
+
+                        $('#listKeunggulan').html(keunggulanHTML);
                     }
                 });
 
-                function kosongkanForm() {
-                    form.attr('action', '/update_header/' + bahasaId);
-                    $('#judul_kecil, #judul_halaman, #deskripsi, #btn_login, #tentang_perusahaan, #keterangan_perusahaan, #visi_misi, #judul_visi, #isi_visi, #judul_ku').val('');
+                function kosong() {
+                    form.attr('action', '/update_tentang/' + bahasaId);
+
+                    $('#judul_kecil').val('');
+                    $('#judul_halaman').val('');
+                    $('#btn_login').val('');
+                    $('#tentang_perusahaan').val('');
+                    $('#judul_visi').val('');
+                    $('#visi_misi').val('');
+                    $('#judul_ku').val('');
+
+                    editorDesc.setData('');
+                    editorKet.setData('');
+                    editorVisi.setData('');
+
+                    $('#listMisi').html('');
+                    $('#listKeunggulan').html('');
                 }
             });
+
 
             // Misi Perusahaan
             $("#tambahMisi").on("click", function() {

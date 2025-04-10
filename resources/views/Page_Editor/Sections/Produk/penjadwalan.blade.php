@@ -36,13 +36,14 @@
 
             <div class="row mt-1">
                 <div class="col-md-9">
-                    <h5 class="mt-2">Penjadwalan - Bahasa</h5>
+                    <h5 class="mt-2">Penjadwalan</h5>
                 </div>
             </div>
 
             <hr>
 
-            <form id="formPenjadwalan" action="{{ route('update.penjadwalan', ['bahasa' => 1]) }}" method="post">
+            <form id="formPenjadwalan" action="{{ route('update.penjadwalan', ['bahasa' => 1]) }}" method="post"
+                enctype="multipart/form-data">
                 @csrf
                 @method('put')
 
@@ -112,8 +113,23 @@
                     </div>
 
                     <div class="col-md">
-                        <input type="file" id="foto_produk" name="foto_produk" class="form-control" accept="image/*"
-                            >
+                        <input type="file" id="foto_produk" name="foto_produk" class="form-control" accept="image/*">
+                        <div class="row">
+                            <div class="col">
+                                {{-- Tampilkan gambar yang sudah tersimpan di database --}}
+                                @if (!empty($produk->gambar))
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $produk->gambar) }}" alt="Foto Produk"
+                                            class="img-thumbnail" width="150">
+                                    </div>
+                                @endif
+
+                            </div>
+                            <div class="col mt-2 text-end">
+                                <i class="bi bi-info-circle"></i>
+                                <small class="text-muted">Tambahkan gambar dengan rasio 4:3</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -161,34 +177,48 @@
                         <hr>
 
                         <div id="listKeunggulanVote" class="mt-2">
-                            <div class="row mb-3 keunggulanV-item align-items-center">
-                                <!-- Kolom Input -->
-                                <div class="col-md-11">
-                                    <div class="row mb-2">
-                                        <div class="col-md">
-                                            <input type="file" name="keunggulanV_image[]" class="form-control"
-                                                accept="image/*">
+                            @foreach ($advantages as $adv)
+                                <div class="row mb-3 keunggulanV-item align-items-center">
+                                    <!-- Kolom Input -->
+                                    <div class="col-md-11">
+                                        <div class="row mb-2">
+                                            <div class="col-md">
+                                                <input type="file" name="keunggulanV_image[]" class="form-control"
+                                                    accept="image/*">
+                                                @if ($adv->ikon)
+                                                    <small class="d-block mt-1">
+                                                        <img src="{{ asset('storage/' . $adv->ikon) }}"
+                                                            alt="{{ $adv->nama }}" class="img-thumbnail"
+                                                            width="80">
+                                                    </small>
+                                                @endif
+                                            </div>
+                                            <div class="col-md">
+                                                <input type="text" name="keunggulanV_judul[]" class="form-control"
+                                                    placeholder="Judul Keunggulan" value="{{ $adv->nama }}">
+                                            </div>
                                         </div>
-                                        <div class="col-md">
-                                            <input type="text" name="keunggulanV_judul[]" class="form-control"
-                                                placeholder="Judul Keunggulan">
+
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <input type="text" name="keunggulanV_keterangan[]"
+                                                    class="form-control" placeholder="Keterangan Keunggulan"
+                                                    value="{{ $adv->isi }}">
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md">
-                                            <input type="text" name="keunggulanV_keterangan[]" class="form-control"
-                                                placeholder="Keterangan Keunggulan">
-                                        </div>
+                                    <!-- Kolom Button Hapus -->
+                                    <div class="col-md-1 text-end">
+                                        <button type="button" class="btn btn-danger hapusKeunggulanV"
+                                            data-id="{{ $adv->id }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
 
-                                <!-- Kolom Button Hapus -->
-                                <div class="col-md-1 text-end">
-                                    <button type="button" class="btn btn-danger hapusKeunggulanV"><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                            </div>
+                                <hr>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -207,10 +237,48 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        // Hapus Keunggulan AJAX
+        $(document).on('click', '.hapusKeunggulanV', function() {
+            const button = $(this);
+            const id = button.data('id');
 
+            Swal.fire({
+                title: 'Yakin mau hapus?',
+                text: "Data keunggulan ini bakal hilang selamanya!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('hapus.keunggulan') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            id: id
+                        },
+                        success: function(res) {
+                            if (res.status === 'success') {
+                                Swal.fire('Berhasil!', res.message, 'success');
+                                button.closest('.keunggulanV-item')
+                            .remove(); // hapus element di UI
+                            } else {
+                                Swal.fire('Gagal!', res.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Oops!', 'Terjadi kesalahan saat menghapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).ready(function() {
             let editor;
 
+            // Inisialisasi ClassicEditor (CKEditor)
             ClassicEditor.create($("#deskripsiEditor")[0])
                 .then(newEditor => {
                     editor = newEditor;
@@ -219,16 +287,35 @@
                     console.error(error);
                 });
 
-            $('#pilihBahasa').change(function() {
+            $('#pilihBahasa').change(function(e) {
+                e.preventDefault(); // cegah langsung berubah
+
                 var bahasaId = $(this).val();
                 var form = $('#formPenjadwalan');
 
+                Swal.fire({
+                    title: 'Ganti Bahasa?',
+                    text: "Apakah kamu ingin menyimpan perubahan sebelum mengganti bahasa?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form dulu buat nyimpen
+                        form.submit();
+                    } else {
+                        // Jalanin AJAX buat ganti bahasa
+                        jalankanAjaxGantiBahasa(bahasaId, form);
+                    }
+                });
+            });
+
+            function jalankanAjaxGantiBahasa(bahasaId, form) {
                 $.ajax({
                     url: '/editor_halaman/penjadwalan/' + bahasaId,
                     type: 'GET',
                     success: function(response) {
-
-                        // Ubah action form agar menyertakan bahasaId
                         form.attr('action', '/update_penjadwalan/' + bahasaId);
 
                         if (response) {
@@ -239,65 +326,97 @@
                             $('#video_tutor').val(response.Link || '');
                             $('#bag_keunggulan').val(response.JudulBagianKeunggulan || '');
                             $('#ket_keunggulan').val(response.KeteranganBagianKeunggulan || '');
+
+                            let keunggulanHTML = '';
+                            if (response.keunggulan.length > 0) {
+                                response.keunggulan.forEach(function(adv) {
+                                    keunggulanHTML += `
+                        <div class="row mb-3 keunggulanV-item align-items-center">
+                            <div class="col-md-11">
+                                <div class="row mb-2">
+                                    <div class="col-md">
+                                        <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*">
+                                        ${adv.ikon ? `<small class="d-block mt-1"><img src="/storage/${adv.ikon}" class="img-thumbnail" width="80"></small>` : ''}
+                                    </div>
+                                    <div class="col-md">
+                                        <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" value="${adv.nama}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" value="${adv.isi}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1 text-end">
+                                <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        <hr>`;
+                                });
+                            } else {
+                                keunggulanHTML =
+                                    `<p class="text-muted">Tidak ada keunggulan tersedia.</p>`;
+                            }
+
+                            $('#listKeunggulanVote').html(keunggulanHTML);
                         } else {
-                            $('#judul').val('');
-                            editor.setData('');
-                            $('#teks_btncoba').val('');
-                            $('#teks_btntutor').val('');
-                            $('#video_tutor').val('');
-                            $('#bag_keunggulan').val('');
-                            $('#ket_keunggulan').val('');
+                            resetFormDanKeunggulan(form, bahasaId);
                         }
                     },
                     error: function() {
-                        // Ubah action form agar menyertakan bahasaId
-                        form.attr('action', '/update_penjadwalan/' + bahasaId);
-
-                        $('#judul').val('');
-                            editor.setData('');
-                            $('#teks_btncoba').val('');
-                            $('#teks_btntutor').val('');
-                            $('#video_tutor').val('');
-                            $('#bag_keunggulan').val('');
-                            $('#ket_keunggulan').val('');
+                        resetFormDanKeunggulan(form, bahasaId);
                     }
                 });
-            });
+            }
 
-            // Tambah Keunggulan Produk Voting
+
+
+            function resetFormDanKeunggulan(form, bahasaId) {
+                form.attr('action', '/update_penjadwalan/' + bahasaId);
+                $('#judul').val('');
+                editor.setData('');
+                $('#teks_btncoba').val('');
+                $('#teks_btntutor').val('');
+                $('#video_tutor').val('');
+                $('#bag_keunggulan').val('');
+                $('#ket_keunggulan').val('');
+                $('#listKeunggulanVote').html('<p class="text-muted">Tidak ada keunggulan tersedia.</p>');
+            }
+
+            // Tambah inputan keunggulan
             $('#tambahKeunggulanV').click(function() {
                 var keunggulanBaru = `
-                <div class="row mb-3 keunggulanV-item align-items-center">
-                    <div class="col-md-11">
-                        <div class="row mb-2">
-                            <div class="col-md">
-                                <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*" required>
-                            </div>
-                            <div class="col-md">
-                                <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" required>
-                            </div>
+            <div class="row mb-3 keunggulanV-item align-items-center">
+                <div class="col-md-11">
+                    <div class="row mb-2">
+                        <div class="col-md">
+                            <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*" required>
                         </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" required>
-                            </div>
+                        <div class="col-md">
+                            <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" required>
                         </div>
                     </div>
-                    <div class="col-md-1 text-end">
-                        <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+                    <div class="row">
+                        <div class="col-md">
+                            <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" required>
+                        </div>
                     </div>
                 </div>
-            `;
+                <div class="col-md-1 text-end">
+                    <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>`;
                 $('#listKeunggulanVote').append(keunggulanBaru);
             });
 
-            // Hapus Keunggulan Produk Voting
+            // Hapus keunggulan yang ditambahkan
             $(document).on('click', '.hapusKeunggulanV', function() {
                 $(this).closest('.keunggulanV-item').remove();
             });
 
-            // Preview Nama File Setelah Upload
-            $('input[type="file"]').on('change', function() {
+            // Preview nama file yang dipilih
+            $(document).on('change', 'input[type="file"]', function() {
                 var fileName = $(this).val().split('\\').pop();
                 $(this).next('.custom-file-label').addClass("selected").html(fileName);
             });

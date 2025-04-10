@@ -4,22 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('advantages', function (Blueprint $table) {
+        Schema::create('missions', function (Blueprint $table) {
             $table->id();
-            $table->string('ikon');
-            $table->string('nama');
-            $table->string('isi');
+            $table->string('judul', 100);
+            $table->text('keterangan');
 
             // Foreign key kedalam tabel bahasa
             $table->unsignedBigInteger('bahasa_id');
             $table->foreign('bahasa_id')->references('id')->on('languages')->onDelete('cascade');
-            
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('advantages');
+        Schema::dropIfExists('missions');
     }
 };

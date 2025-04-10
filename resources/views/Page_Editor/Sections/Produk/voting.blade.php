@@ -36,7 +36,7 @@
 
             <div class="row mt-1">
                 <div class="col-md-9">
-                    <h5 class="mt-2">Voting - Bahasa</h5>
+                    <h5 class="mt-2">Voting</h5>
                 </div>
             </div>
 
@@ -114,6 +114,14 @@
 
                     <div class="col-md">
                         <input type="file" id="foto_produk" name="foto_produk" class="form-control" accept="image/*">
+
+                        {{-- Tampilkan gambar yang sudah tersimpan di database --}}
+                        @if (!empty($produk->gambar))
+                            <div class="mt-2">
+                                <img src="{{ asset('storage/' . $produk->gambar) }}" alt="Foto Produk" class="img-thumbnail"
+                                    width="150">
+                            </div>
+                        @endif
                     </div>
                 </div>
 
@@ -202,6 +210,7 @@
                                 <hr>
                             @endforeach
                         </div>
+
                     </div>
                 </div>
 
@@ -220,103 +229,165 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+    let editor;
+    let originalFormData = {};
 
-            let editor;
+    // Init CKEditor
+    ClassicEditor.create($("#deskripsiEditor")[0])
+        .then(newEditor => {
+            editor = newEditor;
+            simpanDataFormAwal();
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
-            ClassicEditor.create($("#deskripsiEditor")[0])
-                .then(newEditor => {
-                    editor = newEditor;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+    function simpanDataFormAwal() {
+        originalFormData = {
+            judul: $('#judul').val(),
+            deskripsi: editor.getData(),
+            teks_btncoba: $('#teks_btncoba').val(),
+            teks_btntutor: $('#teks_btntutor').val(),
+            video_tutor: $('#video_tutor').val(),
+            bag_keunggulan: $('#bag_keunggulan').val(),
+            ket_keunggulan: $('#ket_keunggulan').val(),
+            bahasa_terakhir: $('#pilihBahasa').val()
+        };
+    }
 
-            $('#pilihBahasa').change(function() {
-                var bahasaId = $(this).val();
-                var form = $('#formVoting');
+    function formBerubah() {
+        return $('#judul').val() !== originalFormData.judul ||
+            editor.getData() !== originalFormData.deskripsi ||
+            $('#teks_btncoba').val() !== originalFormData.teks_btncoba ||
+            $('#teks_btntutor').val() !== originalFormData.teks_btntutor ||
+            $('#video_tutor').val() !== originalFormData.video_tutor ||
+            $('#bag_keunggulan').val() !== originalFormData.bag_keunggulan ||
+            $('#ket_keunggulan').val() !== originalFormData.ket_keunggulan;
+    }
 
-                $.ajax({
-                    url: '/editor_halaman/voting/' + bahasaId,
-                    type: 'GET',
-                    success: function(response) {
+    $('#pilihBahasa').change(function (e) {
+        e.preventDefault();
+        let bahasaId = $(this).val();
+        let form = $('#formVoting');
 
-                        // Ubah action form agar menyertakan bahasaId
-                        form.attr('action', '/update_voting/' + bahasaId);
+        Swal.fire({
+            title: 'Ganti Bahasa?',
+            text: "Apakah kamu ingin menyimpan perubahan sebelum mengganti bahasa?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // langsung submit form
+            } else {
+                jalankanAjaxGantiBahasa(bahasaId, form);
+            }
+        });
+    });
 
-                        if (response) {
-                            $('#judul').val(response.Judul || '');
-                            editor.setData(response.Deskripsi || '');
-                            $('#teks_btncoba').val(response.TeksButtonCoba || '');
-                            $('#teks_btntutor').val(response.TeksButtonTutorial || '');
-                            $('#video_tutor').val(response.Link || '');
-                            $('#bag_keunggulan').val(response.JudulBagianKeunggulan || '');
-                            $('#ket_keunggulan').val(response.KeteranganBagianKeunggulan || '');
-                        } else {
-                            $('#judul').val('');
-                            editor.setData('');
-                            $('#teks_btncoba').val('');
-                            $('#teks_btntutor').val('');
-                            $('#video_tutor').val('');
-                            $('#bag_keunggulan').val('');
-                            $('#ket_keunggulan').val('');
-                        }
-                    },
-                    error: function() {
-                        // Ubah action form agar menyertakan bahasaId
-                        form.attr('action', '/update_voting/' + bahasaId);
+    function jalankanAjaxGantiBahasa(bahasaId, form) {
+        $.ajax({
+            url: '/editor_halaman/voting/' + bahasaId,
+            type: 'GET',
+            success: function (response) {
+                form.attr('action', '/update_voting/' + bahasaId);
 
-                        $('#judul').val('');
-                        editor.setData('');
-                        $('#teks_btncoba').val('');
-                        $('#teks_btntutor').val('');
-                        $('#video_tutor').val('');
-                        $('#bag_keunggulan').val('');
-                        $('#ket_keunggulan').val('');
-                    }
-                });
-            });
+                $('#judul').val(response?.Judul || '');
+                editor.setData(response?.Deskripsi || '');
+                $('#teks_btncoba').val(response?.TeksButtonCoba || '');
+                $('#teks_btntutor').val(response?.TeksButtonTutorial || '');
+                $('#video_tutor').val(response?.Link || '');
+                $('#bag_keunggulan').val(response?.JudulBagianKeunggulan || '');
+                $('#ket_keunggulan').val(response?.KeteranganBagianKeunggulan || '');
 
-            // Tambah Keunggulan Produk Voting
-            $('#tambahKeunggulanV').click(function() {
-                var keunggulanBaru = `
-                <div class="row mb-3 keunggulanV-item align-items-center">
-                    <div class="col-md-11">
-                        <div class="row mb-2">
-                            <div class="col-md">
-                                <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*" required>
+                let keunggulanHTML = '';
+                if (response?.keunggulan?.length > 0) {
+                    response.keunggulan.forEach(function (adv) {
+                        keunggulanHTML += `
+                        <div class="row mb-3 keunggulanV-item align-items-center">
+                            <div class="col-md-11">
+                                <div class="row mb-2">
+                                    <div class="col-md">
+                                        <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*">
+                                        ${adv.ikon ? `<small class="d-block mt-1"><img src="/storage/${adv.ikon}" class="img-thumbnail" width="80"></small>` : ''}
+                                    </div>
+                                    <div class="col-md">
+                                        <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" value="${adv.nama}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" value="${adv.isi}">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md">
-                                <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" required>
+                            <div class="col-md-1 text-end">
+                                <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" required>
-                            </div>
-                        </div>
+                        </div><hr>`;
+                    });
+                } else {
+                    keunggulanHTML = `<p class="text-muted">Tidak ada keunggulan tersedia.</p>`;
+                }
+
+                $('#listKeunggulanVote').html(keunggulanHTML);
+                originalFormData.bahasa_terakhir = bahasaId;
+                simpanDataFormAwal();
+            },
+            error: function () {
+                form.attr('action', '/update_voting/' + bahasaId);
+                $('#judul').val('');
+                editor.setData('');
+                $('#teks_btncoba').val('');
+                $('#teks_btntutor').val('');
+                $('#video_tutor').val('');
+                $('#bag_keunggulan').val('');
+                $('#ket_keunggulan').val('');
+                $('#listKeunggulanVote').html('<p class="text-muted">Tidak ada keunggulan tersedia.</p>');
+            }
+        });
+    }
+
+    // Tambah keunggulan baru
+    $('#tambahKeunggulanV').click(function () {
+        var keunggulanBaru = `
+        <div class="row mb-3 keunggulanV-item align-items-center">
+            <div class="col-md-11">
+                <div class="row mb-2">
+                    <div class="col-md">
+                        <input type="file" name="keunggulanV_image[]" class="form-control" accept="image/*" required>
                     </div>
-                    <div class="col-md-1 text-end">
-                        <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+                    <div class="col-md">
+                        <input type="text" name="keunggulanV_judul[]" class="form-control" placeholder="Judul Keunggulan" required>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md">
+                        <input type="text" name="keunggulanV_keterangan[]" class="form-control" placeholder="Keterangan Keunggulan" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 text-end">
+                <button type="button" class="btn btn-danger hapusKeunggulanV"><i class="bi bi-trash"></i></button>
+            </div>
+        </div><hr>`;
+        $('#listKeunggulanVote').append(keunggulanBaru);
+    });
 
-                <hr>
-            `;
-                $('#listKeunggulanVote').append(keunggulanBaru);
-            });
+    // Hapus keunggulan
+    $(document).on('click', '.hapusKeunggulanV', function () {
+        $(this).closest('.keunggulanV-item').remove();
+    });
 
-            // Hapus Keunggulan Produk Voting
-            $(document).on('click', '.hapusKeunggulanV', function() {
-                $(this).closest('.keunggulanV-item').remove();
-            });
+    // File input label preview
+    $(document).on('change', 'input[type="file"]', function () {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+});
 
-            // Preview Nama File Setelah Upload
-            $('input[type="file"]').on('change', function() {
-                var fileName = $(this).val().split('\\').pop();
-                $(this).next('.custom-file-label').addClass("selected").html(fileName);
-            });
-        });
     </script>
 
 @endsection

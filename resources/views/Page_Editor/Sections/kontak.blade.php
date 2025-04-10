@@ -191,6 +191,9 @@
 
             function saveToDatabase() {
                 return new Promise((resolve, reject) => {
+                    let bahasaSebelumnya = $('#pilihBahasa').data(
+                    'prev'); // Ambil ID bahasa sebelum perubahan
+
                     let formData = {
                         judul: $('#judul').val(),
                         iframe: $('#iframe').val(),
@@ -204,7 +207,8 @@
                     };
 
                     $.ajax({
-                        url: "/update_kontak/" + $('#pilihBahasa').val(),
+                        url: "/update_kontak/" +
+                        bahasaSebelumnya, // Pakai bahasa sebelumnya, bukan yang baru
                         type: "POST", // tetap pakai POST, tapi Laravel akan mengenali sebagai PUT
                         data: formData,
                         success: function(response) {

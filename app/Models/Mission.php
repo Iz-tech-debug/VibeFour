@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Advantage extends Model
+class Mission extends Model
 {
     use HasFactory;
 
-    protected $table = 'advantages';
-
+    protected $table = 'missions';
+    
     protected $fillable = [
-        'ikon',
         'judul',
-        'isi',
+        'keterangan',
         'bahasa_id',
     ];
 }
